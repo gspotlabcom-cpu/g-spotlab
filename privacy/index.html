@@ -6,122 +6,179 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      color-scheme: light dark;
-      --bg: #f4f5f9;
-      --card-bg: #ffffff;
-      --text: #18181b;
-      --muted: #4b5563;
-      --accent: #6366f1;
-      --border: #e5e7eb;
+      color-scheme: dark;
+      --bg-overlay: rgba(2, 6, 23, 0.6);   /* затемнение поверх фона */
+      --card-bg: rgba(2, 6, 23, 0.94);     /* подложка под текст */
+      --card-border: rgba(148, 163, 184, 0.4);
+      --text: #e5e7eb;                     /* светло-серый текст */
+      --muted: #9ca3af;
+      --accent: #f97316;
+      --accent-soft: #fed7aa;
     }
-    * {
-      box-sizing: border-box;
-    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
                    sans-serif;
-      background: radial-gradient(circle at top, #e0e7ff 0, #f4f5f9 45%, #f4f5f9 100%);
       color: var(--text);
+
+      /* фон как на Terms */
+      background-image: url("../assets/loading-bg.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      background-attachment: fixed;
+
+      position: relative;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--bg-overlay);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
       padding: 24px 12px 40px;
     }
-    .page-wrap {
-      max-width: 920px;
-      margin: 0 auto;
-    }
+
     header {
       margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
     }
-    .logo {
-      font-size: 20px;
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-image {
+      height: 80px;
+      width: auto;
+      display: block;
+    }
+
+    .logo-text-main {
+      font-size: 30px;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--text); /* как основной текст */
+      text-shadow: 0 0 10px rgba(15, 23, 42, 0.9);
     }
+
     .subtitle {
-      margin-top: 4px;
-      font-size: 14px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
       color: var(--muted);
     }
+
     .card {
       background: var(--card-bg);
-      border-radius: 16px;
-      padding: 32px 26px 32px;
+      border-radius: 18px;
+      padding: 30px 22px 30px;
       box-shadow:
-        0 16px 40px rgba(15, 23, 42, 0.12),
-        0 0 0 1px rgba(148, 163, 184, 0.15);
-      border: 1px solid var(--border);
+        0 22px 60px rgba(15, 23, 42, 0.95),
+        0 0 0 1px var(--card-border);
+      backdrop-filter: blur(4px);
     }
+
     @media (min-width: 768px) {
-      .card {
-        padding: 40px 40px 36px;
-      }
+      .page-wrap { padding: 32px 16px 48px; }
+      .card { padding: 40px 40px 34px; }
     }
+
     h1 {
-      font-size: 32px;
-      margin: 0 0 4px;
+      font-size: 30px;
+      margin: 0 0 6px;
     }
+
     .meta {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
+
     h2 {
-      margin-top: 28px;
+      margin-top: 26px;
       margin-bottom: 8px;
-      font-size: 22px;
+      font-size: 20px;
     }
+
     h3 {
       margin-top: 18px;
       margin-bottom: 4px;
       font-size: 16px;
     }
+
     p {
       margin-top: 6px;
       margin-bottom: 10px;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.7;
-      color: #111827;
+      color: var(--text);
     }
+
     ul {
       margin: 4px 0 10px 22px;
       padding: 0;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.7;
+      color: var(--text);
     }
+
     li { margin-bottom: 4px; }
     strong { font-weight: 600; }
+
     a {
-      color: var(--accent);
+      color: var(--accent-soft);
       text-decoration: none;
+      border-bottom: 1px solid transparent;
     }
     a:hover {
-      text-decoration: underline;
+      border-bottom-color: rgba(249, 115, 22, 0.7);
     }
+
     footer {
-      max-width: 920px;
+      max-width: 960px;
       margin: 20px auto 0;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
       display: flex;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
+      padding: 0 18px 10px;
     }
   </style>
 </head>
 <body>
 <div class="page-wrap">
   <header>
-    <div class="logo">G-Spot Lab</div>
+    <div class="logo-row">
+      <img class="logo-image" src="../assets/gspot-logo.png" alt="G-Spot Lab logo" />
+      <div class="logo-text-main">G-Spot Lab</div>
+    </div>
     <div class="subtitle">Merge Universe · Legal Information</div>
   </header>
 
   <main class="card">
     <h1>Privacy Policy</h1>
     <div class="meta">
-      <div><strong>Last Updated:</strong> 11/21/2025 </div>
+      <div><strong>Last Updated:</strong> 11/21/2025</div>
       <div><strong>Developer:</strong> G-Spot Lab</div>
     </div>
 
@@ -129,7 +186,7 @@
     <p>
       G-Spot Lab (“we”, “us”, “our”) respects your privacy. This Privacy Policy explains
       how we collect, use, process, and protect your data when you use our mobile game
-      <strong>Merge Universe</strong> and any related services.
+      <strong>Merge Universe</strong> and any related services (the “Services”).
     </p>
 
     <h2>2. Information We Collect</h2>
@@ -148,9 +205,9 @@
 
     <h3>2.2. Local Game Data</h3>
     <p>
-      We store gameplay progress, settings, inventory, boosters, in-game currency and other
-      game-related information locally on your device. This data is not transmitted to us
-      or third parties.
+      We store gameplay progress, settings, inventory, boosters, in-game currency and
+      other game-related information locally on your device. This data is not transmitted
+      to us or third parties.
     </p>
 
     <h3>2.3. Device and Technical Data</h3>
@@ -158,13 +215,13 @@
       Google AdMob and Google Play Services may automatically collect:
     </p>
     <ul>
-      <li>device model</li>
-      <li>operating system version</li>
-      <li>system language</li>
-      <li>time zone</li>
-      <li>IP address (region detection only)</li>
-      <li>Google Advertising ID</li>
-      <li>crash logs and diagnostic data</li>
+      <li>device model;</li>
+      <li>operating system version;</li>
+      <li>system language;</li>
+      <li>time zone;</li>
+      <li>IP address (for region detection only);</li>
+      <li>Google Advertising ID;</li>
+      <li>crash logs and diagnostic data.</li>
     </ul>
 
     <h3>2.4. Advertising</h3>
@@ -176,8 +233,8 @@
 
     <h3>2.5. In-App Purchases</h3>
     <p>
-      Purchases are handled by Google Play Billing. We do not receive or store any
-      payment information such as card numbers or billing addresses.
+      Purchases are handled by Google Play Billing. We do not receive or store any payment
+      information such as card numbers or billing addresses.
     </p>
 
     <h3>2.6. Customer Support</h3>
@@ -203,9 +260,9 @@
       to provide our Services:
     </p>
     <ul>
-      <li>Google Play Services (including Google Play Games)</li>
-      <li>Google AdMob</li>
-      <li>Google Play Billing</li>
+      <li>Google Play Services (including Google Play Games);</li>
+      <li>Google AdMob;</li>
+      <li>Google Play Billing.</li>
     </ul>
     <p>
       We do not sell your personal data or share it with any other third parties.
@@ -245,12 +302,16 @@
       If you have any questions about this Privacy Policy, please contact us at:<br />
       <strong>Email:</strong> gspotlab.com@gmail.com
     </p>
+    <p>
+      For information about our Terms of Use, please visit
+      <a href="/terms">Terms of Use</a>.
+    </p>
   </main>
-
-  <footer>
-    <span>© G-Spot Lab</span>
-    <span>Merge Universe · Privacy Policy</span>
-  </footer>
 </div>
+
+<footer>
+  <span>© G-Spot Lab</span>
+  <span>Merge Universe · Privacy Policy</span>
+</footer>
 </body>
 </html>
