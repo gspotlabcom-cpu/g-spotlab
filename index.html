@@ -4,10 +4,6 @@
   <meta charset="utf-8" />
   <title>G-Spot Lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- мягкий редирект через 2 секунды -->
-  <meta http-equiv="refresh" content="2; url=https://play.google.com/store/apps/dev?id=5951755133508714410" />
-
   <style>
     :root {
       color-scheme: dark;
@@ -18,8 +14,11 @@
       --muted: #9ca3af;
       --accent: #f97316;
       --accent-soft: #fed7aa;
+      --accent-soft-2: rgba(249, 115, 22, 0.12);
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -32,6 +31,7 @@
       position: relative;
       min-height: 100vh;
     }
+
     body::before {
       content: "";
       position: fixed;
@@ -40,11 +40,13 @@
       pointer-events: none;
       z-index: -1;
     }
+
     .page-wrap {
-      max-width: 960px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 24px 12px 40px;
     }
+
     header {
       margin-bottom: 24px;
       display: flex;
@@ -52,16 +54,20 @@
       gap: 8px;
       align-items: flex-start;
     }
+
     .logo-row {
       display: flex;
       align-items: center;
       gap: 14px;
+      flex-wrap: wrap;
     }
+
     .logo-image {
       height: 80px;
       width: auto;
       display: block;
     }
+
     .logo-text-main {
       font-size: 30px;
       font-weight: 700;
@@ -70,50 +76,220 @@
       color: var(--text);
       text-shadow: 0 0 10px rgba(15, 23, 42, 0.9);
     }
+
     .subtitle {
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
       color: var(--muted);
     }
+
     .card {
       background: var(--card-bg);
       border-radius: 18px;
       padding: 30px 22px 30px;
-      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.95), 0 0 0 1px var(--card-border);
+      box-shadow:
+        0 22px 60px rgba(15, 23, 42, 0.95),
+        0 0 0 1px var(--card-border);
       backdrop-filter: blur(4px);
     }
+
     @media (min-width: 768px) {
       .page-wrap { padding: 32px 16px 48px; }
       .card { padding: 40px 40px 34px; }
     }
-    h1 { font-size: 30px; margin: 0 0 6px; }
-    p { margin: 10px 0; font-size: 14px; line-height: 1.7; color: var(--text); }
-    .meta { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+
+    h1 {
+      font-size: 34px;
+      margin: 0 0 10px;
+      line-height: 1.15;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
     a {
       color: var(--accent-soft);
       text-decoration: none;
       border-bottom: 1px solid transparent;
     }
-    a:hover { border-bottom-color: rgba(249, 115, 22, 0.7); }
+
+    a:hover {
+      border-bottom-color: rgba(249, 115, 22, 0.7);
+    }
+
+    .hero {
+      display: grid;
+      gap: 24px;
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .hero-preview {
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 22px;
+    }
+
+    .hero-preview {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .preview-box {
+      min-height: 220px;
+      border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      background: rgba(2, 6, 23, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
     .btn {
       display: inline-block;
-      margin-top: 8px;
       padding: 10px 14px;
       border-radius: 12px;
       border: 1px solid rgba(249,115,22,0.35);
       background: rgba(249,115,22,0.12);
+      transition: 0.2s ease;
     }
-    .links {
-      margin-top: 16px;
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(249,115,22,0.18);
+    }
+
+    .btn-muted {
+      border-color: rgba(148, 163, 184, 0.25);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .section-head {
+      margin-bottom: 14px;
+    }
+
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .asset-card {
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      padding: 16px;
+    }
+
+    .asset-thumb {
+      aspect-ratio: 16 / 10;
+      border-radius: 12px;
+      background:
+        linear-gradient(180deg, rgba(249, 115, 22, 0.10), rgba(2, 6, 23, 0.15)),
+        rgba(255,255,255,0.03);
+      border: 1px dashed rgba(148, 163, 184, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .asset-card p {
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--accent-soft);
+      border: 1px solid rgba(249,115,22,0.35);
+      background: var(--accent-soft-2);
+    }
+
+    .about-grid,
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .info-box {
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      padding: 18px;
+    }
+
+    .contact-link {
+      display: inline-block;
+      margin-top: 4px;
+      word-break: break-word;
+    }
+
+    .legal-links {
+      margin-top: 18px;
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
       font-size: 13px;
       color: var(--muted);
     }
+
     footer {
-      max-width: 960px;
+      max-width: 1100px;
       margin: 20px auto 0;
       font-size: 12px;
       color: var(--muted);
@@ -123,16 +299,17 @@
       flex-wrap: wrap;
       padding: 0 18px 10px;
     }
+
+    @media (max-width: 900px) {
+      .hero-top,
+      .asset-grid,
+      .about-grid,
+      .contacts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
-
-  <script>
-    // на всякий случай, если meta refresh заблокирован
-    setTimeout(function () {
-      window.location.href = "https://play.google.com/store/apps/dev?id=5951755133508714410";
-    }, 5000);
-  </script>
 </head>
-
 <body>
   <div class="page-wrap">
     <header>
@@ -140,31 +317,143 @@
         <img class="logo-image" src="assets/gspot-logo.png" alt="G-Spot Lab logo" />
         <div class="logo-text-main">G-Spot Lab</div>
       </div>
-      <div class="subtitle">Merge Universe · Legal & Developer Information</div>
+      <div class="subtitle">Unity Assets · Game Projects · Legal & Contact Information</div>
     </header>
 
     <main class="card">
-      <h1>Redirecting to Google Play…</h1>
-      <div class="meta">
-        If you are not redirected automatically, use the button below.
-      </div>
+      <section class="hero">
+        <div class="hero-top">
+          <div class="hero-copy">
+            <h1>Stylized Unity Assets by G-Spot Lab</h1>
+            <div class="meta">Indie creator page for upcoming Unity Asset Store content and studio information.</div>
 
-      <p>
-        <a class="btn" href="https://play.google.com/store/apps/dev?id=5951755133508714410">
-          Open Google Play Developer Page
-        </a>
-      </p>
+            <p>
+              G-Spot Lab is preparing a collection of Unity assets focused on clean visuals,
+              practical usability, and a game-ready style for indie projects.
+            </p>
+            <p>
+              This page serves as the main studio website for asset publishing, developer information,
+              and contact details.
+            </p>
 
-      <div class="links">
-        <a href="/privacy/">Privacy Policy</a>
-        <a href="/terms/">Terms of Use</a>
-      </div>
+            <div class="cta-row">
+              <a class="btn" href="#assets">View Upcoming Assets</a>
+              <a class="btn btn-muted" href="#contacts">Contact</a>
+            </div>
+          </div>
+
+          <div class="hero-preview">
+            <div class="preview-box">
+              <div>
+                <strong style="display:block; color: var(--text); font-size: 18px; margin-bottom: 8px; letter-spacing: 0.08em; text-transform: uppercase;">
+                  Preview Showcase
+                </strong>
+                Asset icons, UI packs, and stylized elements can be placed here later as real preview images.
+              </div>
+            </div>
+            <div class="meta" style="margin-bottom: 0;">
+              Store page is in preparation. Visual previews and package links will appear here.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="assets">
+        <div class="section-head">
+          <h2>Upcoming Assets</h2>
+          <p>
+            Planned asset categories that will be published under the G-Spot Lab label.
+          </p>
+        </div>
+
+        <div class="asset-grid">
+          <article class="asset-card">
+            <div class="asset-thumb">Icons / UI Preview</div>
+            <h3>Game Icons Pack</h3>
+            <p>
+              A stylized icon collection suitable for game interfaces, stores, rewards, categories, and buttons.
+            </p>
+            <span class="tag">Coming Soon</span>
+          </article>
+
+          <article class="asset-card">
+            <div class="asset-thumb">Decorative Elements</div>
+            <h3>UI Decoration Elements</h3>
+            <p>
+              Frames, dividers, decorative shapes, and visual details designed for fantasy and casual projects.
+            </p>
+            <span class="tag">Coming Soon</span>
+          </article>
+
+          <article class="asset-card">
+            <div class="asset-thumb">Asset Bundle Preview</div>
+            <h3>Stylized Asset Collections</h3>
+            <p>
+              Future themed bundles for game projects, including polished visual sets for indie development.
+            </p>
+            <span class="tag">Coming Soon</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-head">
+          <h2>About G-Spot Lab</h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="info-box">
+            <h3>Studio Focus</h3>
+            <p>
+              G-Spot Lab develops game-related content including mobile games, stylized art assets,
+              interface elements, and production-ready visual packs.
+            </p>
+          </div>
+
+          <div class="info-box">
+            <h3>Purpose of This Website</h3>
+            <p>
+              This website provides official developer information, links to legal pages,
+              asset publishing presence, and public contact details.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contacts">
+        <div class="section-head">
+          <h2>Contacts</h2>
+        </div>
+
+        <div class="contacts-grid">
+          <div class="info-box">
+            <h3>Email</h3>
+            <a class="contact-link" href="mailto:support@g-spotlab.com">support@g-spotlab.com</a>
+            <p>
+              For business inquiries, support requests, and asset-related communication.
+            </p>
+          </div>
+
+          <div class="info-box">
+            <h3>Google Play</h3>
+            <a class="contact-link" href="https://play.google.com/store/apps/dev?id=5951755133508714410">Developer Page</a>
+            <p>
+              Current published projects and studio presence on Google Play.
+            </p>
+          </div>
+        </div>
+
+        <div class="legal-links">
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/terms/">Terms of Use</a>
+        </div>
+      </section>
     </main>
   </div>
 
   <footer>
     <span>© G-Spot Lab</span>
-    <span>Developer Website</span>
+    <span>Unity Assets · Developer Website</span>
   </footer>
 </body>
 </html>
