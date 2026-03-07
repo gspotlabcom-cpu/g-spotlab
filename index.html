@@ -180,6 +180,47 @@
       line-height: 1.6;
     }
 
+    .preview-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .preview-title {
+      display: block;
+      color: var(--text);
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mini-preview-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .mini-preview {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(255,255,255,0.04);
+      font-size: 20px;
+    }
+
+    .preview-text {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
     .cta-row {
       display: flex;
       gap: 12px;
@@ -204,6 +245,23 @@
     .btn-muted {
       border-color: rgba(148, 163, 184, 0.25);
       background: rgba(255,255,255,0.04);
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .trust-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--accent-soft);
+      border: 1px solid rgba(249,115,22,0.28);
+      background: rgba(249,115,22,0.08);
     }
 
     .section {
@@ -242,6 +300,23 @@
       color: var(--muted);
       font-size: 13px;
       margin-bottom: 14px;
+    }
+
+    .thumb-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .thumb-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .thumb-label {
+      font-size: 13px;
+      color: var(--muted);
     }
 
     .asset-card p {
@@ -344,17 +419,33 @@
 
           <div class="hero-preview">
             <div class="preview-box">
-              <div>
-                <strong style="display:block; color: var(--text); font-size: 18px; margin-bottom: 8px; letter-spacing: 0.08em; text-transform: uppercase;">
-                  Preview Showcase
-                </strong>
-                Asset icons, UI packs, and stylized elements can be placed here later as real preview images.
+              <div class="preview-stack">
+                <strong class="preview-title">Preview Showcase</strong>
+
+                <div class="mini-preview-row">
+                  <span class="mini-preview">🎮</span>
+                  <span class="mini-preview">✨</span>
+                  <span class="mini-preview">🧩</span>
+                  <span class="mini-preview">🎨</span>
+                </div>
+
+                <div class="preview-text">
+                  Asset icons, UI packs, and stylized elements can be placed here later as real preview images.
+                </div>
               </div>
             </div>
+
             <div class="meta" style="margin-bottom: 0;">
               Store page is in preparation. Visual previews and package links will appear here.
             </div>
           </div>
+        </div>
+
+        <div class="trust-row">
+          <span class="trust-pill">Official Studio Website</span>
+          <span class="trust-pill">Unity Assets in Preparation</span>
+          <span class="trust-pill">Public Contact Available</span>
+          <span class="trust-pill">Legal Pages Included</span>
         </div>
       </section>
 
@@ -368,7 +459,12 @@
 
         <div class="asset-grid">
           <article class="asset-card">
-            <div class="asset-thumb">Icons / UI Preview</div>
+            <div class="asset-thumb">
+              <div class="thumb-inner">
+                <div class="thumb-icon">🎮</div>
+                <div class="thumb-label">Icons / UI Preview</div>
+              </div>
+            </div>
             <h3>Game Icons Pack</h3>
             <p>
               A stylized icon collection suitable for game interfaces, stores, rewards, categories, and buttons.
@@ -377,7 +473,12 @@
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb">Decorative Elements</div>
+            <div class="asset-thumb">
+              <div class="thumb-inner">
+                <div class="thumb-icon">✨</div>
+                <div class="thumb-label">Decorative Elements</div>
+              </div>
+            </div>
             <h3>UI Decoration Elements</h3>
             <p>
               Frames, dividers, decorative shapes, and visual details designed for fantasy and casual projects.
@@ -386,7 +487,12 @@
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb">Asset Bundle Preview</div>
+            <div class="asset-thumb">
+              <div class="thumb-inner">
+                <div class="thumb-icon">🧩</div>
+                <div class="thumb-label">Asset Bundle Preview</div>
+              </div>
+            </div>
             <h3>Stylized Asset Collections</h3>
             <p>
               Future themed bundles for game projects, including polished visual sets for indie development.
@@ -417,6 +523,30 @@
               asset publishing presence, and public contact details.
             </p>
           </div>
+        </div>
+      </section>
+
+      <section class="section" id="publisher">
+        <div class="section-head">
+          <h2>Publisher Information</h2>
+          <p>
+            Official studio and publisher information for Unity asset releases and related projects.
+          </p>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Publisher:</strong> G-Spot Lab</p>
+          <p><strong>Type:</strong> Independent game developer and asset publisher</p>
+          <p><strong>Focus:</strong> Stylized Unity assets, UI elements, and indie game production</p>
+          <p>
+            G-Spot Lab creates practical, production-ready content for indie developers,
+            including stylized interface assets, decorative visual elements, and game-related art packs.
+          </p>
+          <p>
+            For publishing inquiries, support requests, or asset-related communication:
+            <br />
+            <a href="mailto:gspotlab.com@gmail.com">gspotlab.com@gmail.com</a>
+          </p>
         </div>
       </section>
 
