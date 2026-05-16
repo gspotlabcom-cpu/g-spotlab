@@ -107,7 +107,7 @@
     }
 
     .page-wrap {
-      max-width: 1180px;
+      max-width: 1320px;
       margin: 0 auto;
       padding: 24px 14px 44px;
     }
@@ -442,7 +442,8 @@
     }
 
     .asset-thumb {
-      min-height: 156px;
+      aspect-ratio: 16 / 9;
+      min-height: 0;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.11);
       background: rgba(255,255,255,0.035);
@@ -458,6 +459,26 @@
       position: absolute;
       inset: -35%;
       opacity: 0.9;
+    }
+
+    .asset-thumb.has-image {
+      background: rgba(2, 6, 23, 0.55);
+      align-items: flex-end;
+    }
+
+    .asset-thumb.has-image::before {
+      display: none;
+    }
+
+    .asset-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      padding: 8px;
+      background: rgba(2, 6, 23, 0.45);
     }
 
     .visual-fire::before {
@@ -569,7 +590,7 @@
     }
 
     footer {
-      max-width: 1180px;
+      max-width: 1320px;
       margin: 20px auto 0;
       padding: 0 18px 12px;
       display: flex;
@@ -688,7 +709,12 @@
 
         <div class="asset-grid">
           <article class="asset-card">
-            <div class="asset-thumb visual-fire">
+            <div class="asset-thumb has-image">
+              <img
+                class="asset-image"
+                src="assets/products/fire-lava-vfx-materials.png"
+                alt="Fire & Lava VFX Materials preview"
+              />
               <div class="asset-thumb-label">Fire & Lava</div>
             </div>
             <div>
@@ -707,7 +733,12 @@
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb visual-energy">
+            <div class="asset-thumb has-image">
+              <img
+                class="asset-image"
+                src="assets/products/elemental-energy-vfx-materials.png"
+                alt="Elemental Energy VFX Materials preview"
+              />
               <div class="asset-thumb-label">Elemental Energy</div>
             </div>
             <div>
@@ -726,7 +757,12 @@
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb visual-textures">
+            <div class="asset-thumb has-image">
+              <img
+                class="asset-image"
+                src="assets/products/magic-energy-materials-30.png"
+                alt="Magic Energy Materials Pack preview"
+              />
               <div class="asset-thumb-label">30 Materials</div>
             </div>
             <div>
@@ -744,7 +780,12 @@
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb visual-free">
+            <div class="asset-thumb has-image">
+              <img
+                class="asset-image"
+                src="assets/products/magic-energy-textures-free.png"
+                alt="Magic Energy Textures Free Pack preview"
+              />
               <div class="asset-thumb-label">Free Starter Pack</div>
             </div>
             <div>
