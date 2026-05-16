@@ -6,33 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="G-Spot Lab creates stylized VFX materials, seamless energy textures, animated shader packs, and indie game projects for Unity and Unreal Engine."
+    content="G-Spot Lab creates stylized VFX materials, animated shader packs, seamless energy textures, and indie game projects for Unity and Unreal Engine."
   />
 
   <style>
     :root {
       color-scheme: dark;
-      --bg-overlay: rgba(2, 6, 23, 0.68);
-      --bg-deep: #020617;
-      --card-bg: rgba(2, 6, 23, 0.94);
-      --card-bg-soft: rgba(255, 255, 255, 0.035);
-      --card-border: rgba(148, 163, 184, 0.28);
-      --card-border-strong: rgba(249, 115, 22, 0.35);
-      --text: #e5e7eb;
+      --bg: #030712;
+      --panel: rgba(3, 7, 18, 0.82);
+      --panel-strong: rgba(3, 7, 18, 0.94);
+      --panel-soft: rgba(255, 255, 255, 0.045);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-soft: rgba(255, 255, 255, 0.075);
+      --text: #f8fafc;
       --muted: #a1a1aa;
-      --muted-2: #71717a;
-      --accent: #f97316;
-      --accent-hot: #fb923c;
-      --accent-soft: #fed7aa;
-      --accent-soft-2: rgba(249, 115, 22, 0.12);
-      --gold: #facc15;
+      --muted-soft: #71717a;
+      --orange: #fb923c;
+      --orange-strong: #f97316;
+      --gold: #fde68a;
       --red: #ef4444;
-      --violet: #8b5cf6;
-      --cyan: #22d3ee;
-      --green: #22c55e;
+      --violet: #a78bfa;
+      --cyan: #67e8f9;
+      --green: #86efac;
+      --radius-xl: 30px;
       --radius-lg: 22px;
       --radius-md: 16px;
-      --shadow: 0 22px 70px rgba(0, 0, 0, 0.62);
+      --shadow: 0 30px 110px rgba(0, 0, 0, 0.58);
     }
 
     * { box-sizing: border-box; }
@@ -41,83 +40,87 @@
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
-      background-color: var(--bg-deep);
-      background-image: url("assets/loading-bg.png");
+      background:
+        radial-gradient(circle at 14% 8%, rgba(249, 115, 22, 0.22), transparent 32%),
+        radial-gradient(circle at 82% 12%, rgba(167, 139, 250, 0.18), transparent 30%),
+        radial-gradient(circle at 50% 72%, rgba(103, 232, 249, 0.09), transparent 36%),
+        linear-gradient(rgba(3, 7, 18, 0.72), rgba(3, 7, 18, 0.94)),
+        url("assets/loading-bg.png");
       background-size: cover;
-      background-repeat: no-repeat;
       background-position: center bottom;
       background-attachment: fixed;
-      min-height: 100vh;
-      position: relative;
+      overflow-x: hidden;
     }
 
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(249, 115, 22, 0.16), transparent 34%),
-        radial-gradient(circle at 78% 24%, rgba(139, 92, 246, 0.13), transparent 30%),
-        var(--bg-overlay);
       pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at 50% 20%, black, transparent 78%);
       z-index: -1;
     }
 
     a {
-      color: var(--accent-soft);
+      color: inherit;
       text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: 0.18s ease;
     }
 
-    a:hover {
-      color: #fff7ed;
-      border-bottom-color: rgba(249, 115, 22, 0.7);
+    img {
+      max-width: 100%;
+      display: block;
     }
 
     p {
-      margin: 10px 0;
+      margin: 0;
+      color: var(--muted);
       font-size: 14px;
       line-height: 1.72;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
       color: var(--text);
     }
 
-    h1, h2, h3 { color: var(--text); }
-
     h1 {
-      margin: 0 0 12px;
-      font-size: clamp(34px, 5vw, 60px);
-      line-height: 1.04;
-      letter-spacing: -0.04em;
+      max-width: 760px;
+      font-size: clamp(42px, 7vw, 84px);
+      line-height: 0.93;
+      letter-spacing: -0.075em;
     }
 
     h2 {
-      margin: 0 0 8px;
-      font-size: clamp(24px, 3vw, 34px);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1;
+      letter-spacing: -0.055em;
     }
 
     h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      line-height: 1.35;
+      font-size: 18px;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
     }
 
-    .page-wrap {
-      max-width: 1320px;
+    .page {
+      width: min(1480px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 24px 14px 44px;
+      padding: 22px 0 36px;
     }
 
-    header {
+    .site-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 18px;
-      margin-bottom: 24px;
+      gap: 22px;
+      padding: 10px 4px 24px;
     }
 
     .brand {
@@ -127,104 +130,135 @@
       min-width: 0;
     }
 
-    .logo-image {
-      height: 72px;
+    .brand img {
       width: auto;
-      display: block;
-      filter: drop-shadow(0 0 18px rgba(0, 0, 0, 0.55));
+      height: 72px;
+      filter: drop-shadow(0 0 28px rgba(249, 115, 22, 0.16));
     }
 
-    .brand-title {
+    .brand-name {
       font-size: 28px;
-      font-weight: 800;
+      font-weight: 850;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(15, 23, 42, 0.9);
       white-space: nowrap;
     }
 
-    .subtitle {
-      margin-top: 4px;
-      font-size: 12px;
+    .brand-subtitle {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
+      letter-spacing: 0.15em;
     }
 
-    nav {
+    .nav {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       justify-content: flex-end;
-      gap: 10px;
-      font-size: 13px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    nav a {
-      padding: 8px 10px;
+    .nav a {
+      padding: 9px 12px;
+      border: 1px solid var(--border-soft);
       border-radius: 999px;
-      color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(2, 6, 23, 0.4);
+      color: #d4d4d8;
+      background: rgba(3, 7, 18, 0.42);
+      font-size: 13px;
+      transition: 0.2s ease;
+      backdrop-filter: blur(10px);
     }
 
-    nav a:hover {
-      color: var(--accent-soft);
-      border-color: rgba(249, 115, 22, 0.36);
-      background: rgba(249, 115, 22, 0.08);
+    .nav a:hover {
+      color: var(--gold);
+      border-color: rgba(251, 146, 60, 0.42);
+      background: rgba(251, 146, 60, 0.1);
+      transform: translateY(-1px);
     }
 
-    .card {
-      background: var(--card-bg);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.025) inset;
-      backdrop-filter: blur(5px);
+    .shell {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,0.064), rgba(255,255,255,0.026));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.08);
       overflow: hidden;
+      backdrop-filter: blur(16px);
     }
 
     .hero {
+      position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1.16fr) minmax(300px, 0.84fr);
-      gap: 28px;
-      padding: clamp(26px, 5vw, 50px);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.72fr);
+      gap: clamp(28px, 5vw, 58px);
+      min-height: 680px;
+      padding: clamp(28px, 5vw, 72px);
       background:
-        linear-gradient(135deg, rgba(249, 115, 22, 0.12), transparent 42%),
-        linear-gradient(315deg, rgba(139, 92, 246, 0.08), transparent 44%);
+        radial-gradient(circle at 16% 20%, rgba(251, 146, 60, 0.16), transparent 28%),
+        radial-gradient(circle at 84% 18%, rgba(239, 68, 68, 0.14), transparent 26%),
+        linear-gradient(135deg, rgba(3,7,18,0.84), rgba(3,7,18,0.44));
+      isolation: isolate;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(251,146,60,0.55), rgba(167,139,250,0.36), transparent);
+      z-index: -1;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+      min-width: 0;
     }
 
     .eyebrow {
+      width: fit-content;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 9px;
       padding: 8px 12px;
+      border: 1px solid rgba(251, 146, 60, 0.34);
       border-radius: 999px;
-      border: 1px solid rgba(249, 115, 22, 0.32);
-      background: rgba(249, 115, 22, 0.1);
-      color: var(--accent-soft);
+      background: rgba(251, 146, 60, 0.1);
+      color: var(--gold);
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--orange);
+      box-shadow: 0 0 18px var(--orange);
     }
 
     .hero-lead {
-      max-width: 760px;
-      color: #f4f4f5;
-      font-size: 16px;
-      line-height: 1.75;
+      max-width: 690px;
+      color: #e5e7eb;
+      font-size: clamp(16px, 1.5vw, 19px);
+      line-height: 1.72;
     }
 
-    .hero-muted {
+    .hero-note {
+      max-width: 650px;
       color: var(--muted);
-      max-width: 700px;
     }
 
     .cta-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 22px;
+      margin-top: 4px;
     }
 
     .btn {
@@ -232,531 +266,669 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      min-height: 42px;
-      padding: 11px 15px;
-      border-radius: 13px;
-      border: 1px solid rgba(249, 115, 22, 0.38);
-      background: rgba(249, 115, 22, 0.14);
-      color: var(--accent-soft);
-      font-weight: 650;
+      min-height: 44px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(251, 146, 60, 0.44);
+      background:
+        linear-gradient(180deg, rgba(251, 146, 60, 0.22), rgba(249, 115, 22, 0.1));
+      color: #fff7ed;
       font-size: 14px;
-      box-shadow: 0 8px 26px rgba(249, 115, 22, 0.08);
+      font-weight: 720;
+      box-shadow: 0 14px 34px rgba(249, 115, 22, 0.12);
+      transition: 0.2s ease;
     }
 
     .btn:hover {
-      transform: translateY(-1px);
-      background: rgba(249, 115, 22, 0.2);
-      border-color: rgba(249, 115, 22, 0.58);
-      color: #fff7ed;
+      transform: translateY(-2px);
+      border-color: rgba(253, 230, 138, 0.58);
+      box-shadow: 0 18px 42px rgba(249, 115, 22, 0.2);
     }
 
-    .btn-muted {
-      border-color: rgba(148, 163, 184, 0.24);
-      background: rgba(255,255,255,0.045);
+    .btn.secondary {
       color: #e4e4e7;
+      border-color: rgba(255,255,255,0.13);
+      background: rgba(255,255,255,0.052);
       box-shadow: none;
     }
 
-    .btn-small {
-      min-height: 34px;
-      padding: 8px 10px;
-      border-radius: 10px;
+    .btn.small {
+      min-height: 36px;
+      padding: 8px 11px;
+      border-radius: 11px;
       font-size: 12px;
     }
 
-    .featured-panel {
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 20px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.025));
-      overflow: hidden;
-      padding: 16px;
+    .hero-showcase {
       display: flex;
-      flex-direction: column;
-      gap: 14px;
-      min-height: 390px;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
     }
 
-    .featured-label {
-      width: fit-content;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(250, 204, 21, 0.28);
-      background: rgba(2, 6, 23, 0.48);
-      color: #fef3c7;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .featured-image-wrap {
+    .featured-card {
       position: relative;
-      aspect-ratio: 16 / 9;
-      border-radius: 16px;
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 28px;
+      background: rgba(3, 7, 18, 0.74);
+      box-shadow:
+        0 30px 90px rgba(0,0,0,0.42),
+        0 0 90px rgba(249, 115, 22, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.08);
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(2, 6, 23, 0.55);
+    }
+
+    .featured-card::before {
+      content: "";
+      position: absolute;
+      inset: -35%;
+      background: conic-gradient(from 120deg, transparent, rgba(249, 115, 22, 0.24), rgba(253, 230, 138, 0.18), rgba(239, 68, 68, 0.2), transparent);
+      opacity: 0.76;
+      filter: blur(28px);
+      animation: slowspin 18s linear infinite;
+    }
+
+    @keyframes slowspin {
+      to { transform: rotate(360deg); }
+    }
+
+    .featured-inner {
+      position: relative;
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .featured-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 2px 2px 0;
+    }
+
+    .label {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(253, 230, 138, 0.28);
+      color: var(--gold);
+      background: rgba(3, 7, 18, 0.46);
+      font-size: 11px;
+      font-weight: 760;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .engine-label {
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .featured-image {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.34);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .featured-image img {
       width: 100%;
       height: 100%;
-      display: block;
       object-fit: contain;
-      object-position: center;
       padding: 8px;
     }
 
     .featured-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      padding: 2px 4px 4px;
+      display: grid;
+      gap: 9px;
     }
 
     .featured-copy p {
-      color: var(--muted);
-      margin: 0;
+      color: #c7c7cf;
     }
 
     .featured-actions {
       display: flex;
       flex-wrap: wrap;
+      gap: 9px;
+      padding: 0 4px 4px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
-      margin-top: auto;
+      margin-top: 6px;
+      max-width: 650px;
     }
 
-    .trust-pill,
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      width: fit-content;
-      padding: 7px 10px;
-      border-radius: 999px;
+    .stat {
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--text);
+      font-size: 20px;
+      line-height: 1;
+      margin-bottom: 7px;
+    }
+
+    .stat span {
+      color: var(--muted);
       font-size: 12px;
-      color: var(--accent-soft);
-      border: 1px solid rgba(249,115,22,0.3);
-      background: rgba(249,115,22,0.08);
-    }
-
-    .tag.cool {
-      color: #cffafe;
-      border-color: rgba(34, 211, 238, 0.26);
-      background: rgba(34, 211, 238, 0.07);
-    }
-
-    .tag.violet {
-      color: #ede9fe;
-      border-color: rgba(139, 92, 246, 0.28);
-      background: rgba(139, 92, 246, 0.08);
-    }
-
-    .tag.green {
-      color: #dcfce7;
-      border-color: rgba(34, 197, 94, 0.26);
-      background: rgba(34, 197, 94, 0.07);
+      line-height: 1.35;
     }
 
     .section {
-      padding: clamp(26px, 5vw, 44px) clamp(26px, 5vw, 50px);
-      border-top: 1px solid rgba(148, 163, 184, 0.14);
+      padding: clamp(34px, 5vw, 68px) clamp(22px, 5vw, 72px);
+      border-top: 1px solid rgba(255,255,255,0.075);
     }
 
-    .section:first-of-type { border-top: 0; }
-
     .section-head {
-      max-width: 830px;
-      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 24px;
     }
 
     .section-head p {
-      color: var(--muted);
-      margin-top: 8px;
+      max-width: 580px;
+      text-align: right;
     }
 
     .asset-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
-    }
-
-    .asset-card,
-    .info-box,
-    .store-card {
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: var(--radius-md);
-      background: var(--card-bg-soft);
-      padding: 18px;
-      box-shadow: 0 14px 36px rgba(0,0,0,0.16);
     }
 
     .asset-card {
+      position: relative;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-    }
-
-    .asset-thumb {
-      aspect-ratio: 16 / 9;
-      min-height: 0;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.11);
-      background: rgba(255,255,255,0.035);
-      position: relative;
+      min-height: 100%;
+      border: 1px solid var(--border-soft);
+      border-radius: 24px;
+      background: rgba(3, 7, 18, 0.6);
       overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      padding: 14px;
+      transition: 0.22s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
     }
 
-    .asset-thumb::before {
-      content: "";
-      position: absolute;
-      inset: -35%;
-      opacity: 0.9;
+    .asset-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(251, 146, 60, 0.34);
+      box-shadow: 0 22px 54px rgba(0,0,0,0.28), 0 0 50px rgba(249, 115, 22, 0.075);
     }
 
-    .asset-thumb.has-image {
-      background: rgba(2, 6, 23, 0.55);
-      align-items: flex-end;
+    .asset-media {
+      aspect-ratio: 16 / 9;
+      background: rgba(0,0,0,0.36);
+      border-bottom: 1px solid var(--border-soft);
+      overflow: hidden;
     }
 
-    .asset-thumb.has-image::before {
-      display: none;
-    }
-
-    .asset-image {
-      position: absolute;
-      inset: 0;
+    .asset-media img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      object-position: center;
-      padding: 8px;
-      background: rgba(2, 6, 23, 0.45);
+      padding: 7px;
+      transition: 0.22s ease;
     }
 
-    .visual-fire::before {
-      background:
-        radial-gradient(circle at 34% 42%, rgba(250,204,21,0.78), transparent 10%),
-        radial-gradient(circle at 48% 54%, rgba(249,115,22,0.7), transparent 18%),
-        radial-gradient(circle at 66% 36%, rgba(239,68,68,0.48), transparent 20%),
-        conic-gradient(from 140deg, rgba(2,6,23,0), rgba(249,115,22,0.55), rgba(250,204,21,0.32), rgba(239,68,68,0.34), rgba(2,6,23,0));
-      filter: blur(0.5px);
+    .asset-card:hover .asset-media img {
+      transform: scale(1.025);
     }
 
-    .visual-energy::before {
-      background:
-        radial-gradient(circle at 28% 45%, rgba(34,211,238,0.62), transparent 14%),
-        radial-gradient(circle at 68% 36%, rgba(139,92,246,0.62), transparent 18%),
-        conic-gradient(from 210deg, rgba(34,211,238,0.3), rgba(139,92,246,0.45), rgba(249,115,22,0.20), rgba(34,211,238,0.3));
+    .asset-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      padding: 16px;
     }
 
-    .visual-textures::before {
-      background:
-        linear-gradient(135deg, rgba(249,115,22,0.52), rgba(139,92,246,0.42), rgba(34,211,238,0.34)),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0 8px, transparent 8px 16px);
+    .asset-body p {
+      font-size: 13px;
+      line-height: 1.62;
     }
 
-    .visual-free::before {
-      background:
-        radial-gradient(circle at 50% 50%, rgba(34,197,94,0.46), transparent 18%),
-        radial-gradient(circle at 30% 35%, rgba(250,204,21,0.4), transparent 15%),
-        conic-gradient(from 70deg, rgba(34,197,94,0.42), rgba(249,115,22,0.34), rgba(34,211,238,0.28), rgba(34,197,94,0.42));
-    }
-
-    .asset-thumb-label {
-      position: relative;
-      z-index: 1;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(2, 6, 23, 0.62);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #fff7ed;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .asset-card p,
-    .info-box p,
-    .store-card p {
-      color: var(--muted);
-    }
-
-    .asset-actions {
+    .tag-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 7px;
       margin-top: auto;
     }
 
-    .store-grid,
-    .about-grid,
-    .contacts-grid {
+    .tag {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 146, 60, 0.26);
+      background: rgba(251, 146, 60, 0.08);
+      color: #fed7aa;
+      font-size: 11px;
+      font-weight: 680;
+    }
+
+    .tag.violet {
+      border-color: rgba(167, 139, 250, 0.28);
+      background: rgba(167, 139, 250, 0.08);
+      color: #ddd6fe;
+    }
+
+    .tag.cyan {
+      border-color: rgba(103, 232, 249, 0.28);
+      background: rgba(103, 232, 249, 0.08);
+      color: #cffafe;
+    }
+
+    .tag.green {
+      border-color: rgba(134, 239, 172, 0.28);
+      background: rgba(134, 239, 172, 0.08);
+      color: #dcfce7;
+    }
+
+    .asset-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 0 16px 16px;
+    }
+
+    .asset-actions .video {
+      grid-column: 1 / -1;
+    }
+
+    .split-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
     }
 
-    .store-card strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 17px;
+    .panel {
+      border: 1px solid var(--border-soft);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 24% 8%, rgba(251, 146, 60, 0.08), transparent 30%),
+        rgba(3, 7, 18, 0.54);
+      padding: clamp(18px, 3vw, 26px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
     }
 
-    .list {
-      margin: 12px 0 0;
+    .panel h3 {
+      margin-bottom: 10px;
+    }
+
+    .link-list {
+      display: grid;
+      gap: 9px;
+      margin: 14px 0 0;
       padding: 0;
       list-style: none;
+    }
+
+    .link-list a,
+    .text-link {
+      color: #fed7aa;
+      border-bottom: 1px solid transparent;
+      transition: 0.18s ease;
+    }
+
+    .link-list a:hover,
+    .text-link:hover {
+      color: #fff7ed;
+      border-bottom-color: rgba(251, 146, 60, 0.5);
+    }
+
+    .mini-kicker {
+      margin-bottom: 10px;
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 780;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .about-band {
       display: grid;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.55;
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: 18px;
+      align-items: stretch;
     }
 
-    .list li {
-      position: relative;
-      padding-left: 18px;
+    .about-large {
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(167, 139, 250, 0.14), transparent 32%),
+        radial-gradient(circle at 80% 72%, rgba(251, 146, 60, 0.12), transparent 36%),
+        rgba(3, 7, 18, 0.54);
     }
 
-    .list li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--accent-hot);
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
     }
 
-    .contact-link {
-      display: inline-block;
-      margin-top: 4px;
-      word-break: break-word;
+    .support-item {
+      border: 1px solid var(--border-soft);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.035);
+      padding: 18px;
     }
 
-    .legal-links {
-      margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--muted);
+    .support-item span {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--gold);
+      font-size: 22px;
     }
 
-    footer {
-      max-width: 1320px;
-      margin: 20px auto 0;
-      padding: 0 18px 12px;
+    .footer {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
+      align-items: center;
+      gap: 16px;
       flex-wrap: wrap;
-      color: var(--muted);
+      padding: 20px 6px 0;
+      color: var(--muted-soft);
       font-size: 12px;
     }
 
-    @media (max-width: 980px) {
-      header {
-        align-items: flex-start;
-        flex-direction: column;
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer a {
+      color: var(--muted);
+    }
+
+    .footer a:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 1180px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
       }
 
-      nav { justify-content: flex-start; }
+      .hero-showcase {
+        justify-content: flex-start;
+      }
+
+      .featured-card {
+        max-width: 760px;
+      }
+
+      .asset-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .about-band,
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 18px, 1480px);
+        padding-top: 14px;
+      }
+
+      .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .brand img {
+        height: 58px;
+      }
+
+      .brand-name {
+        font-size: 20px;
+        letter-spacing: 0.12em;
+      }
+
+      .brand-subtitle {
+        font-size: 10px;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
 
       .hero,
-      .asset-grid,
-      .store-grid,
-      .about-grid,
-      .contacts-grid {
+      .section {
+        padding: 24px 16px;
+      }
+
+      h1 {
+        font-size: clamp(39px, 16vw, 58px);
+      }
+
+      .stat-row,
+      .split-grid,
+      .asset-grid {
         grid-template-columns: 1fr;
       }
 
-      .featured-panel { min-height: auto; }
-    }
+      .section-head {
+        display: block;
+      }
 
-    @media (max-width: 560px) {
-      .page-wrap { padding: 16px 10px 34px; }
-      .logo-image { height: 58px; }
-      .brand-title { font-size: 20px; letter-spacing: 0.12em; }
-      .subtitle { font-size: 10px; letter-spacing: 0.1em; }
-      .hero, .section { padding: 22px 16px; }
-      .trust-row { padding: 0 16px 22px; }
-      .material-stack { grid-template-columns: 1fr; }
-      .cta-row, .asset-actions { gap: 8px; }
-      .btn { width: 100%; }
-      nav a { font-size: 12px; }
+      .section-head p {
+        margin-top: 12px;
+        text-align: left;
+      }
+
+      .cta-row .btn,
+      .featured-actions .btn,
+      .asset-actions .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="page-wrap">
-    <header>
-      <div class="brand">
-        <img class="logo-image" src="assets/gspot-logo.png" alt="G-Spot Lab logo" />
+  <div class="page">
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="G-Spot Lab home">
+        <img src="assets/gspot-logo.png" alt="G-Spot Lab logo" />
         <div>
-          <div class="brand-title">G-Spot Lab</div>
-          <div class="subtitle">Unity & Unreal Assets · VFX Materials · Indie Game Studio</div>
+          <div class="brand-name">G-Spot Lab</div>
+          <div class="brand-subtitle">Stylized VFX assets for game developers</div>
         </div>
-      </div>
+      </a>
 
-      <nav aria-label="Main navigation">
-        <a href="#assets">Assets</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#assets">Asset Packs</a>
         <a href="#stores">Stores</a>
-        <a href="#games">Games</a>
+        <a href="#studio">Studio</a>
         <a href="#support">Support</a>
-        <a href="#contacts">Contact</a>
+        <a href="#contact">Contact</a>
       </nav>
     </header>
 
-    <main class="card">
+    <main class="shell" id="top">
       <section class="hero">
         <div class="hero-copy">
-          <div class="eyebrow">Stylized VFX assets for Unity & Unreal</div>
-          <h1>Animated Shader Packs & Seamless Energy Materials</h1>
+          <div class="eyebrow">Unity · Unreal · Stylized VFX</div>
+
+          <h1>Game-ready glow, fire, lava & energy materials.</h1>
 
           <p class="hero-lead">
-            G-Spot Lab creates stylized VFX materials, animated shader packs,
-            seamless energy textures, and indie game projects for developers working with Unity and Unreal Engine.
+            G-Spot Lab creates stylized shader packs, animated VFX materials,
+            seamless PBR textures, and visual asset collections for indie game developers.
           </p>
 
-          <p class="hero-muted">
-            The asset line focuses on glowing surfaces, fire and lava materials,
-            energy effects, flow, pulse, wave, distortion, and practical game-ready visual packs for indie development.
+          <p class="hero-note">
+            Built around practical effects such as flow, wave, pulse, distortion,
+            glow, crack emission, heat shimmer, and energy surfaces for Unity and Unreal Engine.
           </p>
 
           <div class="cta-row">
-            <a class="btn" href="#assets">View Asset Packs</a>
-            <a class="btn btn-muted" href="https://assetstore.unity.com/publishers/139238">Unity Store</a>
-            <a class="btn btn-muted" href="https://www.fab.com/sellers/GLab%20Studio">Fab Store</a>
-            <a class="btn btn-muted" href="https://www.youtube.com/@G-spotLab">YouTube Channel</a>
+            <a class="btn" href="#assets">Explore Asset Packs</a>
+            <a class="btn secondary" href="https://assetstore.unity.com/publishers/139238">Unity Store</a>
+            <a class="btn secondary" href="https://www.fab.com/sellers/GLab%20Studio">Fab Store</a>
+            <a class="btn secondary" href="https://www.youtube.com/@G-spotLab">YouTube</a>
+          </div>
+
+          <div class="stat-row" aria-label="G-Spot Lab asset focus">
+            <div class="stat">
+              <strong>Unity</strong>
+              <span>URP shader packs and material collections</span>
+            </div>
+            <div class="stat">
+              <strong>Unreal</strong>
+              <span>Fab materials, instances, and VFX surfaces</span>
+            </div>
+            <div class="stat">
+              <strong>VFX</strong>
+              <span>Fire, lava, energy, glow, wave, pulse, distortion</span>
+            </div>
           </div>
         </div>
 
-        <aside class="featured-panel" aria-label="Featured G-Spot Lab release">
-          <div class="featured-label">Featured release</div>
-          <div class="featured-image-wrap">
-            <img
-              class="featured-image"
-              src="assets/products/fire-lava-vfx-materials.png"
-              alt="Fire & Lava VFX Materials preview"
-            />
-          </div>
-          <div class="featured-copy">
-            <h3>Fire & Lava VFX Materials</h3>
-            <p>
-              Animated fire, lava, molten energy, glow, crack, wave, pulse, distortion, and heat-style materials for stylized game scenes.
-            </p>
-            <span class="tag">Latest Shader Pack</span>
-          </div>
-          <div class="featured-actions">
-            <a class="btn btn-small" href="https://assetstore.unity.com/packages/slug/380288">Unity Store</a>
-            <a class="btn btn-small btn-muted" href="https://www.fab.com/listings/8ad65987-8f4f-48d8-b188-061b472d6edd">Fab Store</a>
-            <a class="btn btn-small btn-muted" href="https://youtu.be/9NJ4K64HCDg?si=vhW2jDXsTev8MT4F">Video Demo</a>
-          </div>
-        </aside>
+        <div class="hero-showcase">
+          <article class="featured-card" aria-label="Featured release: Fire & Lava VFX Materials">
+            <div class="featured-inner">
+              <div class="featured-top">
+                <span class="label">Featured release</span>
+                <span class="engine-label">Unity URP · Unreal / Fab</span>
+              </div>
+
+              <div class="featured-image">
+                <img
+                  src="assets/products/fire-lava-vfx-materials.png"
+                  alt="Fire & Lava VFX Materials preview"
+                />
+              </div>
+
+              <div class="featured-copy">
+                <h3>Fire & Lava VFX Materials</h3>
+                <p>
+                  Animated fire, lava, molten energy, glowing cracks, heat-style distortion,
+                  pulse, wave, and emissive material presets for stylized game scenes.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Latest Shader Pack</span>
+                  <span class="tag">Animated Materials</span>
+                </div>
+              </div>
+
+              <div class="featured-actions">
+                <a class="btn small" href="https://assetstore.unity.com/packages/slug/380288">Unity Store</a>
+                <a class="btn small secondary" href="https://www.fab.com/listings/8ad65987-8f4f-48d8-b188-061b472d6edd">Fab Store</a>
+                <a class="btn small secondary" href="https://youtu.be/9NJ4K64HCDg?si=vhW2jDXsTev8MT4F">Video Demo</a>
+              </div>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section class="section" id="assets">
         <div class="section-head">
-          <h2>Asset Packs</h2>
+          <div>
+            <div class="mini-kicker">Asset line</div>
+            <h2>Published packs</h2>
+          </div>
           <p>
-            Current G-Spot Lab asset lines for stylized game development.
-            Each pack includes direct links to Unity Asset Store, Fab, and available video demos.
+            A compact VFX-focused product line: animated shader packs, seamless energy materials,
+            and free starter content for Unity and Unreal Engine users.
           </p>
         </div>
 
         <div class="asset-grid">
           <article class="asset-card">
-            <div class="asset-thumb has-image">
-              <img
-                class="asset-image"
-                src="assets/products/fire-lava-vfx-materials.png"
-                alt="Fire & Lava VFX Materials preview"
-              />
-              <div class="asset-thumb-label">Fire & Lava</div>
+            <div class="asset-media">
+              <img src="assets/products/fire-lava-vfx-materials.png" alt="Fire & Lava VFX Materials preview" />
             </div>
-            <div>
+            <div class="asset-body">
               <h3>Fire & Lava VFX Materials</h3>
-              <p>
-                A stylized animated shader/material pack for fire, lava, molten energy,
-                glowing cracks, heat shimmer, distortion, pulse, wave, and emissive surfaces.
-              </p>
+              <p>Animated fire, lava, molten energy, crack glow, heat shimmer, pulse, wave, and distortion materials.</p>
+              <div class="tag-row">
+                <span class="tag">Shader Pack</span>
+                <span class="tag">Fire / Lava</span>
+              </div>
             </div>
-            <span class="tag">Shader Pack</span>
             <div class="asset-actions">
-              <a class="btn btn-small" href="https://assetstore.unity.com/packages/slug/380288">Unity Store</a>
-              <a class="btn btn-small btn-muted" href="https://www.fab.com/listings/8ad65987-8f4f-48d8-b188-061b472d6edd">Fab Store</a>
-              <a class="btn btn-small btn-muted" href="https://youtu.be/9NJ4K64HCDg?si=vhW2jDXsTev8MT4F">Video Demo</a>
+              <a class="btn small" href="https://assetstore.unity.com/packages/slug/380288">Unity Store</a>
+              <a class="btn small secondary" href="https://www.fab.com/listings/8ad65987-8f4f-48d8-b188-061b472d6edd">Fab Store</a>
+              <a class="btn small secondary video" href="https://youtu.be/9NJ4K64HCDg?si=vhW2jDXsTev8MT4F">Video Demo</a>
             </div>
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb has-image">
-              <img
-                class="asset-image"
-                src="assets/products/elemental-energy-vfx-materials.png"
-                alt="Elemental Energy VFX Materials preview"
-              />
-              <div class="asset-thumb-label">Elemental Energy</div>
+            <div class="asset-media">
+              <img src="assets/products/elemental-energy-vfx-materials.png" alt="Elemental Energy VFX Materials preview" />
             </div>
-            <div>
+            <div class="asset-body">
               <h3>Elemental Energy VFX Materials</h3>
-              <p>
-                Modular animated energy materials built around flow, dual flow, wave,
-                pulse, glow, and distortion effects for stylized fantasy or casual games.
-              </p>
+              <p>Modular animated energy materials with flow, dual flow, wave, pulse, glow, and distortion effects.</p>
+              <div class="tag-row">
+                <span class="tag violet">Modular Shader Pack</span>
+                <span class="tag violet">Energy VFX</span>
+              </div>
             </div>
-            <span class="tag violet">Modular Shader Pack</span>
             <div class="asset-actions">
-              <a class="btn btn-small" href="https://assetstore.unity.com/packages/slug/373670">Unity Store</a>
-              <a class="btn btn-small btn-muted" href="https://www.fab.com/listings/55c57644-fd6b-45ec-a4e5-1b2f7ff98ccd">Fab Store</a>
-              <a class="btn btn-small btn-muted" href="https://youtu.be/jHZIP1Cc9fo?si=fXK0Wt5SqCUA2-z7">Video Demo</a>
+              <a class="btn small" href="https://assetstore.unity.com/packages/slug/373670">Unity Store</a>
+              <a class="btn small secondary" href="https://www.fab.com/listings/55c57644-fd6b-45ec-a4e5-1b2f7ff98ccd">Fab Store</a>
+              <a class="btn small secondary video" href="https://youtu.be/jHZIP1Cc9fo?si=fXK0Wt5SqCUA2-z7">Video Demo</a>
             </div>
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb has-image">
-              <img
-                class="asset-image"
-                src="assets/products/magic-energy-materials-30.png"
-                alt="Magic Energy Materials Pack preview"
-              />
-              <div class="asset-thumb-label">30 Materials</div>
+            <div class="asset-media">
+              <img src="assets/products/magic-energy-materials-30.png" alt="Magic Energy Materials Pack preview" />
             </div>
-            <div>
+            <div class="asset-body">
               <h3>Magic Energy Materials Pack</h3>
-              <p>
-                A larger collection of seamless stylized energy materials with PBR and emission maps,
-                designed for glowing surfaces, portals, magic zones, and decorative VFX planes.
-              </p>
+              <p>30 seamless stylized energy materials with PBR and emission maps for glowing fantasy surfaces.</p>
+              <div class="tag-row">
+                <span class="tag cyan">30 Materials</span>
+                <span class="tag cyan">PBR + Emission</span>
+              </div>
             </div>
-            <span class="tag cool">PBR + Emission</span>
             <div class="asset-actions">
-              <a class="btn btn-small" href="https://assetstore.unity.com/packages/slug/369768">Unity Store</a>
-              <a class="btn btn-small btn-muted" href="https://www.fab.com/listings/f67a5cfa-79ea-40b8-928a-9c430293da1a">Fab Store</a>
+              <a class="btn small" href="https://assetstore.unity.com/packages/slug/369768">Unity Store</a>
+              <a class="btn small secondary" href="https://www.fab.com/listings/f67a5cfa-79ea-40b8-928a-9c430293da1a">Fab Store</a>
             </div>
           </article>
 
           <article class="asset-card">
-            <div class="asset-thumb has-image">
-              <img
-                class="asset-image"
-                src="assets/products/magic-energy-textures-free.png"
-                alt="Magic Energy Textures Free Pack preview"
-              />
-              <div class="asset-thumb-label">Free Starter Pack</div>
+            <div class="asset-media">
+              <img src="assets/products/magic-energy-textures-free.png" alt="Magic Energy Textures Free Pack preview" />
             </div>
-            <div>
+            <div class="asset-body">
               <h3>Magic Energy Textures Pack</h3>
-              <p>
-                A free starter pack with seamless stylized energy textures, PBR maps,
-                and emission-ready visuals for testing and prototyping game materials.
-              </p>
+              <p>A free starter pack with 10 seamless PBR energy materials and emission-ready texture maps.</p>
+              <div class="tag-row">
+                <span class="tag green">Free Pack</span>
+                <span class="tag green">10 Materials</span>
+              </div>
             </div>
-            <span class="tag green">Free Pack</span>
             <div class="asset-actions">
-              <a class="btn btn-small" href="https://assetstore.unity.com/packages/slug/370264">Unity Store</a>
-              <a class="btn btn-small btn-muted" href="https://www.fab.com/listings/9c95fbdf-88fc-4522-8d98-d0e1a121b955">Fab Store</a>
+              <a class="btn small" href="https://assetstore.unity.com/packages/slug/370264">Unity Store</a>
+              <a class="btn small secondary" href="https://www.fab.com/listings/9c95fbdf-88fc-4522-8d98-d0e1a121b955">Fab Store</a>
             </div>
           </article>
         </div>
@@ -764,153 +936,158 @@
 
       <section class="section" id="stores">
         <div class="section-head">
-          <h2>Official Store Pages</h2>
+          <div>
+            <div class="mini-kicker">Official stores</div>
+            <h2>Choose your engine</h2>
+          </div>
           <p>
-            Use the official store pages below to view published assets, current releases,
-            updates, and marketplace-specific product information.
+            Store pages contain the latest marketplace information, compatible engine details,
+            package contents, updates, previews, and download options.
           </p>
         </div>
 
-        <div class="store-grid">
-          <div class="store-card">
-            <strong>Unity Asset Store</strong>
+        <div class="split-grid">
+          <article class="panel">
+            <div class="mini-kicker">Unity Asset Store</div>
+            <h3>Unity URP shader and material packs</h3>
             <p>
-              Unity URP shader packs, seamless materials, energy textures,
-              and game-ready stylized asset packs published under the G-Spot Lab label.
+              Shader Graph / URP materials, stylized textures, energy effects,
+              animated shader packs, and free starter content for Unity developers.
             </p>
-            <a class="btn btn-small" href="https://assetstore.unity.com/publishers/139238">Open Unity Publisher Page</a>
-          </div>
+            <div class="cta-row">
+              <a class="btn small" href="https://assetstore.unity.com/publishers/139238">Open Unity Publisher Page</a>
+            </div>
+          </article>
 
-          <div class="store-card">
-            <strong>Fab / Unreal Engine</strong>
+          <article class="panel">
+            <div class="mini-kicker">Fab / Unreal Engine</div>
+            <h3>Unreal material packs and VFX surfaces</h3>
             <p>
-              Unreal Engine material packs, material instances, stylized VFX surfaces,
-              and matching asset releases under the GLab Studio seller page.
+              Unreal Engine material setups, material instances, emissive surfaces,
+              stylized VFX materials, and matching packs published under GLab Studio.
             </p>
-            <a class="btn btn-small" href="https://www.fab.com/sellers/GLab%20Studio">Open Fab Seller Page</a>
-          </div>
+            <div class="cta-row">
+              <a class="btn small" href="https://www.fab.com/sellers/GLab%20Studio">Open Fab Seller Page</a>
+            </div>
+          </article>
         </div>
       </section>
 
-      <section class="section" id="games">
-        <div class="section-head">
-          <h2>Games by G-Spot Lab</h2>
-          <p>
-            G-Spot Lab also develops indie mobile games, using real production experience
-            to shape practical asset packs for other developers.
-          </p>
-        </div>
+      <section class="section" id="studio">
+        <div class="about-band">
+          <article class="panel about-large">
+            <div class="mini-kicker">Studio</div>
+            <h2>Small studio, visual-first assets.</h2>
+            <p style="margin-top: 16px;">
+              G-Spot Lab is an independent game development and asset publishing studio focused on
+              stylized VFX materials, animated shader effects, seamless energy textures,
+              and practical game-ready content for indie developers.
+            </p>
+            <p style="margin-top: 12px;">
+              The same studio also develops mobile game projects, including Merge Universe: Bubble Game,
+              bringing production context into asset pack design and documentation.
+            </p>
+            <div class="cta-row">
+              <a class="btn small secondary" href="https://play.google.com/store/apps/dev?id=5951755133508714410">Google Play Developer Page</a>
+              <a class="btn small secondary" href="https://www.youtube.com/@G-spotLab">YouTube Channel</a>
+            </div>
+          </article>
 
-        <div class="info-box">
-          <h3>Merge Universe: Bubble Game</h3>
-          <p>
-            A mobile physics-based merge puzzle game developed by G-Spot Lab.
-            This project is part of the studio's game development direction alongside asset publishing.
-          </p>
-          <a class="btn btn-small" href="https://play.google.com/store/apps/dev?id=5951755133508714410">View Google Play Developer Page</a>
+          <article class="panel">
+            <div class="mini-kicker">Publisher information</div>
+            <h3>G-Spot Lab / GLab Studio</h3>
+            <p>
+              Publisher: <strong>G-Spot Lab</strong><br />
+              Fab seller name: <strong>GLab Studio</strong><br />
+              Focus: Unity assets, Unreal/Fab assets, shader packs, VFX materials,
+              seamless textures, and indie game production.
+            </p>
+            <ul class="link-list">
+              <li><a href="https://assetstore.unity.com/publishers/139238">Unity Asset Store Publisher Page</a></li>
+              <li><a href="https://www.fab.com/sellers/GLab%20Studio">Fab Seller Page</a></li>
+              <li><a href="https://www.youtube.com/@G-spotLab">YouTube Channel</a></li>
+            </ul>
+          </article>
         </div>
       </section>
 
       <section class="section" id="support">
         <div class="section-head">
-          <h2>Documentation & Support</h2>
+          <div>
+            <div class="mini-kicker">Support</div>
+            <h2>Practical documentation, not shader theory.</h2>
+          </div>
           <p>
-            Documentation and support information for setup, material parameters,
-            usage notes, and asset-related communication.
+            Documentation is written for users: what the material does, where to use it,
+            which parameters matter, and how to tune effects quickly.
           </p>
         </div>
 
-        <div class="about-grid">
-          <div class="info-box">
-            <h3>Asset Documentation</h3>
-            <p>
-              G-Spot Lab asset documentation focuses on practical usage: what each material does,
-              where to use it, which parameters control the effect, recommended ranges,
-              and best practices for Unity and Unreal projects.
-            </p>
-            <ul class="list">
-              <li>Material and shader effect descriptions</li>
-              <li>Parameter usage and recommended values</li>
-              <li>Unity URP and Unreal Engine usage notes</li>
-              <li>Setup and support guidance</li>
-            </ul>
+        <div class="support-grid">
+          <div class="support-item">
+            <span>✦</span>
+            <h3>Material usage</h3>
+            <p>Effect descriptions, intended use cases, recommended settings, and quick tuning notes.</p>
           </div>
 
-          <div class="info-box">
-            <h3>Custom Work</h3>
-            <p>
-              G-Spot Lab may be available for custom stylized textures, shader material setups,
-              VFX surface materials, and asset adaptation for Unity or Unreal Engine.
-            </p>
-            <p>
-              For custom work, licensing questions, or support requests, contact the studio by email.
-            </p>
-            <a class="btn btn-small" href="mailto:gspotlab.com@gmail.com">Contact G-Spot Lab</a>
+          <div class="support-item">
+            <span>◈</span>
+            <h3>Unity & Unreal notes</h3>
+            <p>Engine-specific setup details while keeping parameter names and product logic consistent.</p>
+          </div>
+
+          <div class="support-item">
+            <span>✉</span>
+            <h3>Direct contact</h3>
+            <p>For support requests, asset questions, custom work, licensing, or business communication.</p>
           </div>
         </div>
       </section>
 
-      <section class="section" id="about">
+      <section class="section" id="contact">
         <div class="section-head">
-          <h2>About G-Spot Lab</h2>
-        </div>
-
-        <div class="about-grid">
-          <div class="info-box">
-            <h3>Studio Focus</h3>
-            <p>
-              G-Spot Lab is an independent game development and asset publishing studio focused on
-              stylized VFX materials, animated shaders, seamless textures, visual packs,
-              and indie mobile games.
-            </p>
+          <div>
+            <div class="mini-kicker">Contact</div>
+            <h2>Support, business & custom work</h2>
           </div>
-
-          <div class="info-box">
-            <h3>Publisher Information</h3>
-            <p><strong>Publisher:</strong> G-Spot Lab</p>
-            <p><strong>Fab Seller Name:</strong> GLab Studio</p>
-            <p><strong>Type:</strong> Independent game developer and asset publisher</p>
-            <p><strong>Focus:</strong> Unity assets, Unreal/Fab assets, VFX materials, shader packs, and indie game production</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="contacts">
-        <div class="section-head">
-          <h2>Contacts</h2>
+          <p>
+            For asset support, custom stylized textures, shader material setups,
+            VFX surface materials, or store-related communication.
+          </p>
         </div>
 
-        <div class="contacts-grid">
-          <div class="info-box">
+        <div class="split-grid">
+          <article class="panel">
             <h3>Email</h3>
-            <a class="contact-link" href="mailto:gspotlab.com@gmail.com">gspotlab.com@gmail.com</a>
-            <p>
-              For business inquiries, support requests, custom work, and asset-related communication.
+            <p style="margin-top: 10px;">
+              <a class="text-link" href="mailto:gspotlab.com@gmail.com">gspotlab.com@gmail.com</a>
             </p>
-          </div>
+            <p style="margin-top: 12px;">
+              Use this email for support, business inquiries, custom work, and asset-related communication.
+            </p>
+          </article>
 
-          <div class="info-box">
-            <h3>Official Links</h3>
-            <ul class="list">
-              <li><a href="https://assetstore.unity.com/publishers/139238">Unity Asset Store Publisher Page</a></li>
-              <li><a href="https://www.fab.com/sellers/GLab%20Studio">Fab Seller Page</a></li>
+          <article class="panel">
+            <h3>Official links</h3>
+            <ul class="link-list">
+              <li><a href="https://assetstore.unity.com/publishers/139238">Unity Asset Store</a></li>
+              <li><a href="https://www.fab.com/sellers/GLab%20Studio">Fab / Unreal Engine</a></li>
               <li><a href="https://play.google.com/store/apps/dev?id=5951755133508714410">Google Play Developer Page</a></li>
-              <li><a href="https://www.youtube.com/@G-spotLab">YouTube channel</a></li>
+              <li><a href="https://www.youtube.com/@G-spotLab">YouTube Channel</a></li>
             </ul>
-          </div>
-        </div>
-
-        <div class="legal-links">
-          <a href="/privacy/">Privacy Policy</a>
-          <a href="/terms/">Terms of Use</a>
+          </article>
         </div>
       </section>
     </main>
-  </div>
 
-  <footer>
-    <span>© G-Spot Lab</span>
-    <span>Unity & Unreal Assets · VFX Materials · Indie Game Studio</span>
-  </footer>
+    <footer class="footer">
+      <span>© G-Spot Lab · Stylized VFX assets for Unity and Unreal Engine</span>
+      <div class="footer-links">
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/terms/">Terms of Use</a>
+        <a href="mailto:gspotlab.com@gmail.com">Contact</a>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
