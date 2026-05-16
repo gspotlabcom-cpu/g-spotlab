@@ -264,59 +264,21 @@
       font-size: 12px;
     }
 
-    .showcase-panel {
-      position: relative;
-      min-height: 390px;
+    .featured-panel {
       border: 1px solid rgba(148, 163, 184, 0.22);
       border-radius: 20px;
       background:
-        radial-gradient(circle at 50% 40%, rgba(249, 115, 22, 0.18), transparent 34%),
         linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.025));
       overflow: hidden;
-      padding: 18px;
-    }
-
-    .showcase-panel::before,
-    .showcase-panel::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      filter: blur(1px);
-      opacity: 0.92;
-    }
-
-    .showcase-panel::before {
-      width: 270px;
-      height: 270px;
-      left: 50%;
-      top: 48%;
-      transform: translate(-50%, -50%);
-      background:
-        radial-gradient(circle, rgba(250, 204, 21, 0.95) 0 6%, rgba(249, 115, 22, 0.72) 7% 24%, rgba(239, 68, 68, 0.38) 25% 43%, rgba(2, 6, 23, 0) 64%);
-      box-shadow: 0 0 70px rgba(249, 115, 22, 0.32);
-    }
-
-    .showcase-panel::after {
-      width: 370px;
-      height: 190px;
-      left: 20%;
-      bottom: 18%;
-      transform: rotate(-18deg);
-      background: linear-gradient(90deg, transparent, rgba(251, 146, 60, 0.22), transparent);
-    }
-
-    .showcase-content {
-      position: relative;
-      z-index: 1;
-      height: 100%;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
+      gap: 14px;
+      min-height: 390px;
     }
 
-    .showcase-label {
-      align-self: flex-start;
+    .featured-label {
+      width: fit-content;
       padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid rgba(250, 204, 21, 0.28);
@@ -327,48 +289,50 @@
       letter-spacing: 0.12em;
     }
 
-    .material-stack {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: auto;
+    .featured-image-wrap {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(2, 6, 23, 0.55);
     }
 
-    .material-chip {
-      min-height: 82px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(2, 6, 23, 0.62);
+    .featured-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      padding: 8px;
+    }
+
+    .featured-copy {
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 12px;
-      overflow: hidden;
-      position: relative;
+      gap: 8px;
     }
 
-    .material-chip::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: conic-gradient(from 120deg, transparent, rgba(249, 115, 22, 0.52), rgba(250, 204, 21, 0.45), transparent);
-      opacity: 0.5;
+    .featured-copy p {
+      color: var(--muted);
+      margin: 0;
     }
 
-    .material-chip span {
-      position: relative;
-      z-index: 1;
-      font-size: 12px;
-      color: #fff7ed;
-      font-weight: 650;
+    .featured-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
     }
 
     .trust-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 0 clamp(26px, 5vw, 50px) clamp(24px, 4vw, 36px);
-      margin-top: -10px;
+      padding: 18px clamp(26px, 5vw, 50px) 28px;
+      margin-top: 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(255,255,255,0.018);
     }
 
     .trust-pill,
@@ -617,7 +581,7 @@
         grid-template-columns: 1fr;
       }
 
-      .showcase-panel { min-height: 320px; }
+      .featured-panel { min-height: auto; }
     }
 
     @media (max-width: 560px) {
@@ -657,38 +621,49 @@
     <main class="card">
       <section class="hero">
         <div class="hero-copy">
-          <div class="eyebrow">Stylized game-ready VFX assets</div>
-          <h1>VFX Materials, Shader Packs & Seamless Textures</h1>
+          <div class="eyebrow">Stylized VFX assets for Unity & Unreal</div>
+          <h1>Animated Shader Packs & Seamless Energy Materials</h1>
 
           <p class="hero-lead">
             G-Spot Lab creates stylized VFX materials, animated shader packs,
-            seamless energy textures, and indie game projects for Unity and Unreal Engine.
+            seamless energy textures, and indie game projects for developers working with Unity and Unreal Engine.
           </p>
 
           <p class="hero-muted">
             The asset line focuses on glowing surfaces, fire and lava materials,
-            energy effects, flow, pulse, wave, distortion, and practical game-ready visual packs
-            for indie developers.
+            energy effects, flow, pulse, wave, distortion, and practical game-ready visual packs for indie development.
           </p>
 
           <div class="cta-row">
-            <a class="btn" href="https://assetstore.unity.com/publishers/139238">View Unity Assets</a>
-            <a class="btn" href="https://www.fab.com/sellers/GLab%20Studio">View Unreal / Fab Assets</a>
-            <a class="btn btn-muted" href="https://youtu.be/9NJ4K64HCDg?si=vhW2jDXsTev8MT4F">Watch Fire & Lava Demo</a>
+            <a class="btn" href="#assets">View Asset Packs</a>
+            <a class="btn btn-muted" href="https://assetstore.unity.com/publishers/139238">Unity Store</a>
+            <a class="btn btn-muted" href="https://www.fab.com/sellers/GLab%20Studio">Fab Store</a>
+            <a class="btn btn-muted" href="https://www.youtube.com/@G-spotLab">YouTube Channel</a>
           </div>
         </div>
 
-        <div class="showcase-panel" aria-label="Stylized VFX material showcase">
-          <div class="showcase-content">
-            <div class="showcase-label">Fire · Lava · Energy · Glow</div>
-            <div class="material-stack">
-              <div class="material-chip"><span>Animated Shader Materials</span></div>
-              <div class="material-chip"><span>Seamless PBR Textures</span></div>
-              <div class="material-chip"><span>Unity URP Packs</span></div>
-              <div class="material-chip"><span>Unreal / Fab Packs</span></div>
-            </div>
+        <aside class="featured-panel" aria-label="Featured G-Spot Lab release">
+          <div class="featured-label">Featured release</div>
+          <div class="featured-image-wrap">
+            <img
+              class="featured-image"
+              src="assets/products/fire-lava-vfx-materials.png"
+              alt="Fire & Lava VFX Materials preview"
+            />
           </div>
-        </div>
+          <div class="featured-copy">
+            <h3>Fire & Lava VFX Materials</h3>
+            <p>
+              Animated fire, lava, molten energy, glow, crack, wave, pulse, distortion, and heat-style materials for stylized game scenes.
+            </p>
+            <span class="tag">Latest Shader Pack</span>
+          </div>
+          <div class="featured-actions">
+            <a class="btn btn-small" href="https://assetstore.unity.com/packages/slug/380288">Unity Store</a>
+            <a class="btn btn-small btn-muted" href="https://www.fab.com/listings/8ad65987-8f4f-48d8-b188-061b472d6edd">Fab Store</a>
+            <a class="btn btn-small btn-muted" href="https://youtu.be/9NJ4K64HCDg?si=vhW2jDXsTev8MT4F">Video Demo</a>
+          </div>
+        </aside>
       </section>
 
       <div class="trust-row">
