@@ -35,6 +35,30 @@
     .footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding:20px 6px 0;color:#778098;font-size:12px}.footer-links{display:flex;gap:13px;flex-wrap:wrap}.footer a{color:var(--muted)}
     @media(max-width:1100px){.hero{grid-template-columns:1fr;min-height:auto}.system-card{max-width:760px}.toolkit-grid,.asset-grid,.three-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.composition{grid-template-columns:1fr}}
     @media(max-width:760px){.page{width:min(100% - 18px,1480px);padding-top:14px}.header{align-items:flex-start;flex-direction:column}.brand img{height:57px}.brand-name{font-size:20px}.brand-sub{font-size:9px}.nav{justify-content:flex-start}.hero,.section{padding:25px 16px}h1{font-size:clamp(40px,15vw,59px)}.section-head{display:block}.section-head p{margin-top:12px;text-align:left}.toolkit-grid,.asset-grid,.three-grid,.split{grid-template-columns:1fr}.actions .btn,.asset-actions .btn{width:100%}.card-body p{min-height:0}}
+
+    /* Narrow-screen containment: prevent content-sized badges and pipeline rows from widening cards. */
+    .hero>*,.hero-copy,.hero-visual,.system-card,.system-inner,.pipeline,.node,.card,.panel,.card-body{min-width:0}
+    .eyebrow,.status,.tag{max-width:100%;line-height:1.35}
+    .system-top,.card-top,.planned{flex-wrap:wrap}
+    .node{grid-template-columns:42px minmax(0,1fr) auto}
+    .node>div:nth-child(2){min-width:0}
+    .node strong,.node span,.btn{overflow-wrap:anywhere}
+    .planned span{flex:1 1 120px;min-width:0}
+    .toolkit-grid>*,.asset-grid>*,.three-grid>*{min-width:0}
+
+    @media(max-width:760px){
+      .page{width:calc(100% - 18px);max-width:1480px}
+      .brand,.nav{max-width:100%}
+      .brand-sub{line-height:1.4}
+      h1{max-width:100%;overflow-wrap:anywhere}
+      .eyebrow{width:100%;white-space:normal}
+      .eyebrow:before{flex:0 0 7px}
+      .system-card{padding:18px}
+      .node{grid-template-columns:38px minmax(0,1fr);gap:10px;padding:12px}
+      .node-icon{grid-row:1 / span 2;width:38px;height:38px}
+      .node small{grid-column:2;grid-row:2}
+      .toolkit-grid,.asset-grid,.three-grid,.split{grid-template-columns:minmax(0,1fr)}
+    }
   </style>
 </head>
 <body>
