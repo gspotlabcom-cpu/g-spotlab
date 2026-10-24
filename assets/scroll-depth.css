@@ -1,10 +1,10 @@
-/* G-Spot Lab scroll-depth study, v1.
+/* G-Spot Lab scroll-depth study, v3 — overlapping layers.
    Independent panel surfaces replace the single continuous homepage frame.
    The scroll script only writes scale, lift and shade: content remains in
    normal document flow, fully clickable and accessible. */
 .shell.depth-shell{
   display:grid;
-  gap:clamp(18px,2.6vw,32px);
+  gap:0;
   overflow:visible;
   border:0;
   border-radius:0;
@@ -13,6 +13,10 @@
   -webkit-backdrop-filter:none;
   backdrop-filter:none;
   perspective:1400px;
+}
+.depth-stage+.depth-stage{
+  /* Negative overlap uses the panels' existing inner padding as a safe edge. */
+  margin-top:clamp(-104px,-6.5vw,-54px);
 }
 .depth-stage{
   --depth-scale:1;
@@ -41,7 +45,6 @@
   pointer-events:none;
 }
 .depth-stage.is-current{
-  z-index:1;
   border-color:rgba(196,181,253,.48);
   box-shadow:
     0 42px 115px rgba(0,0,0,.65),
@@ -90,7 +93,8 @@
 .depth-stage [id="studio"],
 .depth-stage [id="support"]{scroll-margin-top:20px}
 @media(max-width:760px){
-  .shell.depth-shell{gap:16px;perspective:none}
+  .shell.depth-shell{gap:0;perspective:none}
+  .depth-stage+.depth-stage{margin-top:-22px}
   .depth-stage{border-radius:20px}
   .depth-stage>.section+.section{border-top-color:rgba(196,181,253,.10)}
 }
