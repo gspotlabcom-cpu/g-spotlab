@@ -38,6 +38,7 @@
       stage.style.removeProperty('--deck-scale');
       stage.style.removeProperty('--deck-dim');
       stage.style.removeProperty('--deck-blur');
+      stage.style.removeProperty('--deck-opacity');
       stage.style.zIndex='';
       stage.classList.remove('is-current');
       stage.inert=false;
@@ -59,11 +60,12 @@
     render();
   }
 
-  function pose(stage,y,scale,dim,blur,z,focused){
+  function pose(stage,y,scale,dim,blur,opacity,z,focused){
     stage.style.setProperty('--deck-y',y.toFixed(1)+'px');
     stage.style.setProperty('--deck-scale',scale.toFixed(4));
     stage.style.setProperty('--deck-dim',dim.toFixed(3));
     stage.style.setProperty('--deck-blur',blur.toFixed(2)+'px');
+    stage.style.setProperty('--deck-opacity',opacity.toFixed(3));
     stage.style.zIndex=String(z);
     stage.classList.toggle('is-current',focused);
     stage.inert=!focused;
@@ -86,37 +88,44 @@
     var front=t<.56?base:base+1;
 
     stages.forEach(function(stage,i){
-      var distance,y,scale,dim,blur,z;
+      var distance,y,scale,dim,blur,opacity,z;
       if(i<base){
         distance=base-i;
         y=upper-Math.min(3,distance-1)*7;
         scale=Math.max(.64,.73-Math.min(3,distance-1)*.024);
-        dim=Math.min(.94,.86+Math.min(3,distance-1)*.026);
-        blur=2.1+Math.min(3,distance-1)*.25;
+        // Earlier cards become increasingly translucent and softly defocused
+        // the farther they sit back in the upper pile.
+        opacity=Math.max(.33,.72-Math.min(3,distance-1)*.13);
+        dim=Math.min(.29,.16+Math.min(3,distance-1)*.04);
+        blur=1.8+Math.min(3,distance-1)*1.1;
         z=20+i;
       }else if(i>base+1){
         distance=i-(base+1);
         y=lower+Math.min(3,distance-1)*7;
         scale=Math.max(.64,.73-Math.min(3,distance-1)*.024);
-        dim=Math.min(.94,.86+Math.min(3,distance-1)*.026);
-        blur=2.1+Math.min(3,distance-1)*.25;
+        // Upcoming layers use the same depth curve as the upper pile.
+        opacity=Math.max(.33,.72-Math.min(3,distance-1)*.13);
+        dim=Math.min(.29,.16+Math.min(3,distance-1)*.04);
+        blur=1.8+Math.min(3,distance-1)*1.1;
         z=20+stages.length-i;
       }else if(i===base){
         y=mix(0,upper,retiring);
         scale=mix(1,.73,retiring);
-        dim=mix(0,.86,retiring);
-        blur=mix(0,2.1,retiring);
+        dim=mix(0,.16,retiring);
+        blur=mix(0,1.8,retiring);
+        opacity=mix(1,.72,retiring);
         z=t<.56?100:30+i;
       }else{
         // No separate 'prepare' and 'activate' movements. Its position,
         // clarity and size all move continuously along the same path.
         y=mix(lower,0,arriving);
         scale=mix(.73,1,arriving);
-        dim=mix(.86,0,arriving);
-        blur=mix(2.1,0,arriving);
+        dim=mix(.16,0,arriving);
+        blur=mix(1.8,0,arriving);
+        opacity=mix(.72,1,arriving);
         z=t<.56?55:100;
       }
-      pose(stage,y,scale,dim,blur,z,i===front);
+      pose(stage,y,scale,dim,blur,opacity,z,i===front);
     });
   }
 
