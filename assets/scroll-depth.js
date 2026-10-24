@@ -1,187 +1,269 @@
-/* G-Spot Lab / two-pile deck, experimental ?deck=1 only.
-   A fixed central card, a stationary upper pile, and a stationary lower
-   pile. One-at-a-time, non-crossing handoffs are driven by native scrolling.
-   Reverse scrolling walks through the exact same states in reverse order. */
+/* G-Spot Lab / viewport deck prototype, only when ?deck=1.
+   Fixed header and footer, centered active card, fixed upper/lower piles.
+   Mouse wheel, keyboard, and touch move through reversible card transitions.
+   No document scrolling, timers for physics, or experimental behavior on the
+   normal public homepage. */
 (function(){
   var shell=document.querySelector('.depth-shell');
-  if(!shell)return;
-  if(new URLSearchParams(window.location.search).get('deck')!=='1')return;
+  if(!shell || new URLSearchParams(window.location.search).get('deck')!=='1')return;
 
   var stages=Array.prototype.slice.call(shell.querySelectorAll('[data-depth-stage]'));
   if(stages.length<2)return;
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
-  var compact=window.matchMedia('(max-width: 900px), (max-height: 700px)');
-  var track=null,viewport=null,step=0,framePending=false;
-  var didInitialHash=false;
+  var compact=window.matchMedia('(max-width: 900px), (max-height: 650px)');
+  var viewport=null,enabled=false;
+  var position=0,targetIndex=0,animationId=0;
+  var wheelSum=0,wheelDirection=0,wheelLast=0,wheelGestureLocked=false;
+  var touchStart=null,initialized=false;
 
-  function clamp(n){return Math.max(0,Math.min(1,n));}
-  function smooth(n){var t=clamp(n);return t*t*(3-2*t);}
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+  function smooth(v){var t=clamp(v,0,1);return t*t*(3-2*t);}
+  function smoother(v){
+    var t=clamp(v,0,1);
+    return t*t*t*(t*(6*t-15)+10);
+  }
   function mix(a,b,t){return a+(b-a)*t;}
+  function supported(){return !reduced.matches && !compact.matches;}
+  function dialogOpen(){return !!document.querySelector('dialog[open]');}
 
   function restore(){
-    if(track){
-      // Return original nodes to normal flow, preserving content and links.
-      stages.forEach(function(stage){shell.insertBefore(stage,track);});
-      track.remove();
-      track=null;viewport=null;
+    cancelAnimationFrame(animationId);
+    animationId=0;
+    if(viewport){
+      stages.forEach(function(stage){shell.insertBefore(stage,viewport);});
+      viewport.remove();
+      viewport=null;
     }
+    enabled=false;
+    document.documentElement.classList.remove('deck-mode');
     shell.classList.remove('deck-enabled');
     stages.forEach(function(stage){
-      stage.classList.remove('is-current');
       stage.style.removeProperty('--deck-y');
       stage.style.removeProperty('--deck-scale');
       stage.style.removeProperty('--deck-dim');
       stage.style.removeProperty('--deck-blur');
       stage.style.zIndex='';
+      stage.classList.remove('is-current');
       stage.inert=false;
     });
   }
 
-  function supported(){
-    if(reduced.matches||compact.matches)return false;
-    var height=window.innerHeight||800;
-    // Never crop a tall section to make it fit a card transition.
-    return stages.every(function(stage){return stage.offsetHeight<=height-65;});
+  function activate(){
+    if(!supported()){if(enabled)restore();return;}
+    if(enabled)return;
+    viewport=document.createElement('div');
+    viewport.className='deck-viewport';
+    shell.insertBefore(viewport,stages[0]);
+    stages.forEach(function(stage){viewport.appendChild(stage);});
+    shell.classList.add('deck-enabled');
+    document.documentElement.classList.add('deck-mode');
+    enabled=true;
+    // In this mode scroll gestures are navigation, not document motion.
+    window.scrollTo(0,0);
+    render();
   }
 
-  function configure(){
-    if(!supported()){
-      if(track)restore();
-      return;
-    }
-    if(!track){
-      track=document.createElement('div');
-      track.className='deck-track';
-      viewport=document.createElement('div');
-      viewport.className='deck-viewport';
-      track.appendChild(viewport);
-      shell.insertBefore(track,stages[0]);
-      stages.forEach(function(stage){viewport.appendChild(stage);});
-      shell.classList.add('deck-enabled');
-    }
-    var height=window.innerHeight||800;
-    step=Math.max(440,Math.round(height*.90));
-    // A little holding distance at the end gives Support a full-size
-    // centered resting state before the footer comes into view.
-    track.style.height=Math.round(height+step*(stages.length-1)+height*.42)+'px';
-  }
-
-  function pose(stage,y,scale,dim,blur,z,current){
+  function pose(stage,y,scale,dim,blur,z,focused){
     stage.style.setProperty('--deck-y',y.toFixed(1)+'px');
     stage.style.setProperty('--deck-scale',scale.toFixed(4));
     stage.style.setProperty('--deck-dim',dim.toFixed(3));
     stage.style.setProperty('--deck-blur',blur.toFixed(2)+'px');
     stage.style.zIndex=String(z);
-    stage.classList.toggle('is-current',current);
-    stage.inert=!current;
+    stage.classList.toggle('is-current',focused);
+    stage.inert=!focused;
   }
 
-  function paint(){
-    framePending=false;
-    if(!track)return;
-    var height=window.innerHeight||800;
-    var origin=window.scrollY+track.getBoundingClientRect().top;
-    var position=clamp((window.scrollY-origin)/step/(stages.length-1))*(stages.length-1);
-    var base=Math.min(stages.length-2,Math.floor(position));
-    var t=clamp(position-base);
-    var peak=Math.min(255,height*.235);
+  function render(){
+    if(!enabled)return;
+    var h=viewport.clientHeight || window.innerHeight || 800;
+    // The two piles stay IN the viewport; only their outer halves can clip.
+    var peak=Math.min(245,Math.max(150,h*.34));
     var upper=-peak,lower=peak;
+    var base=Math.min(stages.length-2,Math.floor(position));
+    var t=clamp(position-base,0,1);
 
-    // Three NON-CROSSING phases per card:
-    // 0–40%: next card grows in the lower pile; center stays perfectly sharp.
-    // 40–68%: center retreats into upper pile; next waits below.
-    // 68–100%: next rises from lower pile into the empty center.
-    var grow=smooth(t/.40);
-    var depart=smooth((t-.40)/.28);
-    var arrive=smooth((t-.68)/.32);
+    // Distinct sequential phases, reversible with exactly the same route.
+    // First the lower card readies; then center parks above; then lower
+    // approaches center. There is no pass-through/crossing.
+    var ready=smooth(t/.40);
+    var retiring=smooth((t-.40)/.28);
+    var arriving=smooth((t-.68)/.32);
     var front=t<.68?base:base+1;
 
-    stages.forEach(function(stage,index){
+    stages.forEach(function(stage,i){
       var distance,y,scale,dim,blur,z;
-      if(index<base){
-        distance=base-index;
-        y=upper-Math.min(3,distance-1)*8;
-        scale=Math.max(.62,.72-Math.min(3,distance-1)*.025);
-        dim=Math.min(.94,.87+Math.min(3,distance-1)*.02);
-        blur=2.3+Math.min(3,distance-1)*.3;
-        z=22+index;
-      }else if(index>base+1){
-        distance=index-(base+1);
-        y=lower+Math.min(3,distance-1)*8;
-        scale=Math.max(.62,.72-Math.min(3,distance-1)*.025);
-        dim=Math.min(.94,.87+Math.min(3,distance-1)*.02);
-        blur=2.3+Math.min(3,distance-1)*.3;
-        z=22+(stages.length-index);
-      }else if(index===base){
-        // Outgoing stays in front until it is safely in the top pile.
-        y=mix(0,upper,depart);
-        scale=mix(1,.72,depart);
-        dim=mix(0,.87,depart);
-        blur=mix(0,2.3,depart);
-        z=t<.68?100:30+index;
+      if(i<base){
+        distance=base-i;
+        y=upper-Math.min(3,distance-1)*7;
+        scale=Math.max(.64,.73-Math.min(3,distance-1)*.024);
+        dim=Math.min(.94,.86+Math.min(3,distance-1)*.026);
+        blur=2.1+Math.min(3,distance-1)*.25;
+        z=20+i;
+      }else if(i>base+1){
+        distance=i-(base+1);
+        y=lower+Math.min(3,distance-1)*7;
+        scale=Math.max(.64,.73-Math.min(3,distance-1)*.024);
+        dim=Math.min(.94,.86+Math.min(3,distance-1)*.026);
+        blur=2.1+Math.min(3,distance-1)*.25;
+        z=20+stages.length-i;
+      }else if(i===base){
+        y=mix(0,upper,retiring);
+        scale=mix(1,.73,retiring);
+        dim=mix(0,.86,retiring);
+        blur=mix(0,2.1,retiring);
+        z=t<.68?100:30+i;
       }else{
-        // Incoming is prepared below before the previous card withdraws.
-        var readyY=mix(lower,lower*.58,grow);
-        var readyScale=mix(.72,.84,grow);
-        var readyDim=mix(.87,.48,grow);
-        var readyBlur=mix(2.3,1.25,grow);
-        y=mix(readyY,0,arrive);
-        scale=mix(readyScale,1,arrive);
-        dim=mix(readyDim,0,arrive);
-        blur=mix(readyBlur,0,arrive);
+        var readyY=mix(lower,lower*.62,ready);
+        var readyScale=mix(.73,.85,ready);
+        var readyDim=mix(.86,.48,ready);
+        var readyBlur=mix(2.1,1.15,ready);
+        y=mix(readyY,0,arriving);
+        scale=mix(readyScale,1,arriving);
+        dim=mix(readyDim,0,arriving);
+        blur=mix(readyBlur,0,arriving);
         z=t<.68?55:100;
       }
-      pose(stage,y,scale,dim,blur,z,index===front);
+      pose(stage,y,scale,dim,blur,z,i===front);
     });
   }
 
-  function requestPaint(){
-    if(framePending)return;
-    framePending=true;
-    window.requestAnimationFrame(paint);
+  function navigateTo(index){
+    if(!enabled || dialogOpen())return;
+    var to=clamp(index,0,stages.length-1);
+    if(Math.abs(to-position)<.0001)return;
+    cancelAnimationFrame(animationId);
+    targetIndex=to;
+    var from=position;
+    var started=performance.now();
+    // A calm, nearly one-second handoff, with zero velocity at both ends.
+    var duration=1050*Math.max(.66,Math.min(1.6,Math.abs(to-from)));
+    function frame(now){
+      var t=clamp((now-started)/duration,0,1);
+      position=mix(from,to,smoother(t));
+      render();
+      if(t<1)animationId=requestAnimationFrame(frame);
+      else{position=to;animationId=0;render();}
+    }
+    animationId=requestAnimationFrame(frame);
   }
-  function goTo(index,behavior){
-    if(!track)return;
-    var top=window.scrollY+track.getBoundingClientRect().top+index*step;
-    window.scrollTo({top:top,behavior:behavior||'smooth'});
+
+  function navigateBy(direction){
+    var next=clamp(targetIndex+direction,0,stages.length-1);
+    if(next!==targetIndex)navigateTo(next);
   }
-  function refresh(){
-    configure();
-    requestPaint();
-    if(track&&!didInitialHash){
-      didInitialHash=true;
-      var hash=window.location.hash;
-      if(hash){
-        var target=document.getElementById(decodeURIComponent(hash.slice(1)));
-        var index=stages.findIndex(function(stage){return stage.contains(target);});
-        if(index>=0)window.requestAnimationFrame(function(){goTo(index,'auto');});
-      }
+
+  function currentStage(){
+    var index=Math.min(stages.length-1,Math.max(0,Math.round(position)));
+    return stages[index];
+  }
+
+  function hasInnerScroll(stage,delta){
+    if(!stage || stage.scrollHeight<=stage.clientHeight+3)return false;
+    if(delta>0)return stage.scrollTop<stage.scrollHeight-stage.clientHeight-3;
+    if(delta<0)return stage.scrollTop>3;
+    return false;
+  }
+
+  function onWheel(event){
+    if(!enabled || dialogOpen() || event.ctrlKey)return;
+    var delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?window.innerHeight:1);
+    if(!delta)return;
+    var stage=currentStage();
+    // Tall panels can be read internally before changing cards. The page
+    // itself never scrolls, and all product controls remain reachable.
+    if(stage && hasInnerScroll(stage,delta) && !animationId &&
+       (event.target===stage || stage.contains(event.target)))return;
+    event.preventDefault();
+    var now=performance.now();
+    var direction=Math.sign(delta);
+    if(now-wheelLast>280 || direction!==wheelDirection){
+      wheelSum=0;wheelGestureLocked=false;
+    }
+    wheelLast=now;wheelDirection=direction;
+    if(wheelGestureLocked)return;
+    wheelSum+=delta;
+    if(Math.abs(wheelSum)>=45){
+      wheelGestureLocked=true;wheelSum=0;
+      navigateBy(direction);
     }
   }
 
-  // Site navigation still works in deck mode (including the hero buttons).
-  document.addEventListener('click',function(event){
-    if(!track || event.defaultPrevented ||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
-    var link=event.target.closest('a[href]');
-    if(!link || link.origin!==window.location.origin ||
-       link.pathname!==window.location.pathname || !link.hash)return;
-    if(link.hash==='#top'){
-      event.preventDefault();
-      window.scrollTo({top:0,behavior:'smooth'});
-      return;
-    }
-    var target=document.getElementById(decodeURIComponent(link.hash.slice(1)));
-    if(!target)return;
-    var index=stages.findIndex(function(stage){return stage.contains(target);});
-    if(index<0)return;
+  function onKey(event){
+    if(!enabled || dialogOpen() || event.defaultPrevented ||
+       event.ctrlKey || event.metaKey || event.altKey)return;
+    var target=event.target;
+    if(target && target.closest && target.closest('input, textarea, select, [contenteditable="true"]'))return;
+    var key=event.key;
+    if(key==='Home'){event.preventDefault();navigateTo(0);return;}
+    if(key==='End'){event.preventDefault();navigateTo(stages.length-1);return;}
+    var direction=(key==='ArrowDown'||key==='PageDown'||key===' ') ? 1 :
+                  (key==='ArrowUp'||key==='PageUp') ? -1 : 0;
+    if(!direction)return;
+    if(key===' ' && target && target.closest &&
+       target.closest('button,a,[role="button"]'))return;
     event.preventDefault();
-    history.replaceState(null,'',link.hash?window.location.pathname+window.location.search+link.hash:window.location.href);
-    goTo(index,'smooth');
+    navigateBy(direction);
+  }
+
+  function onTouchStart(event){
+    if(!enabled || dialogOpen() || event.touches.length!==1)return;
+    touchStart={y:event.touches[0].clientY,origin:event.target};
+  }
+  function onTouchEnd(event){
+    if(!enabled || dialogOpen() || !touchStart || !event.changedTouches.length)return;
+    var delta=touchStart.y-event.changedTouches[0].clientY;
+    if(Math.abs(delta)>55){
+      var stage=currentStage();
+      if(!(stage && hasInnerScroll(stage,delta) && stage.contains(touchStart.origin)))
+        navigateBy(Math.sign(delta));
+    }
+    touchStart=null;
+  }
+
+  function stageForHash(hash){
+    if(!hash)return -1;
+    var id;
+    try{id=decodeURIComponent(hash.slice(1));}catch(e){return -1;}
+    if(id==='top')return 0;
+    var target=document.getElementById(id);
+    if(!target)return -1;
+    return stages.findIndex(function(stage){return stage===target||stage.contains(target);});
+  }
+
+  function refresh(){
+    activate();
+    if(!enabled)return;
+    if(!initialized){
+      initialized=true;
+      var initial=stageForHash(window.location.hash);
+      if(initial>=0){position=initial;targetIndex=initial;}
+    }
+    render();
+  }
+
+  document.addEventListener('click',function(event){
+    if(!enabled || event.defaultPrevented || event.button!==0 ||
+      event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+    var anchor=event.target.closest('a[href]');
+    if(!anchor || anchor.origin!==window.location.origin ||
+       anchor.pathname!==window.location.pathname || !anchor.hash)return;
+    var i=stageForHash(anchor.hash);
+    if(i<0)return;
+    event.preventDefault();
+    history.replaceState(null,'',window.location.pathname+window.location.search+anchor.hash);
+    navigateTo(i);
   });
 
-  window.addEventListener('scroll',requestPaint,{passive:true});
+  window.addEventListener('wheel',onWheel,{passive:false});
+  document.addEventListener('keydown',onKey);
+  document.addEventListener('touchstart',onTouchStart,{passive:true});
+  document.addEventListener('touchend',onTouchEnd,{passive:true});
   window.addEventListener('resize',refresh,{passive:true});
   window.addEventListener('load',refresh,{once:true});
+  window.addEventListener('hashchange',function(){
+    var i=stageForHash(window.location.hash);
+    if(i>=0 && enabled)navigateTo(i);
+  });
   if(reduced.addEventListener)reduced.addEventListener('change',refresh);
   if(compact.addEventListener)compact.addEventListener('change',refresh);
   refresh();
