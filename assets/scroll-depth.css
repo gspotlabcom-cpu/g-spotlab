@@ -63,18 +63,28 @@ html.deck-mode .shell.depth-shell{
   scrollbar-color:rgba(103,232,249,.3) transparent;
   transform-origin:center center;
   transform:translate3d(0,calc(-50% + var(--deck-y)),0) scale(var(--deck-scale));
-  filter:blur(var(--deck-blur));
+  /* Glass belongs to the PANEL. Never blur the site's backdrop or panel
+     contents: only the pixels seen THROUGH the translucent surface. */
+  border:0;
+  background:linear-gradient(155deg,rgba(15,21,39,.70),rgba(8,13,28,.76));
+  -webkit-backdrop-filter:blur(16px) saturate(1.18);
+  backdrop-filter:blur(16px) saturate(1.18);
+  filter:none;
   pointer-events:none;
   will-change:transform;
-  transition:box-shadow .38s ease,border-color .38s ease;
+  transition:box-shadow .38s ease;
 }
 .deck-enabled .deck-viewport .depth-stage.is-current{
   pointer-events:auto;
-  border-color:rgba(196,181,253,.48);
-  box-shadow:0 34px 95px rgba(0,0,0,.65),
-    0 0 0 1px rgba(167,139,250,.10),
-    0 0 75px rgba(124,58,237,.13),
-    inset 0 1px rgba(255,255,255,.06);
+  box-shadow:0 34px 95px rgba(0,0,0,.53),
+    0 0 75px rgba(124,58,237,.10),
+    inset 0 1px rgba(255,255,255,.045);
+}
+/* A stronger fallback for browsers without frosted-glass support. */
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .deck-enabled .deck-viewport .depth-stage{
+    background:linear-gradient(155deg,rgba(15,21,39,.85),rgba(8,13,28,.90));
+  }
 }
 .depth-stage::after{
   content:"";position:absolute;inset:0;z-index:3;
