@@ -1,11 +1,10 @@
-/* G-Spot Lab scroll-depth study, v4 — softer layered transitions.
-   Independent panel surfaces replace the single continuous homepage frame.
-   The scroll script only writes scale, lift and shade: content remains in
-   normal document flow, fully clickable and accessible. */
+/* G-Spot Lab / Deck scroll prototype (v5).
+   In supported desktop viewports, each section sticks to the same focal
+   position and passes behind the next, like cards occupying one plane.
+   Mobile, short viewports and reduced-motion settings use normal flow. */
 .shell.depth-shell{
-  display:grid;
-  gap:clamp(32px,4vw,56px);
-  margin-bottom:clamp(85px,8vw,130px);
+  --deck-top:clamp(16px,2.7vh,30px);
+  display:block;
   overflow:visible;
   border:0;
   border-radius:0;
@@ -13,88 +12,77 @@
   box-shadow:none;
   -webkit-backdrop-filter:none;
   backdrop-filter:none;
-  perspective:1400px;
+  margin-bottom:clamp(75px,9vh,125px);
 }
 .depth-stage{
-  --depth-scale:1;
-  --depth-offset:0px;
-  --depth-dim:0;
-  --depth-blur:0px;
+  --deck-scale:1;
+  --deck-shift:0px;
+  --deck-dim:0;
+  --deck-blur:0px;
   position:relative;
+  isolation:isolate;
   min-width:0;
   overflow:hidden;
-  border:1px solid rgba(196,181,253,.19);
+  border:1px solid rgba(196,181,253,.22);
   border-radius:28px;
-  background:
-    radial-gradient(circle at 85% 0%,rgba(75,47,136,.065),transparent 48%),
-    linear-gradient(155deg,rgba(18,26,47,.94),rgba(8,13,29,.96));
-  box-shadow:0 24px 76px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.055);
-  transform-origin:50% 50%;
-  transform:translate3d(0,var(--depth-offset),0) scale(var(--depth-scale));
-  filter:blur(var(--depth-blur));
-  transition:border-color .48s ease,box-shadow .48s ease;
+  background:linear-gradient(155deg,rgba(17,24,44,.97),rgba(7,12,27,.97));
+  box-shadow:0 26px 86px rgba(0,0,0,.44),inset 0 1px rgba(255,255,255,.055);
+  transform-origin:50% 12%;
+  margin-bottom:clamp(32px,6vh,64px);
+  transition:border-color .36s ease,box-shadow .36s ease;
+}
+.shell.depth-shell .depth-stage:last-child{margin-bottom:0}
+.deck-enabled.shell.depth-shell{
+  padding-bottom:clamp(100px,20vh,210px);
+  perspective:1250px;
+}
+.deck-enabled .depth-stage{
+  position:sticky;
+  top:var(--deck-top);
+  transform:translate3d(0,var(--deck-shift),0) scale(var(--deck-scale));
+  filter:blur(var(--deck-blur));
+  will-change:transform;
 }
 .depth-stage::after{
   content:"";
   position:absolute;
-  z-index:3;
   inset:0;
-  background:#020611;
-  opacity:var(--depth-dim);
+  z-index:3;
+  background:#02040d;
+  opacity:0;
   pointer-events:none;
 }
-.depth-stage.is-current{
+.deck-enabled .depth-stage::after{opacity:var(--deck-dim)}
+.deck-enabled .depth-stage.is-current{
   border-color:rgba(196,181,253,.48);
   box-shadow:
-    0 42px 115px rgba(0,0,0,.65),
-    0 0 0 1px rgba(167,139,250,.12),
-    0 0 85px rgba(124,58,237,.16),
-    inset 0 1px rgba(255,255,255,.075);
+    0 40px 105px rgba(0,0,0,.62),
+    0 0 0 1px rgba(167,139,250,.10),
+    0 0 80px rgba(124,58,237,.12),
+    inset 0 1px rgba(255,255,255,.065);
 }
-.depth-stage>.section{
-  border-top:0;
-  background:transparent;
+.depth-stage>.section{border-top:0;background:transparent}
+.depth-stage>.section:nth-of-type(odd){background:transparent}
+.depth-stage--hero{background:linear-gradient(145deg,rgba(11,15,31,.98),rgba(5,10,23,.96))}
+.depth-stage--hero>.hero{
+  background:radial-gradient(circle at 16% 18%,rgba(124,58,237,.20),transparent 32%),
+    radial-gradient(circle at 86% 18%,rgba(8,145,178,.13),transparent 32%),transparent
 }
-.depth-stage>.section:nth-of-type(odd){
-  background:transparent;
-}
-.depth-stage>.section+.section{
-  border-top:1px solid rgba(196,181,253,.13);
-}
-.depth-stage--hero{
-  background:linear-gradient(145deg,rgba(11,15,31,.97),rgba(5,10,23,.93));
-}
-.depth-stage--hero>.hero{background:
-  radial-gradient(circle at 16% 18%,rgba(124,58,237,.19),transparent 32%),
-  radial-gradient(circle at 86% 18%,rgba(8,145,178,.12),transparent 32%),
-  transparent;
-}
-.depth-stage--toolkits{
-  background:linear-gradient(140deg,rgba(16,23,43,.98),rgba(9,16,33,.95));
-}
-.depth-stage--process{
-  background:linear-gradient(150deg,rgba(14,18,37,.98),rgba(7,14,28,.96));
-}
-.depth-stage--packs{
-  background:linear-gradient(150deg,rgba(13,20,37,.98),rgba(8,14,28,.97));
-}
-.depth-stage--platforms{
-  background:linear-gradient(150deg,rgba(13,19,35,.98),rgba(9,14,29,.96));
-}
-.depth-stage--support{
-  background:linear-gradient(150deg,rgba(15,20,37,.98),rgba(7,12,27,.97));
-}
-/* Keep anchor scrolling comfortable when the navigation targets a section
-   inside a multi-section depth panel. */
+.depth-stage--toolkits{background:linear-gradient(140deg,rgba(16,23,43,.99),rgba(9,16,33,.97))}
+.depth-stage--workflow{background:linear-gradient(145deg,rgba(16,20,39,.99),rgba(8,14,29,.97))}
+.depth-stage--composition{background:linear-gradient(150deg,rgba(14,18,37,.99),rgba(7,14,28,.97))}
+.depth-stage--packs{background:linear-gradient(150deg,rgba(13,20,37,.99),rgba(8,14,28,.98))}
+.depth-stage--engines{background:linear-gradient(155deg,rgba(14,20,37,.99),rgba(9,14,29,.97))}
+.depth-stage--studio{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
+.depth-stage--support{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
 .depth-stage [id="toolkits"],
 .depth-stage [id="packs"],
 .depth-stage [id="engines"],
 .depth-stage [id="studio"],
-.depth-stage [id="support"]{scroll-margin-top:20px}
-@media(max-width:760px){
-  .shell.depth-shell{gap:22px;margin-bottom:68px;perspective:none}
-  .depth-stage{border-radius:20px}
-  .depth-stage>.section+.section{border-top-color:rgba(196,181,253,.10)}
+.depth-stage [id="support"]{scroll-margin-top:clamp(24px,4vh,46px)}
+@media(max-width:900px),(max-height:700px){
+  .shell.depth-shell{margin-bottom:68px}
+  .depth-stage{border-radius:21px;margin-bottom:18px}
 }
 @media(prefers-reduced-motion:reduce){
   .depth-stage{transform:none!important;filter:none!important;transition:none}
