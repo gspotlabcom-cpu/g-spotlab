@@ -1,11 +1,11 @@
 /* Click-to-load product videos. Marketplace actions are read from the
    product card so the lightbox always matches its Unity/Fab availability. */
 (function () {
-  if (!document.querySelector('a[data-video-id]')) return;
+  if (!document.querySelector('a[data-video-id], a[data-image-src]')) return;
 
   var dialog = document.createElement('dialog');
   dialog.className = 'gsl-video-dialog';
-  dialog.setAttribute('aria-label', 'Product demonstration video');
+  dialog.setAttribute('aria-label', 'Product media preview');
   dialog.innerHTML =
     '<div class="gsl-video-shell">' +
       '<button type="button" class="gsl-video-close" aria-label="Close video">×</button>' +
@@ -95,26 +95,42 @@
   });
 
   document.addEventListener('click', function (event) {
-    var trigger = event.target.closest('a[data-video-id]');
+    var trigger = event.target.closest('a[data-video-id], a[data-image-src]');
     if (!trigger || event.defaultPrevented || event.button !== 0 ||
         event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     if (typeof dialog.showModal !== 'function') return;
     var id = trigger.getAttribute('data-video-id');
-    if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+    var imagePath = trigger.getAttribute('data-image-src');
+    var isVideo = Boolean(id);
+    if (isVideo) {
+      if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+    } else {
+      // Only load the site's own approved preview files.
+      if (!/^\/assets\/products\/[A-Za-z0-9_-]+\.png$/.test(imagePath || '')) return;
+    }
     event.preventDefault();
     lastTrigger = trigger;
-    title.textContent = trigger.getAttribute('data-video-title') ||
-      'G-Spot Lab demonstration';
+    title.textContent = trigger.getAttribute(isVideo ? 'data-video-title' : 'data-image-title') ||
+      'G-Spot Lab product preview';
     populateMarkets(trigger);
 
-    var iframe = document.createElement('iframe');
-    iframe.title = title.textContent;
-    iframe.src = 'https://www.youtube-nocookie.com/embed/' + id +
-      '?autoplay=1&rel=0';
-    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    iframe.allowFullscreen = true;
-    frame.replaceChildren(iframe);
+    frame.classList.toggle('is-image', !isVideo);
+    if (isVideo) {
+      var iframe = document.createElement('iframe');
+      iframe.title = title.textContent;
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + id +
+        '?autoplay=1&rel=0';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      frame.replaceChildren(iframe);
+    } else {
+      var image = document.createElement('img');
+      image.className = 'gsl-lightbox-image';
+      image.src = imagePath;
+      image.alt = title.textContent;
+      frame.replaceChildren(image);
+    }
     dialog.showModal();
   });
 })();
