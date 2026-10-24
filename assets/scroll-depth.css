@@ -9,7 +9,7 @@
   margin-bottom:clamp(80px,10vh,135px);
 }
 .depth-stage{
-  --deck-y:0px;--deck-scale:1;--deck-dim:0;--deck-blur:0px;--deck-opacity:1;
+  --deck-y:0px;--deck-scale:1;--deck-dim:0;--deck-blur:0px;--deck-opacity:1;--deck-glass-opacity:.50;
   position:relative;min-width:0;overflow:hidden;
   border:1px solid rgba(196,181,253,.22);border-radius:28px;
   background:linear-gradient(155deg,rgba(17,24,44,.97),rgba(7,12,27,.97));
@@ -82,8 +82,9 @@ html.deck-mode .shell.depth-shell{
   z-index:0;
   pointer-events:none;
   border-radius:inherit;
-  /* 50% transparency: tinted plexiglass is exactly 50% opaque. */
-  background:linear-gradient(155deg,rgba(15,21,39,.50),rgba(8,13,28,.50));
+  /* Deck depth animates the glass itself: half-transparent in the piles,
+     up to 90% opaque at the center so rear content stays out of the way. */
+  background:linear-gradient(155deg,rgba(15,21,39,var(--deck-glass-opacity)),rgba(8,13,28,var(--deck-glass-opacity)));
   -webkit-backdrop-filter:blur(16px) saturate(1.12);
   backdrop-filter:blur(16px) saturate(1.12);
 }
@@ -98,7 +99,7 @@ html.deck-mode .shell.depth-shell{
 /* Fallback when backdrop-filter is not supported. */
 @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
   .deck-enabled .deck-viewport .depth-stage::before{
-    background:linear-gradient(155deg,rgba(15,21,39,.50),rgba(8,13,28,.50));
+    background:linear-gradient(155deg,rgba(15,21,39,var(--deck-glass-opacity)),rgba(8,13,28,var(--deck-glass-opacity)));
   }
 }
 .depth-stage::after{
