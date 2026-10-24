@@ -1,4 +1,4 @@
-/* G-Spot Lab / Deck scroll prototype (v5).
+/* G-Spot Lab / Optional deck scroll prototype (v6).
    In supported desktop viewports, each section sticks to the same focal
    position and passes behind the next, like cards occupying one plane.
    Mobile, short viewports and reduced-motion settings use normal flow. */
@@ -13,6 +13,13 @@
   -webkit-backdrop-filter:none;
   backdrop-filter:none;
   margin-bottom:clamp(75px,9vh,125px);
+}
+.deck-anchor{
+  display:block;
+  height:0;
+  overflow:hidden;
+  visibility:hidden;
+  pointer-events:none;
 }
 .depth-stage{
   --deck-scale:1;
