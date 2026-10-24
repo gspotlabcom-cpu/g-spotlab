@@ -9,7 +9,7 @@
   margin-bottom:clamp(80px,10vh,135px);
 }
 .depth-stage{
-  --deck-y:0px;--deck-scale:1;--deck-dim:0;--deck-blur:0px;--deck-opacity:1;--deck-glass-opacity:.50;
+  --deck-y:0px;--deck-scale:1;--deck-dim:0;--deck-blur:0px;--deck-opacity:1;--deck-glass-opacity:.50;--deck-saturation:1;--deck-brightness:1;
   position:relative;min-width:0;overflow:hidden;
   border:1px solid rgba(196,181,253,.22);border-radius:28px;
   background:linear-gradient(155deg,rgba(17,24,44,.97),rgba(7,12,27,.97));
@@ -70,7 +70,7 @@ html.deck-mode .shell.depth-shell{
   backdrop-filter:none;
   box-shadow:none;
   opacity:var(--deck-opacity);
-  filter:blur(var(--deck-blur));
+  filter:blur(var(--deck-blur)) saturate(var(--deck-saturation)) brightness(var(--deck-brightness));
   pointer-events:none;
   will-change:transform,opacity;
   transition:box-shadow .38s ease;
@@ -107,6 +107,14 @@ html.deck-mode .shell.depth-shell{
   background:#02040d;opacity:0;pointer-events:none;
 }
 .deck-enabled .depth-stage::after{opacity:var(--deck-dim)}
+/* Only the active glass receives a soft, borderless perimeter vignette.
+   Its central content is untouched and the effect cannot intercept clicks. */
+.deck-enabled .deck-viewport .depth-stage.is-current::after{
+  opacity:1;
+  background:transparent;
+  border-radius:inherit;
+  box-shadow:inset 0 0 52px rgba(2,4,14,.32);
+}
 .depth-stage>.section{border-top:0;background:transparent}
 .depth-stage>.section:nth-of-type(odd){background:transparent}
 .deck-enabled .depth-stage>.section{
@@ -144,6 +152,39 @@ html.deck-mode #toolkits .card.toolkit,
 html.deck-mode #packs .card.asset-card{
   border-color:transparent;
 }
+/* Flat editorial surfaces in the experimental deck only.
+   Remove decorative lighting/3D shading, preserving layout, colors and
+   image thumbnails. Product cards keep their existing hover/focus glow. */
+html.deck-mode .deck-enabled .depth-stage :is(
+  .panel,.choice,.system-card,.node,.diagram-card,.diagram-node,.route,
+  .card.toolkit,.card.asset-card
+){
+  box-shadow:none;
+  background-image:none;
+}
+html.deck-mode .deck-enabled .depth-stage :is(
+  .panel,.choice,.system-card,.route,.diagram-card
+){background-color:rgba(23,30,48,.61)}
+html.deck-mode .deck-enabled .depth-stage :is(.node,.diagram-node){
+  background-color:rgba(31,43,60,.48);
+}
+html.deck-mode .deck-enabled .depth-stage .diagram-node.input{
+  background-color:rgba(148,163,184,.075);
+}
+html.deck-mode .deck-enabled .depth-stage .diagram-node.merge{
+  background-color:rgba(124,58,237,.15);
+}
+html.deck-mode .deck-enabled .depth-stage .diagram-node.output{
+  background-color:rgba(20,184,166,.14);
+}
+html.deck-mode .deck-enabled .depth-stage .node-icon{
+  background:rgba(103,232,249,.12);
+  box-shadow:none;
+}
+html.deck-mode .deck-enabled .depth-stage .system-card::before{
+  display:none;
+}
+
 /* Product cards retain their quiet orange hover/focus affordance and glow.
    Border tint is half the previous strength, but the broad glow is unchanged. */
 @media(hover:hover) and (pointer:fine){
