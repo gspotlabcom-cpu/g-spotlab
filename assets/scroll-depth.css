@@ -9,7 +9,7 @@
   margin-bottom:clamp(80px,10vh,135px);
 }
 .depth-stage{
-  --deck-y:0px;--deck-scale:1;--deck-dim:0;--deck-blur:0px;
+  --deck-y:0px;--deck-scale:1;--deck-dim:0;--deck-blur:0px;--deck-opacity:1;
   position:relative;min-width:0;overflow:hidden;
   border:1px solid rgba(196,181,253,.22);border-radius:28px;
   background:linear-gradient(155deg,rgba(17,24,44,.97),rgba(7,12,27,.97));
@@ -69,9 +69,10 @@ html.deck-mode .shell.depth-shell{
   -webkit-backdrop-filter:none;
   backdrop-filter:none;
   box-shadow:none;
-  filter:none;
+  opacity:var(--deck-opacity);
+  filter:blur(var(--deck-blur));
   pointer-events:none;
-  will-change:transform;
+  will-change:transform,opacity;
   transition:box-shadow .38s ease;
 }
 .deck-enabled .deck-viewport .depth-stage::before{
@@ -131,6 +132,30 @@ html.deck-mode .shell.depth-shell{
 .depth-stage--engines{background:linear-gradient(155deg,rgba(14,20,37,.99),rgba(9,14,29,.97))}
 .depth-stage--studio{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
 .depth-stage--support{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
+
+/* Deck-only inner surfaces: separate them using material, space and shadow
+   rather than visible strokes. Keep actionable button outlines for usability. */
+html.deck-mode .deck-enabled .depth-stage :is(
+  .panel,.system-card,.node,.diagram-card,.diagram-node,
+  .asset-media,.status,.eyebrow
+){border-color:transparent}
+html.deck-mode #toolkits .card.toolkit,
+html.deck-mode #packs .card.asset-card{
+  border-color:transparent;
+}
+/* Product cards retain their quiet orange hover/focus affordance and glow.
+   Border tint is half the previous strength, but the broad glow is unchanged. */
+@media(hover:hover) and (pointer:fine){
+  html.deck-mode #toolkits .card.toolkit:hover,
+  html.deck-mode #packs .card.asset-card:hover{
+    border-color:rgba(255,167,92,.19);
+  }
+}
+html.deck-mode #toolkits .card.toolkit:focus-within,
+html.deck-mode #packs .card.asset-card:focus-within{
+  border-color:rgba(255,167,92,.19);
+}
+
 @media(max-width:900px),(max-height:650px){
   .shell.depth-shell{margin-bottom:68px}
   .depth-stage{border-radius:21px;margin-bottom:18px}
