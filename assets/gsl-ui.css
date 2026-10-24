@@ -1,0 +1,85 @@
+/* G-Spot Lab — shared editorial scale and composition visualizations.
+   Applied after each page's local styles to retain its layout and brand identity. */
+:root {
+  --gsl-text-size: 16px;
+  --gsl-small-size: 13px;
+  --gsl-text-leading: 1.7;
+}
+body, button, input, textarea, select {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+body { font-size: var(--gsl-text-size); }
+p { font-size: var(--gsl-text-size); line-height: var(--gsl-text-leading); }
+h2 { line-height: 1.13; }
+h3 { font-size: 21px; line-height: 1.28; }
+.btn, .nav a { font-size: 14px; }
+.btn.small { font-size: var(--gsl-small-size); }
+.brand-sub, .kicker { font-size: 12px; }
+.nav a { line-height: 1.4; }
+.platform, .number, .footer { font-size: var(--gsl-small-size); }
+.status, .tag { font-size: 12px; }
+.node strong { font-size: 15px; }
+.node span { font-size: 13px; line-height: 1.55; }
+.node small { font-size: 11px; }
+.system-foot { font-size: 14px; line-height: 1.6; }
+.choice-item { font-size: 15px; line-height: 1.6; grid-template-columns: 24px minmax(0,1fr); align-items: start; }
+.choice-item span { text-align: center; font-weight: 700; font-size: 17px; line-height: 1.4; }
+.card-body p { min-height: 0; }
+.card-body .planned span, .toolkit .planned span { font-size: 12px; line-height: 1.45; }
+.footer { line-height: 1.6; }
+.panel h2 { font-size: clamp(27px, 3vw, 37px); }
+.principles-title { font-size: 23px; margin: 0; line-height: 1.28; letter-spacing: -.025em; }
+.principles-list { gap: 15px; margin-top: 20px; }
+.principles-list .choice-item { grid-template-columns: 24px minmax(0,1fr); font-size: 16px; align-items: start; }
+.principles-list .principle-mark { color: var(--mint, #5eead4); font-size: 19px; }
+.composition { grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: clamp(25px, 4vw, 60px); }
+.composition-copy p { max-width: 570px; }
+.composition-diagrams { display: grid; gap: 15px; min-width: 0; }
+.diagram-card {
+  border: 1px solid rgba(103,232,249,.19);
+  background: linear-gradient(125deg,rgba(124,58,237,.09),rgba(6,182,212,.04)),rgba(255,255,255,.035);
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 0;
+}
+.diagram-heading { color: #c7d2fe; font-size: 12px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; margin: 0 0 15px; }
+.diagram-flow, .diagram-parallel { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; }
+.diagram-node {
+  display: inline-flex; align-items: center; justify-content: center;
+  text-align: center; min-height: 44px; padding: 9px 14px; border-radius: 12px;
+  color: #e5faff; border: 1px solid rgba(103,232,249,.35);
+  background: rgba(6,182,212,.11); font-size: 14px; font-weight: 750;
+  line-height: 1.25; white-space: nowrap;
+}
+.diagram-node.input { border-color: rgba(148,163,184,.29); color: #d1d5db; background: rgba(148,163,184,.06); }
+.diagram-node.merge { border-color: rgba(167,139,250,.44); color: #ede9fe; background: rgba(124,58,237,.16); }
+.diagram-node.output { border-color: rgba(94,234,212,.44); color: #ccfbf1; background: rgba(20,184,166,.13); }
+.diagram-arrow { flex: 0 0 auto; color: var(--violet, #a78bfa); font-size: 21px; line-height: 1; }
+.diagram-branches { display: grid; gap: 6px; }
+.diagram-branch { display: flex; align-items: center; gap: 7px; }
+.diagram-branch .diagram-node { min-width: 95px; min-height: 37px; padding: 7px 10px; }
+.diagram-branch .diagram-arrow { font-size: 19px; }
+.diagram-mobile-arrow { display: none; }
+.diagram-caption { margin-top: 13px; font-size: 14px; line-height: 1.55; }
+@media(max-width:1100px) {
+  .composition { grid-template-columns: 1fr; }
+  .diagram-card { padding: 20px; }
+}
+@media(max-width:760px) {
+  .brand-sub { font-size: 11px; }
+  .hero .lead { font-size: 17px; line-height: 1.55; }
+  .diagram-node { font-size: 13px; padding: 9px; }
+  .diagram-card { padding: 17px 12px; }
+  .diagram-flow { gap: 4px; }
+  .diagram-flow .diagram-arrow { font-size: 17px; }
+  .diagram-parallel { gap: 6px; }
+  .diagram-branch .diagram-node { min-width: 78px; }
+}
+@media(max-width:410px) {
+  .diagram-flow .diagram-node { font-size: 12px; padding: 8px 6px; min-height: 40px; }
+  .diagram-parallel { flex-direction: column; }
+  .diagram-branches { display: flex; gap: 9px; }
+  .diagram-branch .diagram-arrow { display: none; }
+  .diagram-mobile-arrow { display: block; color: var(--violet, #a78bfa); font-size: 21px; }
+  .diagram-parallel > .diagram-arrow { transform: rotate(90deg); }
+}
