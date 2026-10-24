@@ -138,7 +138,7 @@
       if(t<1)animationId=requestAnimationFrame(frame);
       else{
         position=to;animationId=0;render();
-        settleUntil=performance.now()+650;
+        settleUntil=performance.now()+455;
       }
     }
     animationId=requestAnimationFrame(frame);
