@@ -40,6 +40,8 @@
       stage.style.removeProperty('--deck-blur');
       stage.style.removeProperty('--deck-opacity');
       stage.style.removeProperty('--deck-glass-opacity');
+      stage.style.removeProperty('--deck-saturation');
+      stage.style.removeProperty('--deck-brightness');
       stage.style.zIndex='';
       stage.classList.remove('is-current');
       stage.inert=false;
@@ -69,8 +71,11 @@
     stage.style.setProperty('--deck-opacity',opacity.toFixed(3));
     // The central screen builds a stronger glass tint continuously as it
     // moves into focus. Pile cards keep their existing translucent glass.
-    var focus=clamp((opacity-.72)/.28,0,1);
+    var focus=clamp((opacity-.55)/.45,0,1);
     stage.style.setProperty('--deck-glass-opacity',(.50+.40*focus).toFixed(3));
+    var depth=clamp((1-opacity)/.78,0,1);
+    stage.style.setProperty('--deck-saturation',(1-.50*depth).toFixed(3));
+    stage.style.setProperty('--deck-brightness',(1-.15*depth).toFixed(3));
     stage.style.zIndex=String(z);
     stage.classList.toggle('is-current',focused);
     stage.inert=!focused;
@@ -100,34 +105,34 @@
         scale=Math.max(.64,.73-Math.min(3,distance-1)*.024);
         // Earlier cards become increasingly translucent and softly defocused
         // the farther they sit back in the upper pile.
-        opacity=Math.max(.33,.72-Math.min(3,distance-1)*.13);
-        dim=Math.min(.29,.16+Math.min(3,distance-1)*.04);
-        blur=1.8+Math.min(3,distance-1)*1.1;
+        opacity=Math.max(.22,.55-Math.min(3,distance-1)*.13);
+        dim=Math.min(.16,.07+Math.min(3,distance-1)*.025);
+        blur=5+Math.min(3,distance-1)*2.5;
         z=20+i;
       }else if(i>base+1){
         distance=i-(base+1);
         y=lower+Math.min(3,distance-1)*7;
         scale=Math.max(.64,.73-Math.min(3,distance-1)*.024);
         // Upcoming layers use the same depth curve as the upper pile.
-        opacity=Math.max(.33,.72-Math.min(3,distance-1)*.13);
-        dim=Math.min(.29,.16+Math.min(3,distance-1)*.04);
-        blur=1.8+Math.min(3,distance-1)*1.1;
+        opacity=Math.max(.22,.55-Math.min(3,distance-1)*.13);
+        dim=Math.min(.16,.07+Math.min(3,distance-1)*.025);
+        blur=5+Math.min(3,distance-1)*2.5;
         z=20+stages.length-i;
       }else if(i===base){
         y=mix(0,upper,retiring);
         scale=mix(1,.73,retiring);
-        dim=mix(0,.16,retiring);
-        blur=mix(0,1.8,retiring);
-        opacity=mix(1,.72,retiring);
+        dim=mix(0,.07,retiring);
+        blur=mix(0,5,retiring);
+        opacity=mix(1,.55,retiring);
         z=t<.56?100:30+i;
       }else{
         // No separate 'prepare' and 'activate' movements. Its position,
         // clarity and size all move continuously along the same path.
         y=mix(lower,0,arriving);
         scale=mix(.73,1,arriving);
-        dim=mix(.16,0,arriving);
-        blur=mix(1.8,0,arriving);
-        opacity=mix(.72,1,arriving);
+        dim=mix(.07,0,arriving);
+        blur=mix(5,0,arriving);
+        opacity=mix(.55,1,arriving);
         z=t<.56?55:100;
       }
       pose(stage,y,scale,dim,blur,opacity,z,i===front);
