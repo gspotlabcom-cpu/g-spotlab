@@ -1,4 +1,4 @@
-/* Shared YouTube lightbox for product video previews. */
+/* Shared click-to-load video lightbox with direct marketplace actions. */
 .gsl-video-dialog{
   width:min(1040px,calc(100vw - 28px));
   max-width:1040px;
@@ -16,14 +16,48 @@
 .gsl-video-shell{position:relative;overflow:hidden;border-radius:18px}
 .gsl-video-frame{aspect-ratio:16/9;background:#05080e}
 .gsl-video-frame iframe{display:block;width:100%;height:100%;border:0}
-.gsl-video-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 18px}
-.gsl-video-name{margin:0;color:#f8fafc;font-size:15px;font-weight:700;line-height:1.4}
-.gsl-video-external{color:#67e8f9;font-size:13px;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-.gsl-video-close{position:absolute;right:10px;top:10px;z-index:2;display:grid;place-items:center;width:42px;height:42px;padding:0;border:1px solid rgba(255,255,255,.3);border-radius:11px;background:rgba(4,6,12,.9);color:#fff;font-size:25px;line-height:1;cursor:pointer}
-.gsl-video-close:focus-visible,.gsl-video-external:focus-visible{outline:2px solid #67e8f9;outline-offset:3px}
+.gsl-video-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;padding:11px 18px;min-width:0
+}
+.gsl-video-name{margin:0;color:#f8fafc;font-size:15px;font-weight:700;line-height:1.4;min-width:0}
+.gsl-video-markets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;flex:0 0 auto;width:min(340px,47%)}
+.gsl-video-market-link,
+.gsl-video-market-disabled{
+  min-width:0;min-height:42px;display:flex;align-items:center;justify-content:center;
+  gap:6px;padding:7px 10px;border-radius:11px;text-decoration:none;
+  line-height:1.25;text-align:center;font-size:13px;font-weight:750
+}
+.gsl-video-market-link{
+  border:1px solid rgba(103,232,249,.42);
+  background:linear-gradient(180deg,rgba(124,58,237,.26),rgba(6,182,212,.15));
+  color:#ecfeff
+}
+.gsl-video-market-link:hover{background:rgba(35,66,89,.9);color:#fff}
+.gsl-video-market-disabled{
+  flex-wrap:wrap;border:1px dashed rgba(148,163,184,.3);
+  background:rgba(148,163,184,.05);color:#aeb7c9;cursor:not-allowed
+}
+.gsl-video-market-title{white-space:nowrap}
+.gsl-video-market-badge{
+  display:inline-block;padding:3px 6px;border-radius:6px;
+  white-space:nowrap;font-size:10px;line-height:1.25;font-weight:750
+}
+.gsl-video-market-badge.review{color:#f4b56a;background:rgba(244,181,106,.13)}
+.gsl-video-market-badge.development{color:#adb7c9;background:rgba(148,163,184,.13)}
+.gsl-video-close{
+  position:absolute;right:10px;top:10px;z-index:2;
+  display:grid;place-items:center;width:42px;height:42px;padding:0;
+  border:1px solid rgba(255,255,255,.3);border-radius:11px;
+  background:rgba(4,6,12,.9);color:#fff;font-size:25px;line-height:1;cursor:pointer
+}
+.gsl-video-close:focus-visible,.gsl-video-market-link:focus-visible{
+  outline:2px solid #67e8f9;outline-offset:3px
+}
 @media(max-width:600px){
- .gsl-video-dialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
- .gsl-video-bar{gap:10px;padding:12px;flex-wrap:wrap}
- .gsl-video-name{font-size:13px}
- .gsl-video-external{font-size:12px}
+  .gsl-video-dialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+  .gsl-video-bar{padding:12px;gap:9px;flex-wrap:wrap}
+  .gsl-video-name{font-size:13px;flex:1 1 100%}
+  .gsl-video-markets{width:100%;gap:7px}
+  .gsl-video-market-link,.gsl-video-market-disabled{font-size:12px;padding:7px 5px}
 }
