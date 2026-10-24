@@ -76,7 +76,9 @@ h3 { font-size: 21px; line-height: 1.28; }
   .diagram-branch .diagram-node { min-width: 78px; }
 }
 @media(max-width:410px) {
-  .diagram-flow .diagram-node { font-size: 12px; padding: 8px 6px; min-height: 40px; }
+  .diagram-flow { flex-direction: column; gap: 6px; }
+  .diagram-flow .diagram-arrow { transform: rotate(90deg); }
+  .diagram-flow .diagram-node { width: min(100%, 180px); font-size: 13px; padding: 9px 12px; min-height: 40px; }
   .diagram-parallel { flex-direction: column; }
   .diagram-branches { display: flex; gap: 9px; }
   .diagram-branch .diagram-arrow { display: none; }
