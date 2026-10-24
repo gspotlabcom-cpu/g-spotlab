@@ -63,27 +63,55 @@ html.deck-mode .shell.depth-shell{
   scrollbar-color:rgba(103,232,249,.3) transparent;
   transform-origin:center center;
   transform:translate3d(0,calc(-50% + var(--deck-y)),0) scale(var(--deck-scale));
-  /* Glass belongs to the PANEL. Never blur the site's backdrop or panel
-     contents: only the pixels seen THROUGH the translucent surface. */
+  /* The stage itself has no visible rectangular fill or hard outline.
+     Frosted glass is painted behind its content on a feather-masked layer. */
   border:0;
-  background:linear-gradient(155deg,rgba(15,21,39,.70),rgba(8,13,28,.76));
-  -webkit-backdrop-filter:blur(16px) saturate(1.18);
-  backdrop-filter:blur(16px) saturate(1.18);
+  background:transparent;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  box-shadow:none;
   filter:none;
   pointer-events:none;
   will-change:transform;
   transition:box-shadow .38s ease;
 }
+.deck-enabled .deck-viewport .depth-stage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  border-radius:inherit;
+  /* 45% transparency: the panel's tinted glass is 55% opaque. */
+  background:linear-gradient(155deg,rgba(15,21,39,.55),rgba(8,13,28,.55));
+  -webkit-backdrop-filter:blur(16px) saturate(1.12);
+  backdrop-filter:blur(16px) saturate(1.12);
+}
+/* Fade top/bottom AND left/right edges of the GLASS and dimming layer,
+   but never fade the title, video thumbnails, descriptions, or controls. */
+.deck-enabled .deck-viewport .depth-stage::before,
+.deck-enabled .deck-viewport .depth-stage::after{
+  -webkit-mask-image:
+    linear-gradient(to bottom,transparent 0%,#000 7%,#000 93%,transparent 100%),
+    linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%);
+  mask-image:
+    linear-gradient(to bottom,transparent 0%,#000 7%,#000 93%,transparent 100%),
+    linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-composite:intersect;
+}
+.deck-enabled .deck-viewport .depth-stage>.section{
+  position:relative;
+  z-index:1;
+}
 .deck-enabled .deck-viewport .depth-stage.is-current{
   pointer-events:auto;
-  box-shadow:0 34px 95px rgba(0,0,0,.53),
-    0 0 75px rgba(124,58,237,.10),
-    inset 0 1px rgba(255,255,255,.045);
+  box-shadow:0 24px 82px rgba(0,0,0,.26);
 }
-/* A stronger fallback for browsers without frosted-glass support. */
+/* Without backdrop-filter, keep the tinted translucent feathered surface. */
 @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
-  .deck-enabled .deck-viewport .depth-stage{
-    background:linear-gradient(155deg,rgba(15,21,39,.85),rgba(8,13,28,.90));
+  .deck-enabled .deck-viewport .depth-stage::before{
+    background:linear-gradient(155deg,rgba(15,21,39,.55),rgba(8,13,28,.55));
   }
 }
 .depth-stage::after{
