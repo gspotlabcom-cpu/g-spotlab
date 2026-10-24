@@ -8,7 +8,7 @@
   if(!shell||!panels.length)return;
   const desktop=matchMedia('(min-width:1101px)');
   const motion=matchMedia('(prefers-reduced-motion:no-preference)');
-  const modes={depth:'Depth Flow — active sections move forward',stack:'Layered Stack — sections overlap',original:'Separated — motion disabled'};
+  const modes={depth:'Глубина — активный блок приближается, предыдущий темнеет',stack:'Стопка — следующая панель накрывает предыдущую',original:'Без эффекта — обычные отдельные секции'};
   let mode='depth',scheduled=false;
   const clamp=(v)=>Math.max(0,Math.min(1,v));
   panels.forEach((p,i)=>p.style.setProperty('--scene-layer',String(i+1)));
@@ -55,11 +55,18 @@
   }
   function choose(next){
     if(!modes[next])return;
+    const changed=mode!==next;
     mode=next;
     document.body.classList.remove('mode-depth','mode-stack','mode-original');
     document.body.classList.add('mode-'+next);
     buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scrollMode===next)));
     if(caption)caption.textContent=modes[next];
+    if(changed){
+      const previous=document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior='auto';
+      window.scrollTo(0,0);
+      document.documentElement.style.scrollBehavior=previous;
+    }
     measure();
   }
   buttons.forEach(b=>b.addEventListener('click',()=>choose(b.dataset.scrollMode)));
