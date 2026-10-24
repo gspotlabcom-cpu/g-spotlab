@@ -44,6 +44,8 @@
   perspective:1250px;
 }
 .deck-enabled .depth-stage{
+  /* Compress the natural gaps only in the deck experiment. */
+  margin-bottom:clamp(12px,1.8vh,20px);
   position:sticky;
   top:var(--deck-top);
   transform:translate3d(0,var(--deck-shift),0) scale(var(--deck-scale));
