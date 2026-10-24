@@ -14,14 +14,10 @@
   var viewport=null,enabled=false;
   var position=0,targetIndex=0,animationId=0;
   var wheelSum=0,wheelDirection=0,wheelLast=0,wheelGestureLocked=false;
+  var settleUntil=0;
   var touchStart=null,initialized=false;
 
   function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
-  function smooth(v){var t=clamp(v,0,1);return t*t*(3-2*t);}
-  function smoother(v){
-    var t=clamp(v,0,1);
-    return t*t*t*(t*(6*t-15)+10);
-  }
   function mix(a,b,t){return a+(b-a)*t;}
   function supported(){return !reduced.matches && !compact.matches;}
   function dialogOpen(){return !!document.querySelector('dialog[open]');}
@@ -82,13 +78,12 @@
     var base=Math.min(stages.length-2,Math.floor(position));
     var t=clamp(position-base,0,1);
 
-    // Distinct sequential phases, reversible with exactly the same route.
-    // First the lower card readies; then center parks above; then lower
-    // approaches center. There is no pass-through/crossing.
-    var ready=smooth(t/.40);
-    var retiring=smooth((t-.40)/.28);
-    var arriving=smooth((t-.68)/.32);
-    var front=t<.68?base:base+1;
+    // One uninterrupted, linear trajectory for each moving panel.
+    // The previous panel leaves for the upper pile, and the next one
+    // approaches from below. Neither passes through the center of the other.
+    var retiring=clamp(t/.52,0,1);
+    var arriving=clamp((t-.18)/.82,0,1);
+    var front=t<.56?base:base+1;
 
     stages.forEach(function(stage,i){
       var distance,y,scale,dim,blur,z;
@@ -111,17 +106,15 @@
         scale=mix(1,.73,retiring);
         dim=mix(0,.86,retiring);
         blur=mix(0,2.1,retiring);
-        z=t<.68?100:30+i;
+        z=t<.56?100:30+i;
       }else{
-        var readyY=mix(lower,lower*.62,ready);
-        var readyScale=mix(.73,.85,ready);
-        var readyDim=mix(.86,.48,ready);
-        var readyBlur=mix(2.1,1.15,ready);
-        y=mix(readyY,0,arriving);
-        scale=mix(readyScale,1,arriving);
-        dim=mix(readyDim,0,arriving);
-        blur=mix(readyBlur,0,arriving);
-        z=t<.68?55:100;
+        // No separate 'prepare' and 'activate' movements. Its position,
+        // clarity and size all move continuously along the same path.
+        y=mix(lower,0,arriving);
+        scale=mix(.73,1,arriving);
+        dim=mix(.86,0,arriving);
+        blur=mix(2.1,0,arriving);
+        z=t<.56?55:100;
       }
       pose(stage,y,scale,dim,blur,z,i===front);
     });
@@ -135,19 +128,24 @@
     targetIndex=to;
     var from=position;
     var started=performance.now();
-    // A calm, nearly one-second handoff, with zero velocity at both ends.
-    var duration=1050*Math.max(.66,Math.min(1.6,Math.abs(to-from)));
+    // Linear clock speed, without accelerating/decelerating at the front
+    // layer change. A separate dwell interval prevents rapid wheel skips.
+    var duration=1000*Math.max(.75,Math.min(1.7,Math.abs(to-from)));
     function frame(now){
       var t=clamp((now-started)/duration,0,1);
-      position=mix(from,to,smoother(t));
+      position=mix(from,to,t);
       render();
       if(t<1)animationId=requestAnimationFrame(frame);
-      else{position=to;animationId=0;render();}
+      else{
+        position=to;animationId=0;render();
+        settleUntil=performance.now()+650;
+      }
     }
     animationId=requestAnimationFrame(frame);
   }
 
   function navigateBy(direction){
+    if(animationId || performance.now()<settleUntil)return;
     var next=clamp(targetIndex+direction,0,stages.length-1);
     if(next!==targetIndex)navigateTo(next);
   }
@@ -176,10 +174,16 @@
     event.preventDefault();
     var now=performance.now();
     var direction=Math.sign(delta);
-    if(now-wheelLast>280 || direction!==wheelDirection){
+    if(now-wheelLast>420){
       wheelSum=0;wheelGestureLocked=false;
     }
+    if(direction!==wheelDirection)wheelSum=0;
     wheelLast=now;wheelDirection=direction;
+    // Ignore wheel inertia through the motion and centered-card dwell.
+    if(animationId || now<settleUntil){
+      wheelGestureLocked=true;
+      return;
+    }
     if(wheelGestureLocked)return;
     wheelSum+=delta;
     if(Math.abs(wheelSum)>=45){
