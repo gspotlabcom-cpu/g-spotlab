@@ -29,7 +29,7 @@ h3 { font-size: 21px; line-height: 1.28; }
 .footer { line-height: 1.6; }
 .panel h2 { font-size: clamp(27px, 3vw, 37px); }
 /* Studio cards share the same h2 typography and paragraph scale. */
-.principles-list { gap: 4px; margin-top: 20px; }
+.principles-list { gap: 2px; margin-top: 20px; }
 .principles-list .choice-item { grid-template-columns: 24px minmax(0,1fr); align-items: start; }
 .principles-list .choice-item p { margin: 0; color: var(--muted); font-size: var(--gsl-text-size); line-height: 1.45; }
 .principles-list .principle-mark { color: var(--mint, #5eead4); font-size: 19px; }
