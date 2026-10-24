@@ -1,0 +1,29 @@
+/* Shared YouTube lightbox for product video previews. */
+.gsl-video-dialog{
+  width:min(1040px,calc(100vw - 28px));
+  max-width:1040px;
+  max-height:calc(100dvh - 28px);
+  padding:0;
+  margin:auto;
+  overflow:visible;
+  border:1px solid rgba(103,232,249,.27);
+  border-radius:19px;
+  background:#111722;
+  color:#f8fafc;
+  box-shadow:0 35px 110px rgba(0,0,0,.78)
+}
+.gsl-video-dialog::backdrop{background:rgba(1,4,12,.89);backdrop-filter:blur(7px)}
+.gsl-video-shell{position:relative;overflow:hidden;border-radius:18px}
+.gsl-video-frame{aspect-ratio:16/9;background:#05080e}
+.gsl-video-frame iframe{display:block;width:100%;height:100%;border:0}
+.gsl-video-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 18px}
+.gsl-video-name{margin:0;color:#f8fafc;font-size:15px;font-weight:700;line-height:1.4}
+.gsl-video-external{color:#67e8f9;font-size:13px;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.gsl-video-close{position:absolute;right:10px;top:10px;z-index:2;display:grid;place-items:center;width:42px;height:42px;padding:0;border:1px solid rgba(255,255,255,.3);border-radius:11px;background:rgba(4,6,12,.9);color:#fff;font-size:25px;line-height:1;cursor:pointer}
+.gsl-video-close:focus-visible,.gsl-video-external:focus-visible{outline:2px solid #67e8f9;outline-offset:3px}
+@media(max-width:600px){
+ .gsl-video-dialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+ .gsl-video-bar{gap:10px;padding:12px;flex-wrap:wrap}
+ .gsl-video-name{font-size:13px}
+ .gsl-video-external{font-size:12px}
+}
