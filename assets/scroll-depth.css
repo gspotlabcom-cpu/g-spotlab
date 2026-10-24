@@ -1,0 +1,96 @@
+/* G-Spot Lab scroll-depth study, v1.
+   Independent panel surfaces replace the single continuous homepage frame.
+   The scroll script only writes scale, lift and shade: content remains in
+   normal document flow, fully clickable and accessible. */
+.shell.depth-shell{
+  display:grid;
+  gap:clamp(18px,2.6vw,32px);
+  overflow:visible;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  perspective:1400px;
+}
+.depth-stage{
+  --depth-scale:1;
+  --depth-offset:0px;
+  --depth-dim:0;
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(196,181,253,.19);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 85% 0%,rgba(75,47,136,.065),transparent 48%),
+    linear-gradient(155deg,rgba(18,26,47,.94),rgba(8,13,29,.96));
+  box-shadow:0 24px 76px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.055);
+  transform-origin:50% 50%;
+  transform:translate3d(0,var(--depth-offset),0) scale(var(--depth-scale));
+  transition:border-color .26s ease,box-shadow .26s ease;
+}
+.depth-stage::after{
+  content:"";
+  position:absolute;
+  z-index:3;
+  inset:0;
+  background:#020611;
+  opacity:var(--depth-dim);
+  pointer-events:none;
+}
+.depth-stage.is-current{
+  border-color:rgba(196,181,253,.3);
+  box-shadow:0 30px 95px rgba(0,0,0,.48),0 0 66px rgba(124,58,237,.075),inset 0 1px rgba(255,255,255,.065);
+}
+.depth-stage>.section{
+  border-top:0;
+  background:transparent;
+}
+.depth-stage>.section:nth-of-type(odd){
+  background:transparent;
+}
+.depth-stage>.section+.section{
+  border-top:1px solid rgba(196,181,253,.13);
+}
+.depth-stage--hero{
+  background:linear-gradient(145deg,rgba(11,15,31,.97),rgba(5,10,23,.93));
+}
+.depth-stage--hero>.hero{background:
+  radial-gradient(circle at 16% 18%,rgba(124,58,237,.19),transparent 32%),
+  radial-gradient(circle at 86% 18%,rgba(8,145,178,.12),transparent 32%),
+  transparent;
+}
+.depth-stage--toolkits{
+  background:linear-gradient(140deg,rgba(16,23,43,.98),rgba(9,16,33,.95));
+}
+.depth-stage--process{
+  background:linear-gradient(150deg,rgba(14,18,37,.98),rgba(7,14,28,.96));
+}
+.depth-stage--packs{
+  background:linear-gradient(150deg,rgba(13,20,37,.98),rgba(8,14,28,.97));
+}
+.depth-stage--platforms{
+  background:linear-gradient(150deg,rgba(13,19,35,.98),rgba(9,14,29,.96));
+}
+.depth-stage--support{
+  background:linear-gradient(150deg,rgba(15,20,37,.98),rgba(7,12,27,.97));
+}
+/* Keep anchor scrolling comfortable when the navigation targets a section
+   inside a multi-section depth panel. */
+.depth-stage [id="toolkits"],
+.depth-stage [id="packs"],
+.depth-stage [id="engines"],
+.depth-stage [id="studio"],
+.depth-stage [id="support"]{scroll-margin-top:20px}
+@media(max-width:760px){
+  .shell.depth-shell{gap:16px;perspective:none}
+  .depth-stage{border-radius:20px}
+  .depth-stage>.section+.section{border-top-color:rgba(196,181,253,.10)}
+}
+@media(prefers-reduced-motion:reduce){
+  .depth-stage{transform:none!important;transition:none}
+  .depth-stage::after{opacity:0!important}
+  html{scroll-behavior:auto}
+}
