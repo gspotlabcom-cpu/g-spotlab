@@ -58,14 +58,20 @@
 
     var h=window.innerHeight||800;
     var pin=parseFloat(getComputedStyle(shell).getPropertyValue('--deck-top'))||25;
-    // The handoff begins while the incoming card is near the lower
-    // viewport and finishes when it reaches the sticky front plane.
-    var approach=h*.88;
-    var travel=Math.max(160,approach-pin);
+    // Keep the handoff short enough that EVERY panel spends time fully
+    // sharp between arriving and the following card beginning to depart.
+    // The next panel starts surfacing at 84% of the viewport and finishes
+    // at 59%. Previous versions used the entire viewport, so consecutive
+    // transitions overlapped and intermediate cards never reached weight 1.
+    var approach=h*.84;
+    var finish=h*.59;
+    var travel=Math.max(120,approach-finish);
+    var tops=anchors.map(function(anchor){
+      return anchor.getBoundingClientRect().top;
+    });
     var progress=[];
     for(var i=1;i<stages.length;i++){
-      var nextTop=anchors[i].getBoundingClientRect().top;
-      progress.push(ease((approach-nextTop)/travel));
+      progress.push(ease((approach-tops[i])/travel));
     }
 
     var visible=[];
@@ -85,13 +91,23 @@
 
     stages.forEach(function(stage,index){
       var weight=visible[index];
-      var arriving=index===0?0:1-progress[index-1];
-      var departing=index===stages.length-1?0:progress[index];
+      var shift=0;
+      if(index>0 && tops[index]>pin){
+        // Pre-position the upcoming card JUST behind the active screen,
+        // instead of letting it wait a whole viewport down the page.
+        // The pull begins while still offscreen and smoothly reaches the
+        // focal plane; both pull and handoff use untransformed markers.
+        var pull=ease((h*1.54-tops[index])/(h*.60));
+        var entered=progress[index-1];
+        var targetTop=pin+55*(1-entered);
+        shift=(targetTop-tops[index])*pull;
+      }
       stage.style.setProperty('--deck-scale',(0.72+weight*.28).toFixed(4));
-      stage.style.setProperty('--deck-shift',(arriving*18-departing*22).toFixed(1)+'px');
+      stage.style.setProperty('--deck-shift',shift.toFixed(1)+'px');
       stage.style.setProperty('--deck-dim',(.88*(1-weight)).toFixed(3));
       stage.style.setProperty('--deck-blur',(2*(1-weight)).toFixed(2)+'px');
-      // The card in focus is always in front. Others retain doc order.
+      // Only one card receives foreground priority. Once its entry
+      // transition finishes it remains at 100% sharp until the next starts.
       stage.style.zIndex=String(index===active?100:10+index);
       stage.classList.toggle('is-current',index===active);
     });
