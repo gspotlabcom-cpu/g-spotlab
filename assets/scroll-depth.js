@@ -22,8 +22,10 @@
       return;
     }
     var height=window.innerHeight||800;
-    var focal=height*.48;
-    var reach=Math.max(250,height*.66);
+    var focal=height*.50;
+    // Depth now changes over a shorter scroll distance, so the handoff
+    // between panels is noticeable instead of reading as a static page.
+    var reach=Math.max(260,height*.48);
     var small=narrow.matches;
     // Read all geometries first, then apply styles to avoid interleaved layout.
     var boxes=stages.map(function(stage){return stage.getBoundingClientRect();});
@@ -31,13 +33,14 @@
       var distance=0;
       if(rect.top>focal) distance=rect.top-focal;
       else if(rect.bottom<focal) distance=focal-rect.bottom;
-      var away=Math.min(1,Math.max(0,distance/reach));
-      // The currently viewed panel is full-size; passed and upcoming panels
-      // gently recede. Mobile devices use less movement and dimming.
-      stages[i].style.setProperty('--depth-scale',(1-away*(small?.018:.043)).toFixed(4));
-      stages[i].style.setProperty('--depth-offset',Math.round(away*(small?6:16))+'px');
-      stages[i].style.setProperty('--depth-dim',(away*(small?.11:.23)).toFixed(3));
-      stages[i].classList.toggle('is-current',away<.06);
+      // Ease into the depth effect earlier, while keeping the active panel
+      // crisp and full-size when the viewport focus is inside it.
+      var away=Math.sqrt(Math.min(1,Math.max(0,distance/reach)));
+      var direction=rect.bottom<focal?-1:1;
+      stages[i].style.setProperty('--depth-scale',(1-away*(small?.055:.15)).toFixed(4));
+      stages[i].style.setProperty('--depth-offset',Math.round(direction*away*(small?12:38))+'px');
+      stages[i].style.setProperty('--depth-dim',(away*(small?.23:.54)).toFixed(3));
+      stages[i].classList.toggle('is-current',away<.12);
     });
   }
   function requestRender(){
