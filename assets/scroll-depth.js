@@ -62,9 +62,9 @@
       if(i===stages.length-1 && remaining<=2)away=0;
       // Moving away pulls previous panels toward the next, not apart.
       var direction=pos.bottom<focal?1:-1;
-      stages[i].style.setProperty('--depth-scale',(1-away*(small?.055:.15)).toFixed(4));
+      stages[i].style.setProperty('--depth-scale',(1-away*(small?.055:.30)).toFixed(4));
       stages[i].style.setProperty('--depth-offset',Math.round(direction*away*(small?12:38))+'px');
-      stages[i].style.setProperty('--depth-dim',(away*(small?.23:.54)).toFixed(3));
+      stages[i].style.setProperty('--depth-dim',(away*(small?.23:.75)).toFixed(3));
       // The focused panel must always paint above both neighboring panels.
       // Non-focused panels retain document-order layering behind it.
       stages[i].style.zIndex=String(i===active?stages.length+10:i+1);
