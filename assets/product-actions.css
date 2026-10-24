@@ -1,0 +1,34 @@
+/* Shared direct marketplace actions for Toolkit cards and catalog. */
+.store-options {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-top:auto;
+  padding-top:16px;
+}
+.store-option{display:flex;flex-direction:column;gap:6px;min-width:0}
+.store-option .btn{display:flex;align-items:center;justify-content:center;min-height:38px;width:100%;padding:8px 7px;text-align:center;line-height:1.3;white-space:nowrap}
+.store-option .store-disabled,.store-option .store-disabled:hover{
+  border:1px dashed rgba(148,163,184,.29);
+  border-radius:11px;
+  background:rgba(148,163,184,.055);
+  color:#8c97ae;
+  box-shadow:none;
+  cursor:not-allowed;
+  transform:none;
+}
+.store-note{display:block;text-align:center;font-size:12px;line-height:1.35;color:#9ca3af}
+.store-note.review{color:#f4b56a}
+.store-note.development{color:#acb5c8}
+#toolkits .card-body{padding-bottom:18px}
+#toolkits .toolkit .store-options{width:100%}
+#toolkits .toolkit .store-options .btn{align-self:auto;margin-top:0;font-size:13px}
+#toolkits .toolkit .planned{display:none}
+#packs .asset-copy p{font-size:14px;line-height:1.58}
+#packs .asset-copy{padding-top:17px;padding-bottom:10px}
+#packs .asset-copy .tags{padding-top:3px}
+@media(max-width:500px){
+ .store-options{gap:7px}
+ .store-option .btn{font-size:12px;padding:8px 5px}
+ .store-note{font-size:11px}
+}
