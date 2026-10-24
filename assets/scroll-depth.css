@@ -1,10 +1,11 @@
-/* G-Spot Lab scroll-depth study, v3 — overlapping layers.
+/* G-Spot Lab scroll-depth study, v4 — softer layered transitions.
    Independent panel surfaces replace the single continuous homepage frame.
    The scroll script only writes scale, lift and shade: content remains in
    normal document flow, fully clickable and accessible. */
 .shell.depth-shell{
   display:grid;
-  gap:0;
+  gap:clamp(32px,4vw,56px);
+  margin-bottom:clamp(85px,8vw,130px);
   overflow:visible;
   border:0;
   border-radius:0;
@@ -14,14 +15,11 @@
   backdrop-filter:none;
   perspective:1400px;
 }
-.depth-stage+.depth-stage{
-  /* Negative overlap uses the panels' existing inner padding as a safe edge. */
-  margin-top:clamp(-104px,-6.5vw,-54px);
-}
 .depth-stage{
   --depth-scale:1;
   --depth-offset:0px;
   --depth-dim:0;
+  --depth-blur:0px;
   position:relative;
   min-width:0;
   overflow:hidden;
@@ -33,7 +31,8 @@
   box-shadow:0 24px 76px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.055);
   transform-origin:50% 50%;
   transform:translate3d(0,var(--depth-offset),0) scale(var(--depth-scale));
-  transition:border-color .26s ease,box-shadow .26s ease;
+  filter:blur(var(--depth-blur));
+  transition:border-color .48s ease,box-shadow .48s ease;
 }
 .depth-stage::after{
   content:"";
@@ -93,13 +92,12 @@
 .depth-stage [id="studio"],
 .depth-stage [id="support"]{scroll-margin-top:20px}
 @media(max-width:760px){
-  .shell.depth-shell{gap:0;perspective:none}
-  .depth-stage+.depth-stage{margin-top:-22px}
+  .shell.depth-shell{gap:22px;margin-bottom:68px;perspective:none}
   .depth-stage{border-radius:20px}
   .depth-stage>.section+.section{border-top-color:rgba(196,181,253,.10)}
 }
 @media(prefers-reduced-motion:reduce){
-  .depth-stage{transform:none!important;transition:none}
+  .depth-stage{transform:none!important;filter:none!important;transition:none}
   .depth-stage::after{opacity:0!important}
   html{scroll-behavior:auto}
 }
