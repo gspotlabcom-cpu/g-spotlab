@@ -130,7 +130,7 @@
     var started=performance.now();
     // Linear clock speed, without accelerating/decelerating at the front
     // layer change. A separate dwell interval prevents rapid wheel skips.
-    var duration=1000*Math.max(.75,Math.min(1.7,Math.abs(to-from)));
+    var duration=650*Math.max(.75,Math.min(1.7,Math.abs(to-from)));
     function frame(now){
       var t=clamp((now-started)/duration,0,1);
       position=mix(from,to,t);
