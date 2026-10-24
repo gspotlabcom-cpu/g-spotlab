@@ -39,6 +39,7 @@
       stage.style.removeProperty('--deck-dim');
       stage.style.removeProperty('--deck-blur');
       stage.style.removeProperty('--deck-opacity');
+      stage.style.removeProperty('--deck-glass-opacity');
       stage.style.zIndex='';
       stage.classList.remove('is-current');
       stage.inert=false;
@@ -66,6 +67,10 @@
     stage.style.setProperty('--deck-dim',dim.toFixed(3));
     stage.style.setProperty('--deck-blur',blur.toFixed(2)+'px');
     stage.style.setProperty('--deck-opacity',opacity.toFixed(3));
+    // The central screen builds a stronger glass tint continuously as it
+    // moves into focus. Pile cards keep their existing translucent glass.
+    var focus=clamp((opacity-.72)/.28,0,1);
+    stage.style.setProperty('--deck-glass-opacity',(.50+.40*focus).toFixed(3));
     stage.style.zIndex=String(z);
     stage.classList.toggle('is-current',focused);
     stage.inert=!focused;
