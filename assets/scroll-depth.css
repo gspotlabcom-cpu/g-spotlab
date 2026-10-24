@@ -41,8 +41,13 @@
   pointer-events:none;
 }
 .depth-stage.is-current{
-  border-color:rgba(196,181,253,.3);
-  box-shadow:0 30px 95px rgba(0,0,0,.48),0 0 66px rgba(124,58,237,.075),inset 0 1px rgba(255,255,255,.065);
+  z-index:1;
+  border-color:rgba(196,181,253,.48);
+  box-shadow:
+    0 42px 115px rgba(0,0,0,.65),
+    0 0 0 1px rgba(167,139,250,.12),
+    0 0 85px rgba(124,58,237,.16),
+    inset 0 1px rgba(255,255,255,.075);
 }
 .depth-stage>.section{
   border-top:0;
