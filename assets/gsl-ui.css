@@ -28,9 +28,10 @@ h3 { font-size: 21px; line-height: 1.28; }
 .card-body .planned span, .toolkit .planned span { font-size: 12px; line-height: 1.45; }
 .footer { line-height: 1.6; }
 .panel h2 { font-size: clamp(27px, 3vw, 37px); }
-.principles-title { font-size: 23px; margin: 0; line-height: 1.28; letter-spacing: -.025em; }
+/* Studio cards share the same h2 typography and paragraph scale. */
 .principles-list { gap: 15px; margin-top: 20px; }
-.principles-list .choice-item { grid-template-columns: 24px minmax(0,1fr); font-size: 16px; align-items: start; }
+.principles-list .choice-item { grid-template-columns: 24px minmax(0,1fr); align-items: start; }
+.principles-list .choice-item p { margin: 0; color: var(--muted); font-size: var(--gsl-text-size); line-height: var(--gsl-text-leading); }
 .principles-list .principle-mark { color: var(--mint, #5eead4); font-size: 19px; }
 .composition { grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: clamp(25px, 4vw, 60px); }
 .composition-copy p { max-width: 570px; }
