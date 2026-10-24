@@ -1,57 +1,72 @@
-/* G-Spot Lab: two-pile deck experiment.
-   The public homepage remains normal document flow. Deck CSS only activates
-   for ?deck=1 on a sufficiently large desktop viewport. */
+/* G-Spot Lab — viewport deck experiment (?deck=1).
+   Header + centered scene + footer fit in the browser viewport.
+   Desktop wheel/keyboard/touch navigate cards; page itself never scrolls.
+   The public site and unsupported screens retain normal page flow. */
 .shell.depth-shell{
-  display:block;
-  overflow:visible;
-  border:0;
-  border-radius:0;
-  background:transparent;
-  box-shadow:none;
-  -webkit-backdrop-filter:none;
-  backdrop-filter:none;
+  display:block;overflow:visible;border:0;border-radius:0;
+  background:transparent;box-shadow:none;
+  -webkit-backdrop-filter:none;backdrop-filter:none;
   margin-bottom:clamp(80px,10vh,135px);
 }
 .depth-stage{
-  --deck-y:0px;
-  --deck-scale:1;
-  --deck-dim:0;
-  --deck-blur:0px;
-  position:relative;
-  min-width:0;
-  overflow:hidden;
-  border:1px solid rgba(196,181,253,.22);
-  border-radius:28px;
+  --deck-y:0px;--deck-scale:1;--deck-dim:0;--deck-blur:0px;
+  position:relative;min-width:0;overflow:hidden;
+  border:1px solid rgba(196,181,253,.22);border-radius:28px;
   background:linear-gradient(155deg,rgba(17,24,44,.97),rgba(7,12,27,.97));
   box-shadow:0 26px 86px rgba(0,0,0,.44),inset 0 1px rgba(255,255,255,.055);
   margin-bottom:clamp(32px,6vh,64px);
 }
 .shell.depth-shell>.depth-stage:last-child{margin-bottom:0}
-/* The track supplies scroll distance, but the visual viewport remains fixed
-   in one place. Every card is drawn into exactly one of three positions:
-   upper pile, front center, or lower pile. */
-.deck-enabled .deck-track{position:relative;width:100%}
-.deck-enabled .deck-viewport{
-  position:sticky;
-  top:0;
-  width:100%;
-  height:100vh;
-  height:100dvh;
+/* The viewport lock belongs to the experimental mode ONLY. */
+html.deck-mode,html.deck-mode body{
+  width:100%;height:100%;overflow:hidden;overscroll-behavior:none;
+}
+html.deck-mode body{min-height:0}
+html.deck-mode .page{
+  width:min(1480px,calc(100% - 28px));
+  height:100vh;height:100dvh;max-height:100dvh;
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  gap:clamp(5px,1vh,12px);
+  margin:0 auto;padding:clamp(5px,1vh,11px) 0;
   overflow:hidden;
-  isolation:isolate;
+}
+html.deck-mode .page>.header{
+  position:relative;z-index:200;
+  flex:0 0 auto;min-height:0;
+  padding:0 4px;
+}
+html.deck-mode .page>.header .brand img{height:clamp(45px,7vh,64px)}
+html.deck-mode .page>.footer{
+  position:relative;z-index:200;
+  min-height:0;padding:0 5px;
+  margin:0;
+}
+html.deck-mode .shell.depth-shell{
+  display:block;
+  width:100%;height:100%;min-height:0;
+  margin:0;padding:0;overflow:hidden;
+}
+.deck-enabled .deck-viewport{
+  position:relative;
+  width:100%;height:100%;
+  min-height:0;
+  isolation:isolate;overflow:hidden;
 }
 .deck-enabled .deck-viewport .depth-stage{
   position:absolute;
-  top:50%;
-  left:0;
-  width:100%;
+  top:50%;left:0;width:100%;
+  max-height:calc(100% - 10px);
   margin:0;
+  overflow-x:hidden;overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(103,232,249,.3) transparent;
   transform-origin:center center;
   transform:translate3d(0,calc(-50% + var(--deck-y)),0) scale(var(--deck-scale));
   filter:blur(var(--deck-blur));
   pointer-events:none;
   will-change:transform;
-  transition:box-shadow .24s ease,border-color .24s ease;
+  transition:box-shadow .38s ease,border-color .38s ease;
 }
 .deck-enabled .deck-viewport .depth-stage.is-current{
   pointer-events:auto;
@@ -62,17 +77,24 @@
     inset 0 1px rgba(255,255,255,.06);
 }
 .depth-stage::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:3;
-  background:#02040d;
-  opacity:0;
-  pointer-events:none;
+  content:"";position:absolute;inset:0;z-index:3;
+  background:#02040d;opacity:0;pointer-events:none;
 }
 .deck-enabled .depth-stage::after{opacity:var(--deck-dim)}
 .depth-stage>.section{border-top:0;background:transparent}
 .depth-stage>.section:nth-of-type(odd){background:transparent}
+.deck-enabled .depth-stage>.section{
+  padding:clamp(16px,3vh,37px) clamp(18px,4vw,58px);
+}
+/* Hero no longer forces 700 px of height on a 750 px desktop display. */
+.deck-enabled .depth-stage--hero>.hero{
+  min-height:0;
+  padding:clamp(16px,3.5vh,40px) clamp(18px,4vw,60px);
+  gap:clamp(15px,3vw,45px);
+}
+.deck-enabled .depth-stage--hero h1{font-size:clamp(41px,6vw,82px)}
+.deck-enabled .depth-stage--hero .system-card{padding:clamp(12px,2vh,22px)}
+.deck-enabled .depth-stage .section-head{margin-bottom:clamp(13px,2.5vh,25px)}
 .depth-stage--hero{background:linear-gradient(145deg,rgba(11,15,31,.98),rgba(5,10,23,.96))}
 .depth-stage--hero>.hero{
   background:radial-gradient(circle at 16% 18%,rgba(124,58,237,.20),transparent 32%),
@@ -85,7 +107,7 @@
 .depth-stage--engines{background:linear-gradient(155deg,rgba(14,20,37,.99),rgba(9,14,29,.97))}
 .depth-stage--studio{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
 .depth-stage--support{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
-@media(max-width:900px),(max-height:700px){
+@media(max-width:900px),(max-height:650px){
   .shell.depth-shell{margin-bottom:68px}
   .depth-stage{border-radius:21px;margin-bottom:18px}
 }
