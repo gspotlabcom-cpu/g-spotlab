@@ -198,6 +198,29 @@ html.deck-mode #packs .card.asset-card:focus-within{
   border-color:rgba(255,167,92,.19);
 }
 
+/* Borderless controls in the experimental deck. Retain the original
+   border width for stable button geometry, but make the stroke invisible.
+   Hover transforms/animations and the existing button glow remain active. */
+html.deck-mode .nav a,
+html.deck-mode .deck-enabled .depth-stage .btn,
+html.deck-mode .deck-enabled .depth-stage .store-disabled,
+html.deck-mode .deck-enabled .depth-stage .video-play{
+  border-color:transparent;
+}
+/* Visible, diffuse keyboard focus without recreating a hard outline. */
+html.deck-mode .nav a:focus-visible,
+html.deck-mode .deck-enabled .depth-stage .btn:focus-visible{
+  outline:none;
+  box-shadow:0 13px 38px rgba(124,58,237,.26),
+             0 0 24px rgba(103,232,249,.18);
+}
+html.deck-mode .nav a:hover{
+  box-shadow:0 10px 28px rgba(103,232,249,.11);
+}
+html.deck-mode .deck-enabled .depth-stage .toolkit-video:focus-visible .video-play{
+  box-shadow:0 0 24px rgba(103,232,249,.32);
+}
+
 @media(max-width:900px),(max-height:650px){
   .shell.depth-shell{margin-bottom:68px}
   .depth-stage{border-radius:21px;margin-bottom:18px}
