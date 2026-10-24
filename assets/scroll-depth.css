@@ -1,9 +1,7 @@
-/* G-Spot Lab / Optional deck scroll prototype (v6).
-   In supported desktop viewports, each section sticks to the same focal
-   position and passes behind the next, like cards occupying one plane.
-   Mobile, short viewports and reduced-motion settings use normal flow. */
+/* G-Spot Lab: two-pile deck experiment.
+   The public homepage remains normal document flow. Deck CSS only activates
+   for ?deck=1 on a sufficiently large desktop viewport. */
 .shell.depth-shell{
-  --deck-top:clamp(16px,2.7vh,30px);
   display:block;
   overflow:visible;
   border:0;
@@ -12,45 +10,56 @@
   box-shadow:none;
   -webkit-backdrop-filter:none;
   backdrop-filter:none;
-  margin-bottom:clamp(75px,9vh,125px);
-}
-.deck-anchor{
-  display:block;
-  height:0;
-  overflow:hidden;
-  visibility:hidden;
-  pointer-events:none;
+  margin-bottom:clamp(80px,10vh,135px);
 }
 .depth-stage{
+  --deck-y:0px;
   --deck-scale:1;
-  --deck-shift:0px;
   --deck-dim:0;
   --deck-blur:0px;
   position:relative;
-  isolation:isolate;
   min-width:0;
   overflow:hidden;
   border:1px solid rgba(196,181,253,.22);
   border-radius:28px;
   background:linear-gradient(155deg,rgba(17,24,44,.97),rgba(7,12,27,.97));
   box-shadow:0 26px 86px rgba(0,0,0,.44),inset 0 1px rgba(255,255,255,.055);
-  transform-origin:50% 12%;
   margin-bottom:clamp(32px,6vh,64px);
-  transition:border-color .36s ease,box-shadow .36s ease;
 }
-.shell.depth-shell .depth-stage:last-child{margin-bottom:0}
-.deck-enabled.shell.depth-shell{
-  padding-bottom:clamp(100px,20vh,210px);
-  perspective:1250px;
-}
-.deck-enabled .depth-stage{
-  /* Compress the natural gaps only in the deck experiment. */
-  margin-bottom:clamp(12px,1.8vh,20px);
+.shell.depth-shell>.depth-stage:last-child{margin-bottom:0}
+/* The track supplies scroll distance, but the visual viewport remains fixed
+   in one place. Every card is drawn into exactly one of three positions:
+   upper pile, front center, or lower pile. */
+.deck-enabled .deck-track{position:relative;width:100%}
+.deck-enabled .deck-viewport{
   position:sticky;
-  top:var(--deck-top);
-  transform:translate3d(0,var(--deck-shift),0) scale(var(--deck-scale));
+  top:0;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  overflow:hidden;
+  isolation:isolate;
+}
+.deck-enabled .deck-viewport .depth-stage{
+  position:absolute;
+  top:50%;
+  left:0;
+  width:100%;
+  margin:0;
+  transform-origin:center center;
+  transform:translate3d(0,calc(-50% + var(--deck-y)),0) scale(var(--deck-scale));
   filter:blur(var(--deck-blur));
+  pointer-events:none;
   will-change:transform;
+  transition:box-shadow .24s ease,border-color .24s ease;
+}
+.deck-enabled .deck-viewport .depth-stage.is-current{
+  pointer-events:auto;
+  border-color:rgba(196,181,253,.48);
+  box-shadow:0 34px 95px rgba(0,0,0,.65),
+    0 0 0 1px rgba(167,139,250,.10),
+    0 0 75px rgba(124,58,237,.13),
+    inset 0 1px rgba(255,255,255,.06);
 }
 .depth-stage::after{
   content:"";
@@ -62,20 +71,12 @@
   pointer-events:none;
 }
 .deck-enabled .depth-stage::after{opacity:var(--deck-dim)}
-.deck-enabled .depth-stage.is-current{
-  border-color:rgba(196,181,253,.48);
-  box-shadow:
-    0 40px 105px rgba(0,0,0,.62),
-    0 0 0 1px rgba(167,139,250,.10),
-    0 0 80px rgba(124,58,237,.12),
-    inset 0 1px rgba(255,255,255,.065);
-}
 .depth-stage>.section{border-top:0;background:transparent}
 .depth-stage>.section:nth-of-type(odd){background:transparent}
 .depth-stage--hero{background:linear-gradient(145deg,rgba(11,15,31,.98),rgba(5,10,23,.96))}
 .depth-stage--hero>.hero{
   background:radial-gradient(circle at 16% 18%,rgba(124,58,237,.20),transparent 32%),
-    radial-gradient(circle at 86% 18%,rgba(8,145,178,.13),transparent 32%),transparent
+  radial-gradient(circle at 86% 18%,rgba(8,145,178,.13),transparent 32%),transparent
 }
 .depth-stage--toolkits{background:linear-gradient(140deg,rgba(16,23,43,.99),rgba(9,16,33,.97))}
 .depth-stage--workflow{background:linear-gradient(145deg,rgba(16,20,39,.99),rgba(8,14,29,.97))}
@@ -84,11 +85,6 @@
 .depth-stage--engines{background:linear-gradient(155deg,rgba(14,20,37,.99),rgba(9,14,29,.97))}
 .depth-stage--studio{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
 .depth-stage--support{background:linear-gradient(150deg,rgba(15,20,37,.99),rgba(7,12,27,.98))}
-.depth-stage [id="toolkits"],
-.depth-stage [id="packs"],
-.depth-stage [id="engines"],
-.depth-stage [id="studio"],
-.depth-stage [id="support"]{scroll-margin-top:clamp(24px,4vh,46px)}
 @media(max-width:900px),(max-height:700px){
   .shell.depth-shell{margin-bottom:68px}
   .depth-stage{border-radius:21px;margin-bottom:18px}
