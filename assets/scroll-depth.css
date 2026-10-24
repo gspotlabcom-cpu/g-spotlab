@@ -63,8 +63,7 @@ html.deck-mode .shell.depth-shell{
   scrollbar-color:rgba(103,232,249,.3) transparent;
   transform-origin:center center;
   transform:translate3d(0,calc(-50% + var(--deck-y)),0) scale(var(--deck-scale));
-  /* The stage itself has no visible rectangular fill or hard outline.
-     Frosted glass is painted behind its content on a feather-masked layer. */
+  /* Borderless glass with clean, rounded edges and translucent fill. */
   border:0;
   background:transparent;
   -webkit-backdrop-filter:none;
@@ -82,23 +81,10 @@ html.deck-mode .shell.depth-shell{
   z-index:0;
   pointer-events:none;
   border-radius:inherit;
-  /* 45% transparency: the panel's tinted glass is 55% opaque. */
-  background:linear-gradient(155deg,rgba(15,21,39,.55),rgba(8,13,28,.55));
+  /* 50% transparency: tinted plexiglass is exactly 50% opaque. */
+  background:linear-gradient(155deg,rgba(15,21,39,.50),rgba(8,13,28,.50));
   -webkit-backdrop-filter:blur(16px) saturate(1.12);
   backdrop-filter:blur(16px) saturate(1.12);
-}
-/* Fade top/bottom AND left/right edges of the GLASS and dimming layer,
-   but never fade the title, video thumbnails, descriptions, or controls. */
-.deck-enabled .deck-viewport .depth-stage::before,
-.deck-enabled .deck-viewport .depth-stage::after{
-  -webkit-mask-image:
-    linear-gradient(to bottom,transparent 0%,#000 7%,#000 93%,transparent 100%),
-    linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%);
-  mask-image:
-    linear-gradient(to bottom,transparent 0%,#000 7%,#000 93%,transparent 100%),
-    linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%);
-  -webkit-mask-composite:source-in;
-  mask-composite:intersect;
 }
 .deck-enabled .deck-viewport .depth-stage>.section{
   position:relative;
@@ -108,10 +94,10 @@ html.deck-mode .shell.depth-shell{
   pointer-events:auto;
   box-shadow:0 24px 82px rgba(0,0,0,.26);
 }
-/* Without backdrop-filter, keep the tinted translucent feathered surface. */
+/* Fallback when backdrop-filter is not supported. */
 @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
   .deck-enabled .deck-viewport .depth-stage::before{
-    background:linear-gradient(155deg,rgba(15,21,39,.55),rgba(8,13,28,.55));
+    background:linear-gradient(155deg,rgba(15,21,39,.50),rgba(8,13,28,.50));
   }
 }
 .depth-stage::after{
