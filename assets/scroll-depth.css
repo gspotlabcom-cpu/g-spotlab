@@ -84,7 +84,12 @@ html.deck-mode .shell.depth-shell{
   border-radius:inherit;
   /* Deck depth animates the glass itself: 65% opaque in the piles,
      up to 95% opaque at the center so rear content stays out of the way. */
-  background:linear-gradient(155deg,rgba(15,21,39,var(--deck-glass-opacity)),rgba(8,13,28,var(--deck-glass-opacity)));
+  /* Top/bottom luminous seams fade to zero at the sides. The third
+     layer is the existing frosted plexiglass, kept fully intact. */
+  background:
+    linear-gradient(90deg,transparent 5%,rgba(103,232,249,.12) 22%,rgba(103,232,249,.55) 50%,rgba(103,232,249,.12) 78%,transparent 95%) center top / 100% var(--deck-edge-top,1px) no-repeat,
+    linear-gradient(90deg,transparent 5%,rgba(103,232,249,.12) 22%,rgba(103,232,249,.55) 50%,rgba(103,232,249,.12) 78%,transparent 95%) center bottom / 100% var(--deck-edge-bottom,1px) no-repeat,
+    linear-gradient(155deg,rgba(15,21,39,var(--deck-glass-opacity)),rgba(8,13,28,var(--deck-glass-opacity)));
   -webkit-backdrop-filter:blur(16px) saturate(1.12);
   backdrop-filter:blur(16px) saturate(1.12);
 }
@@ -92,10 +97,23 @@ html.deck-mode .shell.depth-shell{
   position:relative;
   z-index:1;
 }
+/* Keep only the inner-facing seam on the two ends of the deck. */
+.deck-enabled .deck-viewport .depth-stage:first-child{--deck-edge-top:0px}
+.deck-enabled .deck-viewport .depth-stage:last-child{--deck-edge-bottom:0px}
 .deck-enabled .deck-viewport .depth-stage.is-current{
   pointer-events:auto;
-  box-shadow:none;
+  /* Two shallow OUTSIDE shadows; no side outline, no interior vignette. */
+  box-shadow:0 -13px 18px -15px rgba(1,4,14,.48),
+             0 13px 18px -15px rgba(1,4,14,.48);
 }
+.deck-enabled .deck-viewport .depth-stage.is-current:first-child{
+  box-shadow:0 13px 18px -15px rgba(1,4,14,.48);
+}
+.deck-enabled .deck-viewport .depth-stage.is-current:last-child{
+  box-shadow:0 -13px 18px -15px rgba(1,4,14,.48);
+}
+/* The hero's old line would duplicate the new unified lower seam. */
+html.deck-mode .depth-stage--hero>.hero::after{display:none}
 /* Fallback when backdrop-filter is not supported. */
 @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
   .deck-enabled .deck-viewport .depth-stage::before{
