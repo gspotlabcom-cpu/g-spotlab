@@ -103,14 +103,14 @@ html.deck-mode .shell.depth-shell{
 .deck-enabled .deck-viewport .depth-stage.is-current{
   pointer-events:auto;
   /* Two shallow OUTSIDE shadows; no side outline, no interior vignette. */
-  box-shadow:0 -13px 18px -15px rgba(1,4,14,.48),
-             0 13px 18px -15px rgba(1,4,14,.48);
+  box-shadow:0 -18px 34px -20px rgba(1,4,14,.70),
+             0 18px 34px -20px rgba(1,4,14,.70);
 }
 .deck-enabled .deck-viewport .depth-stage.is-current:first-child{
-  box-shadow:0 13px 18px -15px rgba(1,4,14,.48);
+  box-shadow:0 18px 34px -20px rgba(1,4,14,.70);
 }
 .deck-enabled .deck-viewport .depth-stage.is-current:last-child{
-  box-shadow:0 -13px 18px -15px rgba(1,4,14,.48);
+  box-shadow:0 -18px 34px -20px rgba(1,4,14,.70);
 }
 /* The hero's old line would duplicate the new unified lower seam. */
 html.deck-mode .depth-stage--hero>.hero::after{display:none}
