@@ -96,10 +96,11 @@ html.deck-mode .shell.depth-shell{
   pointer-events:auto;
   /* Outside-only diffuse shadow: obscures the piles around the active
      screen without tinting any of its text, controls or artwork. */
+  /* Short, symmetric shadow on all four edges.
+     Large prior shadows were clipped by the scene at left and right. */
   box-shadow:
-    0 0 48px 22px rgba(2,4,14,.52),
-    0 0 120px 55px rgba(2,4,14,.31),
-    0 24px 82px rgba(0,0,0,.25);
+    0 0 16px 7px rgba(2,4,14,.52),
+    0 0 40px 18px rgba(2,4,14,.31);
 }
 /* Fallback when backdrop-filter is not supported. */
 @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
