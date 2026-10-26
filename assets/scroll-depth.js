@@ -72,7 +72,7 @@
     // The central screen builds a stronger glass tint continuously as it
     // moves into focus. Pile cards keep their existing translucent glass.
     var focus=clamp((opacity-.55)/.45,0,1);
-    stage.style.setProperty('--deck-glass-opacity',(.50+.40*focus).toFixed(3));
+    stage.style.setProperty('--deck-glass-opacity',(.65+.30*focus).toFixed(3));
     var depth=clamp((1-opacity)/.78,0,1);
     stage.style.setProperty('--deck-saturation',(1-.50*depth).toFixed(3));
     stage.style.setProperty('--deck-brightness',(1-.15*depth).toFixed(3));
