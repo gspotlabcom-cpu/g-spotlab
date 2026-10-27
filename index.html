@@ -100,6 +100,30 @@
   <link rel="stylesheet" href="/assets/product-actions.css?v=5" />
   <link rel="stylesheet" href="/assets/video-modal.css?v=3" />
   <script src="/assets/video-modal.js?v=3" defer></script>
+<style>
+/* Support email is an actionable copy control, not a mailto link. */
+.gsl-copy-email{appearance:none;-webkit-appearance:none;border:0;background:none;padding:0;cursor:pointer;font:inherit;text-align:left;text-decoration:underline;text-decoration-color:rgba(103,232,249,.35);text-underline-offset:3px}
+.gsl-copy-email:hover{color:#e9d5ff;text-decoration-color:currentColor}
+.gsl-copy-email:focus-visible{outline:2px solid #a78bfa;outline-offset:4px;border-radius:3px}
+.gsl-copy-feedback{display:inline-block;color:#5eead4;font-size:12px;font-weight:700;min-width:0}
+</style>
+<script>
+document.addEventListener('click',async function(event){
+  const button=event.target.closest('[data-copy-email]');
+  if(!button)return;
+  const email=button.dataset.copyEmail, feedback=button.nextElementSibling;
+  let ok=false;
+  try{
+    if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(email);ok=true;}
+    else{
+      const field=document.createElement('textarea');
+      field.value=email;field.setAttribute('readonly','');field.style.position='fixed';field.style.opacity='0';
+      document.body.appendChild(field);field.select();ok=document.execCommand('copy');field.remove();
+    }
+  }catch(err){ok=false;}
+  if(feedback)feedback.textContent=ok?'Copied!':'Select and copy the email address';
+});
+</script>
 <link rel="stylesheet" href="/assets/back-to-top.css?v=1" />
   <script src="/assets/back-to-top.js?v=1" defer></script>
   <link rel="stylesheet" href="/assets/scroll-depth.css?v=29" />
@@ -263,7 +287,7 @@
           </div></article></div></section>
       </div>
       <div class="depth-stage depth-stage--support" data-depth-stage>
-        <section class="section" id="support"><div class="section-head"><div><div class="kicker">Documentation & support</div><h2>Understand what you connect.</h2></div><p>Documentation covers contracts, defaults, units, order-dependent composition and practical examples—not only a list of exposed parameters.</p></div><div class="three-grid"><article class="panel"><span class="support-icon">◇</span><h3>Clear contracts</h3><p>Inputs, outputs, defaults, units and boundaries for every public building block.</p></article><article class="panel"><span class="support-icon">⇄</span><h3>Composition notes</h3><p>How sequence, parallel branches and blending change the final behavior.</p></article><article class="panel"><span class="support-icon">✉</span><h3>Direct support</h3><p>Questions, product support, licensing and business communication at <a class="text-link" href="mailto:gspotlab.com@gmail.com">gspotlab.com@gmail.com</a>.</p></article></div></section>
+        <section class="section" id="support"><div class="section-head"><div><div class="kicker">Documentation & support</div><h2>Understand what you connect.</h2></div><p>Documentation covers contracts, defaults, units, order-dependent composition and practical examples—not only a list of exposed parameters.</p></div><div class="three-grid"><article class="panel"><span class="support-icon">◇</span><h3>Clear contracts</h3><p>Inputs, outputs, defaults, units and boundaries for every public building block.</p></article><article class="panel"><span class="support-icon">⇄</span><h3>Composition notes</h3><p>How sequence, parallel branches and blending change the final behavior.</p></article><article class="panel"><span class="support-icon">✉</span><h3>Direct support</h3><p>Questions, product support, licensing and business communication at <button type="button" class="text-link gsl-copy-email" data-copy-email="gspotlab.com@gmail.com" aria-label="Copy email address" title="Copy email address">gspotlab.com@gmail.com</button> <span class="gsl-copy-feedback" role="status" aria-live="polite"></span></p></article></div></section>
       </div>
     </main>
     <footer class="footer"><span>© G-Spot Lab · Shader Toolkits & VFX assets for Unity and Unreal Engine</span><div class="footer-links"><a href="/privacy/">Privacy Policy</a><a href="https://www.youtube.com/@G-spotLab" target="_blank" rel="noopener noreferrer">YouTube</a><a href="#support">Contact</a></div></footer>
