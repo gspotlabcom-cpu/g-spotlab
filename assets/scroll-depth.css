@@ -184,7 +184,17 @@ html.deck-mode .depth-stage--hero .gsl-hero-art{
 }
 .gsl-art-pulses path:first-child{animation:gsl-signal 7s linear infinite}
 .gsl-art-pulses path:last-child{animation:gsl-signal 9s linear infinite reverse}
-.gsl-art-rings{transform-origin:332px 260px;animation:gsl-rotate 35s linear infinite}
+/* Orbit groups rotate independently around the shared SVG center. */
+.gsl-art-ring-outer,.gsl-art-ring-middle,.gsl-art-ring-inner,
+.gsl-art-orbit-one,.gsl-art-orbit-two{
+  transform-box:view-box;
+  transform-origin:332px 260px;
+}
+.gsl-art-ring-outer{animation:gsl-rotate 33s linear infinite}
+.gsl-art-ring-middle{animation:gsl-rotate-reverse 42s linear infinite}
+.gsl-art-ring-inner{animation:gsl-rotate 24s linear infinite}
+.gsl-art-orbit-one{animation:gsl-rotate-reverse 19s linear infinite}
+.gsl-art-orbit-two{animation:gsl-rotate 27s linear infinite}
 .gsl-art-core{transform-origin:332px 260px;animation:gsl-breathe 4.6s ease-in-out infinite alternate}
 .gsl-art-grid{opacity:.7}
 .gsl-art-chip{
@@ -213,6 +223,7 @@ html.deck-mode .depth-stage--hero .gsl-hero-art{
 }
 @keyframes gsl-signal{to{stroke-dashoffset:-680}}
 @keyframes gsl-rotate{to{transform:rotate(360deg)}}
+@keyframes gsl-rotate-reverse{to{transform:rotate(-360deg)}}
 @keyframes gsl-breathe{to{transform:scale(1.075)}}
 @keyframes gsl-float{to{transform:translateY(-9px)}}
 @keyframes gsl-halo{to{opacity:.62;transform:scale(1.1)}}
@@ -223,7 +234,7 @@ html.deck-mode .depth-stage--hero .gsl-hero-art{
   .gsl-art-chip small{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){
-  .gsl-art-halo,.gsl-art-pulses path,.gsl-art-rings,.gsl-art-core,.gsl-art-chip{animation:none!important}
+  .gsl-art-halo,.gsl-art-pulses path,.gsl-art-ring-outer,.gsl-art-ring-middle,.gsl-art-ring-inner,.gsl-art-orbit-one,.gsl-art-orbit-two,.gsl-art-core,.gsl-art-chip{animation:none!important}
 }
 
 .depth-stage--toolkits{background:linear-gradient(140deg,rgba(16,23,43,.99),rgba(9,16,33,.97))}
