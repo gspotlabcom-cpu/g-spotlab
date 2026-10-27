@@ -105,7 +105,9 @@
 .gsl-copy-email{appearance:none;-webkit-appearance:none;border:0;background:none;padding:0;cursor:pointer;font:inherit;text-align:left;text-decoration:underline;text-decoration-color:rgba(103,232,249,.35);text-underline-offset:3px}
 .gsl-copy-email:hover{color:#e9d5ff;text-decoration-color:currentColor}
 .gsl-copy-email:focus-visible{outline:2px solid #a78bfa;outline-offset:4px;border-radius:3px}
-.gsl-copy-feedback{display:inline-block;color:#5eead4;font-size:12px;font-weight:700;min-width:0}
+.gsl-copy-feedback{display:inline-block;color:#5eead4;font-size:12px;font-weight:700;min-width:0;opacity:0;transition:opacity .7s ease}
+.gsl-copy-feedback.is-visible{opacity:1}
+@media(prefers-reduced-motion:reduce){.gsl-copy-feedback{transition:none}}
 </style>
 <script>
 document.addEventListener('click',async function(event){
@@ -121,7 +123,15 @@ document.addEventListener('click',async function(event){
       document.body.appendChild(field);field.select();ok=document.execCommand('copy');field.remove();
     }
   }catch(err){ok=false;}
-  if(feedback)feedback.textContent=ok?'Copied!':'Select and copy the email address';
+  if(feedback){
+    clearTimeout(feedback._hideTimer);
+    feedback.textContent=ok?'Copied!':'Select and copy the email address';
+    feedback.classList.add('is-visible');
+    feedback._hideTimer=setTimeout(function(){
+      feedback.classList.remove('is-visible');
+      setTimeout(function(){if(!feedback.classList.contains('is-visible'))feedback.textContent='';},700);
+    },4300);
+  }
 });
 </script>
 <link rel="stylesheet" href="/assets/back-to-top.css?v=1" />
