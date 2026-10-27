@@ -1,11 +1,11 @@
-/* G-Spot Lab / viewport deck prototype, only when ?deck=1.
+/* G-Spot Lab / primary viewport deck on supported desktop screens.
    Fixed header and footer, centered active card, fixed upper/lower piles.
-   Mouse wheel, keyboard, and touch move through reversible card transitions.
-   No document scrolling, timers for physics, or experimental behavior on the
-   normal public homepage. */
+   Mouse wheel, keyboard, and touch move through reversible transitions.
+   Reduced-motion and compact screens keep regular document scrolling.
+   ?deck=0 is an optional regular-scroll fallback. */
 (function(){
   var shell=document.querySelector('.depth-shell');
-  if(!shell || new URLSearchParams(window.location.search).get('deck')!=='1')return;
+  if(!shell || new URLSearchParams(window.location.search).get('deck')==='0')return;
 
   var stages=Array.prototype.slice.call(shell.querySelectorAll('[data-depth-stage]'));
   if(stages.length<2)return;
