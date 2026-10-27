@@ -208,11 +208,16 @@ html.deck-mode .depth-stage--hero .gsl-hero-art{
 .gsl-art-orbit-four{animation:gsl-rotate-reverse 31s linear infinite}
 .gsl-art-orbit-five{animation:gsl-rotate 38s linear infinite}
 /* Keep some orbits crisp and bright, others quiet and recessed. */
-.gsl-art-ring-inner{filter:drop-shadow(0 0 5px rgba(103,232,249,.65))}
-.gsl-art-ring-outer{filter:drop-shadow(0 0 4px rgba(167,139,250,.36))}
-.gsl-art-orbit-one{filter:drop-shadow(0 0 7px rgba(103,232,249,.75))}
-.gsl-art-orbit-three{filter:drop-shadow(0 0 8px rgba(70,245,255,.6))}
-.gsl-art-orbit-five{filter:drop-shadow(0 0 5px rgba(255,174,81,.48))}
+/* A violet cosmic core and five individually colored planetary tracks. */
+.gsl-art-core{filter:drop-shadow(0 0 10px rgba(177,104,255,.7))}
+.gsl-art-ring-inner{filter:drop-shadow(0 0 7px rgba(222,171,255,.82))}
+.gsl-art-ring-middle{filter:drop-shadow(0 0 3px rgba(109,56,200,.38))}
+.gsl-art-ring-outer{filter:drop-shadow(0 0 6px rgba(155,92,255,.65))}
+.gsl-art-orbit-one{filter:drop-shadow(0 0 7px rgba(22,79,197,.8))}
+.gsl-art-orbit-two{filter:drop-shadow(0 0 5px rgba(107,188,255,.57))}
+.gsl-art-orbit-three{filter:drop-shadow(0 0 8px rgba(40,233,221,.74))}
+.gsl-art-orbit-four{filter:drop-shadow(0 0 6px rgba(231,247,255,.62))}
+.gsl-art-orbit-five{filter:drop-shadow(0 0 7px rgba(255,155,67,.58))}
 
 .gsl-art-core{transform-origin:332px 260px;animation:gsl-breathe 4.6s ease-in-out infinite alternate}
 .gsl-art-grid{opacity:.7}
