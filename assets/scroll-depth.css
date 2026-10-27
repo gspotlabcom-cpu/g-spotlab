@@ -185,7 +185,7 @@ html.deck-mode .depth-stage--hero .gsl-hero-art{
 /* Bright neon runners: a hot color core and a soft halo, moving on
    independent circuits. SVG drop-shadow works without extra elements. */
 .gsl-art-pulses .gsl-pulse{
-  filter:drop-shadow(0 0 3px currentColor) drop-shadow(0 0 9px currentColor);
+  filter:drop-shadow(0 0 4px currentColor) drop-shadow(0 0 13px currentColor) drop-shadow(0 0 21px currentColor);
   stroke-linecap:round;
 }
 .gsl-pulse-cyan{color:#46f5ff;animation:gsl-signal 6.5s linear infinite}
@@ -207,6 +207,13 @@ html.deck-mode .depth-stage--hero .gsl-hero-art{
 .gsl-art-orbit-three{animation:gsl-rotate 23s linear infinite}
 .gsl-art-orbit-four{animation:gsl-rotate-reverse 31s linear infinite}
 .gsl-art-orbit-five{animation:gsl-rotate 38s linear infinite}
+/* Keep some orbits crisp and bright, others quiet and recessed. */
+.gsl-art-ring-inner{filter:drop-shadow(0 0 5px rgba(103,232,249,.65))}
+.gsl-art-ring-outer{filter:drop-shadow(0 0 4px rgba(167,139,250,.36))}
+.gsl-art-orbit-one{filter:drop-shadow(0 0 7px rgba(103,232,249,.75))}
+.gsl-art-orbit-three{filter:drop-shadow(0 0 8px rgba(70,245,255,.6))}
+.gsl-art-orbit-five{filter:drop-shadow(0 0 5px rgba(255,174,81,.48))}
+
 .gsl-art-core{transform-origin:332px 260px;animation:gsl-breathe 4.6s ease-in-out infinite alternate}
 .gsl-art-grid{opacity:.7}
 .gsl-art-chip{
