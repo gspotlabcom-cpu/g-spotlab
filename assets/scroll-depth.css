@@ -150,6 +150,82 @@ html.deck-mode .depth-stage--hero>.hero::after{display:none}
   background:radial-gradient(circle at 16% 18%,rgba(124,58,237,.20),transparent 32%),
   radial-gradient(circle at 86% 18%,rgba(8,145,178,.13),transparent 32%),transparent
 }
+/* Hero network replaces the informational card ONLY in the deck preview.
+   All effects are CSS-driven; nothing moves when reduced motion is requested. */
+.gsl-hero-art{display:none}
+html.deck-mode .depth-stage--hero .system-card{display:none}
+html.deck-mode .depth-stage--hero .hero{
+  grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  gap:clamp(12px,2vw,32px);
+}
+html.deck-mode .depth-stage--hero .hero-copy{position:relative;z-index:2}
+html.deck-mode .depth-stage--hero .hero-visual{min-width:0}
+html.deck-mode .depth-stage--hero .gsl-hero-art{
+  display:block;
+  position:relative;
+  width:100%;
+  aspect-ratio:1.16;
+  max-height:min(58vh,530px);
+  min-height:280px;
+  isolation:isolate;
+  overflow:hidden;
+  border-radius:28px;
+}
+.gsl-art-halo{
+  position:absolute;inset:7% 4%;
+  background:radial-gradient(ellipse at 54% 52%,rgba(14,165,233,.17),transparent 38%),
+             radial-gradient(ellipse at 40% 45%,rgba(124,58,237,.17),transparent 60%);
+  filter:blur(26px);
+  animation:gsl-halo 7s ease-in-out infinite alternate;
+}
+.gsl-art-circuit{
+  position:absolute;inset:0;width:100%;height:100%;
+  filter:drop-shadow(0 0 9px rgba(103,232,249,.16));
+}
+.gsl-art-pulses path:first-child{animation:gsl-signal 7s linear infinite}
+.gsl-art-pulses path:last-child{animation:gsl-signal 9s linear infinite reverse}
+.gsl-art-rings{transform-origin:332px 260px;animation:gsl-rotate 35s linear infinite}
+.gsl-art-core{transform-origin:332px 260px;animation:gsl-breathe 4.6s ease-in-out infinite alternate}
+.gsl-art-grid{opacity:.7}
+.gsl-art-chip{
+  position:absolute;display:flex;flex-direction:column;gap:2px;
+  min-width:130px;padding:10px 13px 10px 26px;
+  border-radius:11px;
+  background:rgba(9,21,38,.67);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+  color:#e6faff;letter-spacing:.08em;
+  animation:gsl-float 5.6s ease-in-out infinite alternate;
+}
+.gsl-art-chip strong{font-size:12px;font-weight:800;letter-spacing:.15em}
+.gsl-art-chip small{font-size:10px;color:#b7c6dd;letter-spacing:.02em}
+.gsl-chip-dot{position:absolute;left:11px;top:14px;width:6px;height:6px;border-radius:50%;background:#67e8f9;box-shadow:0 0 13px rgba(103,232,249,.7)}
+.gsl-art-chip-flow{left:4%;top:21%}
+.gsl-art-chip-wave{right:3%;top:17%;animation-delay:-1.8s}
+.gsl-art-chip-wave .gsl-chip-dot{background:#c4b5fd}
+.gsl-art-chip-dist{right:7%;bottom:17%;animation-delay:-3.4s}
+.gsl-art-chip-dist .gsl-chip-dot{background:#fb923c}
+.gsl-art-caption{
+  position:absolute;bottom:5%;left:8%;right:8%;
+  display:flex;justify-content:space-between;
+  color:#8cb8cb;font-size:10px;letter-spacing:.22em;font-weight:700;
+  opacity:.68;
+}
+@keyframes gsl-signal{to{stroke-dashoffset:-680}}
+@keyframes gsl-rotate{to{transform:rotate(360deg)}}
+@keyframes gsl-breathe{to{transform:scale(1.075)}}
+@keyframes gsl-float{to{transform:translateY(-9px)}}
+@keyframes gsl-halo{to{opacity:.62;transform:scale(1.1)}}
+@media(max-width:1100px){
+  html.deck-mode .depth-stage--hero .gsl-hero-art{min-height:230px}
+  .gsl-art-chip{min-width:100px;padding:8px 9px 8px 21px}
+  .gsl-art-chip strong{font-size:10px}
+  .gsl-art-chip small{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .gsl-art-halo,.gsl-art-pulses path,.gsl-art-rings,.gsl-art-core,.gsl-art-chip{animation:none!important}
+}
+
 .depth-stage--toolkits{background:linear-gradient(140deg,rgba(16,23,43,.99),rgba(9,16,33,.97))}
 .depth-stage--workflow{background:linear-gradient(145deg,rgba(16,20,39,.99),rgba(8,14,29,.97))}
 .depth-stage--composition{background:linear-gradient(150deg,rgba(14,18,37,.99),rgba(7,14,28,.97))}
