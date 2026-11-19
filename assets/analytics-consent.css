@@ -1,55 +1,54 @@
 .gsl-consent-banner{
   position:fixed;
   z-index:10000;
-  left:16px;
-  right:16px;
-  bottom:16px;
+  left:12px;
+  right:12px;
+  bottom:12px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:24px;
-  width:min(920px,calc(100% - 32px));
+  gap:16px;
+  width:min(780px,calc(100% - 24px));
   margin:auto;
-  padding:20px;
-  border:1px solid rgba(196,181,253,.28);
-  border-radius:18px;
-  background:rgba(8,13,28,.97);
-  box-shadow:0 24px 80px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.07);
+  padding:12px 14px;
+  border:1px solid rgba(196,181,253,.2);
+  border-radius:14px;
+  background:rgba(8,13,28,.96);
+  box-shadow:0 16px 48px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.05);
   color:#f8fafc;
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  backdrop-filter:blur(18px)
+  backdrop-filter:blur(14px)
 }
 .gsl-consent-copy{min-width:0}
-.gsl-consent-copy strong{display:block;margin-bottom:7px;font-size:16px;color:#f8fafc}
-.gsl-consent-copy p{margin:0;color:#b7c0d4;font-size:13px;line-height:1.55}
-.gsl-consent-copy a{display:inline-block;margin-top:7px;color:#67e8f9;font-size:12px;text-underline-offset:3px}
-.gsl-consent-actions{display:flex;flex:0 0 auto;gap:9px}
+.gsl-consent-copy p{margin:0;color:#c5ccda;font-size:12px;line-height:1.45}
+.gsl-consent-copy a{margin-left:5px;color:#8be9f7;font-size:12px;text-underline-offset:3px;white-space:nowrap}
+.gsl-consent-actions{display:flex;flex:0 0 auto;gap:8px}
 .gsl-consent-actions button,.gsl-consent-settings{
   appearance:none;
-  border:1px solid rgba(196,181,253,.25);
-  border-radius:12px;
+  border:1px solid rgba(196,181,253,.22);
+  border-radius:10px;
   background:rgba(255,255,255,.055);
   color:#e5e7eb;
   cursor:pointer;
   font:700 12px/1.2 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif
 }
-.gsl-consent-actions button{min-height:42px;padding:10px 14px}
-.gsl-consent-actions button.is-primary{border-color:rgba(103,232,249,.45);background:linear-gradient(180deg,rgba(124,58,237,.32),rgba(6,182,212,.16));color:#ecfeff}
+.gsl-consent-actions button{min-height:36px;padding:8px 12px;white-space:nowrap}
+.gsl-consent-actions button.is-primary{border-color:rgba(103,232,249,.38);background:rgba(6,182,212,.12);color:#ecfeff}
 .gsl-consent-actions button:hover,.gsl-consent-settings:hover{border-color:rgba(103,232,249,.55);color:#fff}
 .gsl-consent-actions button:focus-visible,.gsl-consent-settings:focus-visible{outline:2px solid #67e8f9;outline-offset:3px}
 .gsl-consent-settings{
-  position:fixed;
-  z-index:9998;
-  right:14px;
-  bottom:14px;
-  padding:8px 10px;
-  background:rgba(8,13,28,.88);
-  color:#aab2c7;
-  opacity:.82;
-  backdrop-filter:blur(10px)
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  color:inherit;
+  font:inherit;
+  text-decoration:underline;
+  text-decoration-color:rgba(103,232,249,.3);
+  text-underline-offset:3px
 }
 @media(max-width:680px){
-  .gsl-consent-banner{align-items:stretch;flex-direction:column;gap:16px;padding:17px}
+  .gsl-consent-banner{align-items:stretch;flex-direction:column;gap:11px;padding:12px}
   .gsl-consent-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
   .gsl-consent-actions button{width:100%}
 }
