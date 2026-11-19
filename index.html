@@ -16,11 +16,6 @@
   <meta name="twitter:title" content="G-Spot Lab | Shader Toolkits & VFX Assets" />
   <meta name="twitter:description" content="Reusable shader building blocks and ready-to-use VFX for Unity URP and Unreal Engine." />
   <meta name="twitter:image" content="https://g-spotlab.com/assets/products/elemental-energy-vfx-materials.png" />
-  <script>
-    document.documentElement.classList.add(
-      new URLSearchParams(window.location.search).get('deck') === '1' ? 'legacy-deck' : 'portal-mode'
-    );
-  </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"G-Spot Lab","url":"https://g-spotlab.com/","logo":"https://g-spotlab.com/assets/gspot-logo.png","sameAs":["https://assetstore.unity.com/publishers/139238","https://www.fab.com/sellers/GLab%20Studio","https://www.youtube.com/@G-spotLab"],"description":"Independent publisher of modular shader toolkits and ready-to-use VFX assets for Unity URP and Unreal Engine."}
   </script>
@@ -118,8 +113,7 @@
 document.addEventListener('click',async function(event){
   const button=event.target.closest('[data-copy-email]');
   if(!button)return;
-  const email=button.dataset.copyEmail,
-    feedback=button.nextElementSibling || (button.closest('.portal-copy') && button.closest('.portal-copy').querySelector('.gsl-copy-feedback'));
+  const email=button.dataset.copyEmail, feedback=button.nextElementSibling;
   let ok=false;
   try{
     if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(email);ok=true;}
@@ -146,75 +140,8 @@ document.addEventListener('click',async function(event){
   <script src="/assets/scroll-depth.js?v=22" defer></script>
   <link rel="stylesheet" href="/assets/analytics-consent.css?v=2" />
   <script src="/assets/analytics-consent.js?v=2" defer></script>
-  <link rel="stylesheet" href="/assets/portal-home.css?v=1" />
 </head>
 <body>
-  <div class="portal-page">
-    <header class="portal-header">
-      <a class="portal-brand" href="/" aria-label="G-Spot Lab home">
-        <img src="/assets/gspot-logo.png" alt="G-Spot Lab logo" />
-        <span class="portal-brand-copy">
-          <span class="portal-brand-name">G-Spot Lab</span>
-          <span class="portal-brand-sub">Shader toolkits &amp; ready-to-use VFX</span>
-        </span>
-      </a>
-      <nav class="portal-nav" aria-label="Main navigation">
-        <a href="https://www.youtube.com/@G-spotLab" target="_blank" rel="noopener noreferrer">YouTube</a>
-        <a href="/privacy/">Privacy</a>
-        <a class="portal-nav-primary" href="/toolkits/">Explore Toolkits</a>
-      </nav>
-    </header>
-
-    <main class="portal-main">
-      <section class="portal-hero" aria-labelledby="portal-title">
-        <div class="portal-copy">
-          <div class="portal-kicker">Unity URP · Unreal Engine · Modular by design</div>
-          <h1 class="portal-title" id="portal-title">Experiment.<br>Combine.<br>Create.</h1>
-          <p class="portal-lead"><strong>Focused shader mechanics for building your own effects</strong> — plus ready-to-use VFX assets when speed matters more than customization.</p>
-
-          <nav class="portal-routes" aria-label="Explore G-Spot Lab">
-            <a class="portal-route portal-route--featured" href="/toolkits/">
-              <span class="portal-route-icon" aria-hidden="true">◇</span>
-              <span class="portal-route-copy"><strong>Shader Toolkit Library</strong><span>Flow, Wave, Distortion and Dissolve mechanics</span></span>
-              <span class="portal-route-meta">4 toolkits</span>
-            </a>
-
-            <article class="portal-route portal-store-route">
-              <span class="portal-route-icon" aria-hidden="true">✦</span>
-              <span class="portal-route-copy"><strong>Ready-to-Use VFX</strong><span>Finished shaders, materials and texture packs</span></span>
-              <span class="portal-store-actions">
-                <a href="https://assetstore.unity.com/publishers/139238" target="_blank" rel="noopener noreferrer">Unity</a>
-                <a href="https://www.fab.com/sellers/GLab%20Studio" target="_blank" rel="noopener noreferrer">Fab</a>
-              </span>
-            </article>
-
-            <a class="portal-route" href="https://www.youtube.com/@G-spotLab" target="_blank" rel="noopener noreferrer">
-              <span class="portal-route-icon" aria-hidden="true">▶</span>
-              <span class="portal-route-copy"><strong>Video Demonstrations</strong><span>See every toolkit and pack in motion</span></span>
-            </a>
-
-            <button class="portal-route gsl-copy-email" type="button" data-copy-email="gspotlab.com@gmail.com" aria-label="Copy G-Spot Lab support email" title="Copy email address">
-              <span class="portal-route-icon" aria-hidden="true">@</span>
-              <span class="portal-route-copy"><strong>Documentation &amp; Support</strong><span>Copy gspotlab.com@gmail.com</span></span>
-            </button>
-          </nav>
-          <span class="gsl-copy-feedback" role="status" aria-live="polite"></span>
-        </div>
-
-        <div class="portal-visual" data-portal-art aria-hidden="true"></div>
-      </section>
-    </main>
-
-    <footer class="portal-footer">
-      <span>© G-Spot Lab · Shader Toolkits &amp; VFX assets for Unity and Unreal Engine</span>
-      <span class="portal-footer-links">
-        <a href="/privacy/">Privacy Policy</a>
-        <a href="https://www.youtube.com/@G-spotLab" target="_blank" rel="noopener noreferrer">YouTube</a>
-        <button type="button" class="gsl-copy-email" data-copy-email="gspotlab.com@gmail.com">Contact</button>
-      </span>
-    </footer>
-  </div>
-
   <div class="page">
     <header class="header">
       <a class="brand" href="#top" aria-label="G-Spot Lab home"><img src="assets/gspot-logo.png" alt="G-Spot Lab logo" /><div><div class="brand-name">G-Spot Lab</div><div class="brand-sub">Shader toolkits & ready-to-use VFX</div></div></a>
@@ -377,13 +304,6 @@ document.addEventListener('click',async function(event){
     </main>
     <footer class="footer"><span>© G-Spot Lab · Shader Toolkits & VFX assets for Unity and Unreal Engine</span><div class="footer-links"><a href="/privacy/">Privacy Policy</a><a href="https://www.youtube.com/@G-spotLab" target="_blank" rel="noopener noreferrer">YouTube</a><a href="#support">Contact</a></div></footer>
   </div>
-  <script>
-    (function(){
-      if(!document.documentElement.classList.contains('portal-mode'))return;
-      var art=document.querySelector('.depth-stage--hero .gsl-hero-art');
-      var target=document.querySelector('[data-portal-art]');
-      if(art && target)target.appendChild(art);
-    })();
-  </script>
 </body>
 </html>
+
