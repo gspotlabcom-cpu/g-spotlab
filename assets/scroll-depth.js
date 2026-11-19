@@ -5,7 +5,7 @@
    ?deck=0 is an optional regular-scroll fallback. */
 (function(){
   var shell=document.querySelector('.depth-shell');
-  if(!shell || new URLSearchParams(window.location.search).get('deck')==='0')return;
+  if(!shell || new URLSearchParams(window.location.search).get('deck')!=='1')return;
 
   var stages=Array.prototype.slice.call(shell.querySelectorAll('[data-depth-stage]'));
   if(stages.length<2)return;
