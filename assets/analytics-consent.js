@@ -70,6 +70,7 @@
   function grantConsent() {
     saveConsent('granted');
     closeBanner();
+    addSettingsButton();
     loadGoogleTag();
   }
 
@@ -83,6 +84,7 @@
     });
     deleteAnalyticsCookies();
     closeBanner();
+    addSettingsButton();
   }
 
   function closeBanner() {
@@ -93,37 +95,44 @@
   function showBanner() {
     closeBanner();
 
+    const settingsButton = document.querySelector('[data-gsl-consent-settings]');
+    if (settingsButton) settingsButton.hidden = true;
+
     const banner = document.createElement('section');
     banner.className = 'gsl-consent-banner';
     banner.dataset.gslConsentBanner = '';
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-modal', 'false');
-    banner.setAttribute('aria-labelledby', 'gsl-consent-title');
+    banner.setAttribute('aria-label', 'Analytics cookie preferences');
     banner.innerHTML =
       '<div class="gsl-consent-copy">' +
-        '<strong id="gsl-consent-title">Optional website analytics</strong>' +
-        '<p>Allow anonymous Google Analytics measurement to help G-Spot Lab understand page visits, video opens and marketplace clicks. Advertising storage and personalization stay disabled.</p>' +
-        '<a href="/privacy/">Privacy Policy</a>' +
+        '<p>We use optional analytics cookies to understand how visitors use our website.' +
+        '<a href="/privacy/">Privacy Policy</a></p>' +
       '</div>' +
       '<div class="gsl-consent-actions">' +
         '<button type="button" data-gsl-consent="deny">Reject</button>' +
-        '<button type="button" class="is-primary" data-gsl-consent="grant">Allow analytics</button>' +
+        '<button type="button" class="is-primary" data-gsl-consent="grant">Accept</button>' +
       '</div>';
 
     document.body.appendChild(banner);
-    const primaryButton = banner.querySelector('[data-gsl-consent="grant"]');
-    if (primaryButton) primaryButton.focus({ preventScroll: true });
   }
 
   function addSettingsButton() {
-    if (document.querySelector('[data-gsl-consent-settings]')) return;
+    const existingButton = document.querySelector('[data-gsl-consent-settings]');
+    if (existingButton) {
+      existingButton.hidden = false;
+      return;
+    }
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'gsl-consent-settings';
     button.dataset.gslConsentSettings = '';
-    button.textContent = 'Privacy settings';
+    button.textContent = 'Cookie settings';
     button.addEventListener('click', showBanner);
-    document.body.appendChild(button);
+    const footerTarget = document.querySelector('.footer-links') ||
+      document.querySelector('footer .wrap') ||
+      document.querySelector('footer');
+    (footerTarget || document.body).appendChild(button);
   }
 
   function productName(element) {
@@ -186,10 +195,15 @@
   }, true);
 
   function initialize() {
-    addSettingsButton();
     const consent = readConsent();
-    if (consent === 'granted') loadGoogleTag();
-    else if (consent !== 'denied') showBanner();
+    if (consent === 'granted') {
+      addSettingsButton();
+      loadGoogleTag();
+    } else if (consent === 'denied') {
+      addSettingsButton();
+    } else {
+      showBanner();
+    }
   }
 
   if (document.readyState === 'loading') {
